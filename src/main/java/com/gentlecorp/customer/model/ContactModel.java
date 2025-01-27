@@ -9,16 +9,16 @@ import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @JsonPropertyOrder({
-  "lastName", "firstName", "relationship", "withdrawalLimit", "emergencyContact", "startDate", "endDate"
+  "customerId", "relationship", "withdrawalLimit", "emergencyContact", "startDate", "endDate"
 })
 @Relation(collectionRelation = "addresses", itemRelation = "address")
 @Getter
 @ToString(callSuper = true)
 public class ContactModel extends RepresentationModel<ContactModel> {
-  private final String lastName;
-  private final String firstName;
+  private final UUID customerId;
   private final RelationshipType relationship;
   private final int withdrawalLimit;
   private final boolean isEmergencyContact;
@@ -26,8 +26,7 @@ public class ContactModel extends RepresentationModel<ContactModel> {
   private final LocalDate endDate;
 
   public ContactModel(final Contact contact) {
-    this.lastName = contact.getLastName();
-    this.firstName = contact.getFirstName();
+    this.customerId = contact.getCustomerId();
     this.relationship = contact.getRelationship();
     this.withdrawalLimit = contact.getWithdrawalLimit();
     this.isEmergencyContact = contact.isEmergencyContact();

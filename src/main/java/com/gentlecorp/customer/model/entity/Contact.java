@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -46,10 +48,10 @@ public class Contact {
   /**
    * Startdatum der Beziehung.
    */
-  private String startDate;
+  private LocalDate startDate;
 
   /**
    * Enddatum der Beziehung.
    */
-  private String endDate;
+  private LocalDate endDate;
 }

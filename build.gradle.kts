@@ -5,6 +5,11 @@
  * anschließend: ./gradlew wrapper --gradle-version {neue version}
  */
 
+/**
+ * ./gradlew dependencyUpdates
+ *
+ */
+
 val javaLanguageVersion = project.properties["javaLanguageVersion"] as String? ?: JavaVersion.VERSION_23.majorVersion
 val javaVersion = project.properties["javaVersion"] ?: libs.versions.javaVersion.get()
 
@@ -46,7 +51,7 @@ dependencies {
 	 * --------------------------------------------------------------------------------------------------------------------*/
 	runtimeOnly("org.bouncycastle:bcpkix-jdk18on:${libs.versions.bouncycastle.get()}") // Argon2
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
-	implementation("com.c4-soft.springaddons:spring-addons-starter-oidc:${libs.versions.springAddonsStarterOidc.get()}")
+	// implementation("com.c4-soft.springaddons:spring-addons-starter-oidc:${libs.versions.springAddonsStarterOidc.get()}")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 
 
@@ -102,6 +107,7 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok:${libs.versions.lombok.get()}")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	annotationProcessor("org.hibernate:hibernate-jpamodelgen:${libs.versions.hibernateJpamodelgen.get()}")
+	implementation("io.github.cdimascio:dotenv-java:${libs.versions.dotenv.get()}") // Bibliothek für .env-Datei
 
 	/**------------------------------------------------------------------------------------------------------------------------
 	 * WEITERE EXTRAS

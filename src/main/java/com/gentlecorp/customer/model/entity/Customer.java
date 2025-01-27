@@ -22,6 +22,7 @@ import java.util.UUID;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Customer {
 
     /**
@@ -29,6 +30,7 @@ public class Customer {
      * Automatische UUID-Generierung bei der Erstellung.
      */
     @Id
+    @Builder.Default
     private UUID id = UUID.randomUUID();
 
     /**
