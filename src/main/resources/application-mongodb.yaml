@@ -1,0 +1,12 @@
+MONGODB_USER_NAME:  root
+MONGODB_USER_PASSWORT: p
+
+spring:
+  data:
+    mongodb:
+      # uri: mongodb+srv://${MONGODB_USER_NAME}:${MONGODB_USER_PASSWORT}@hka-cluster.q49rh.mongodb.net/?retryWrites=true&w=majority&appName=hka-cluster
+      uri: mongodb+srv://${MONGODB_USER_NAME}:${MONGODB_USER_PASSWORT}@hka-test0.re2qw.mongodb.net/
+      database: Customer
+  config:
+    activate:
+      on-profile: mongodb
