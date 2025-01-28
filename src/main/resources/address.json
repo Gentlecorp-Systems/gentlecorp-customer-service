@@ -1,0 +1,247 @@
+{
+  "addresses": [
+    {
+      "id": "10000000-0000-0000-0000-000000000000",
+      "street": "Kwame Nkrumah Street",
+      "house_number": "45",
+      "zip_code": "KA003",
+      "city": "Kumasi",
+      "state": "Ashanti Region",
+      "country": "Ghana"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000001",
+      "street": "Namurstraße",
+      "house_number": "4",
+      "zip_code": "70374",
+      "city": "Stuttgart",
+      "state": "Baden Württemberg",
+      "country": "Deutschland"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000002",
+      "street": "Hauptstraße",
+      "house_number": "15",
+      "zip_code": "76135",
+      "city": "Karlsruhe",
+      "state": "Baden Württemberg",
+      "country": "Deutschland"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000003",
+      "street": "Mainzer Landstraße",
+      "house_number": "50",
+      "zip_code": "60329",
+      "city": "Frankfurt",
+      "state": "Hessen",
+      "country": "Deutschland"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000004",
+      "street": "Eichenstraße",
+      "house_number": "8",
+      "zip_code": "20255",
+      "city": "Hamburg",
+      "state": "Hamburg",
+      "country": "Deutschland"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000005",
+      "street": "Eichenstraße",
+      "house_number": "8",
+      "zip_code": "20255",
+      "city": "Hamburg",
+      "state": "Hamburg",
+      "country": "Deutschland"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000006",
+      "street": "Musterstraße",
+      "house_number": "1",
+      "zip_code": "10117",
+      "city": "Berlin",
+      "state": "Berlin",
+      "country": "Deutschland"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000007",
+      "street": "Namurstraße",
+      "house_number": "1",
+      "zip_code": "70374",
+      "city": "Stuttgart",
+      "state": "Baden Württemberg",
+      "country": "Deutschland"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000008",
+      "street": "Ludwigstraße",
+      "house_number": "24",
+      "zip_code": "80333",
+      "city": "München",
+      "state": "Bayern",
+      "country": "Deutschland"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000009",
+      "street": "Nanjing Lu",
+      "house_number": "789",
+      "zip_code": "200001",
+      "city": "Shanghai",
+      "state": "Shanghai",
+      "country": "China"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000010",
+      "street": "Avenida Insurgentes",
+      "house_number": "123",
+      "zip_code": "06600",
+      "city": "Ciudad de México",
+      "state": "Ciudad de México",
+      "country": "Mexico"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000011",
+      "street": "Maple Street",
+      "house_number": "45",
+      "zip_code": "CA90001",
+      "city": "Los Angeles",
+      "state": "California",
+      "country": "USA"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000012",
+      "street": "Sunset Boulevard",
+      "house_number": "78",
+      "zip_code": "FL33101",
+      "city": "Miami",
+      "state": "Florida",
+      "country": "USA"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000013",
+      "street": "Oxford Street",
+      "house_number": "13",
+      "zip_code": "OX1 1AA",
+      "city": "Oxford",
+      "state": "England",
+      "country": "UK"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000014",
+      "street": "King’s Road",
+      "house_number": "77",
+      "zip_code": "SW3 5TX",
+      "city": "London",
+      "state": "England",
+      "country": "UK"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000015",
+      "street": "Independence Avenue",
+      "house_number": "10",
+      "zip_code": "AC001",
+      "city": "Accra",
+      "state": "Greater Accra Region",
+      "country": "Ghana"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000016",
+      "street": "Kumasi Avenue",
+      "house_number": "22",
+      "zip_code": "KA002",
+      "city": "Kumasi",
+      "state": "Ashanti Region",
+      "country": "Ghana"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000017",
+      "street": "Broadway",
+      "house_number": "22",
+      "zip_code": "NY10001",
+      "city": "New York",
+      "state": "New York",
+      "country": "USA"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000018",
+      "street": "Shibuya Crossing",
+      "house_number": "1-2-3",
+      "zip_code": "150-0001",
+      "city": "Tokyo",
+      "state": "Kanto",
+      "country": "Japan"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000019",
+      "street": "Queen Street",
+      "house_number": "16",
+      "zip_code": "1010",
+      "city": "Auckland",
+      "state": "North Island",
+      "country": "New Zealand"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000020",
+      "street": "George Street",
+      "house_number": "45",
+      "zip_code": "2000",
+      "city": "Sydney",
+      "state": "New South Wales",
+      "country": "Australia"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000021",
+      "street": "Leninsky Prospekt",
+      "house_number": "12",
+      "zip_code": "119991",
+      "city": "Moscow",
+      "state": "Moscow",
+      "country": "Russia"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000022",
+      "street": "Leninsky Prospekt",
+      "house_number": "12",
+      "zip_code": "119991",
+      "city": "Moscow",
+      "state": "Moscow",
+      "country": "Russia"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000023",
+      "street": "Storgatan",
+      "house_number": "1",
+      "zip_code": "11122",
+      "city": "Stockholm",
+      "state": "Stockholm",
+      "country": "Sweden"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000024",
+      "street": "Storgatan",
+      "house_number": "1",
+      "zip_code": "11122",
+      "city": "Stockholm",
+      "state": "Stockholm",
+      "country": "Sweden"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000025",
+      "street": "Namurstraße",
+      "house_number": "4",
+      "zip_code": "70374",
+      "city": "Stuttgart",
+      "state": "Baden Württemberg",
+      "country": "Deutschland"
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000026",
+      "street": "Connell Street",
+      "house_number": "42",
+      "zip_code": "D01 C3N0",
+      "city": "Dublin",
+      "state": "Leinster",
+      "country": "Ireland"
+    }
+  ]
+}
