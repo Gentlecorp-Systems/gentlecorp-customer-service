@@ -21,6 +21,11 @@ jobs:
       - name: directory
         run: pwd
 
+      - name: directory 2
+        run: |
+          cd ../../../../../../keys
+          ls -al
+
       # 3. Abhängigkeiten auflösen und Tests ausführen
       - name: Resolve dependencies and run tests
         run: ./gradlew clean build --no-daemon
