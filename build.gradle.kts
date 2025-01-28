@@ -44,6 +44,8 @@ repositories {
 	mavenCentral()
 }
 
+extra["snippetsDir"] = file("build/generated-snippets")
+
 dependencies {
 
 	/**--------------------------------------------------------------------------------------------------------------------
@@ -171,4 +173,8 @@ tasks.named("bootBuildImage", org.springframework.boot.gradle.tasks.bundling.Boo
 	println("")
 	println("Buildpacks: JVM durch   B e l l s o f t   L i b e r i c a   (default)")
 	println("")
+}
+
+tasks.test {
+	outputs.dir(project.extra["snippetsDir"]!!)
 }

@@ -94,3 +94,6 @@ bin/
 
 # Temporary files
 tmp/
+
+# Action Runner
+.github/actions-runner/**

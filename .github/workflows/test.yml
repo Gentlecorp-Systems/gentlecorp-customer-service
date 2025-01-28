@@ -11,21 +11,9 @@ on:
 jobs:
   test:
     name: Run Java Tests
-    runs-on: ubuntu-latest
+    runs-on: Customer # Nutze einen lokalen Runner
 
     steps:
-      # 1. Repository klonen
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      # 2. Setup JDK
-      - name: Setup Java
-        uses: actions/setup-java@v4.6.0
-        with:
-          distribution: 'temurin' # Alternativen: zulu, adopt, etc.
-          java-version: '23'      # Die Java-Version, die du nutzt
-          cache: 'gradle'         # Gradle-Caching aktivieren
-
       # 3. Abhängigkeiten auflösen und Tests ausführen
       - name: Resolve dependencies and run tests
         run: ./gradlew clean build --no-daemon
