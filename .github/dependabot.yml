@@ -4,10 +4,10 @@ updates:
     directory: "/" # Der Ordner, in dem sich deine `build.gradle.kts`-Datei befindet
     schedule:
       interval: "weekly" # Updates werden wöchentlich geprüft
-    open-pull-requests-limit: 10 # Maximale Anzahl der offenen PRs
-    ignore:
-      - dependency-name: "org.springframework.boot" # Falls du bestimmte Abhängigkeiten ignorieren willst
-        versions: ["3.1.0"] # Optionale Versionen, die ignoriert werden sollen
+#    open-pull-requests-limit: 10 # Maximale Anzahl der offenen PRs
+#    ignore:
+#      - dependency-name: "org.springframework.boot" # Falls du bestimmte Abhängigkeiten ignorieren willst
+#        versions: ["3.1.0"] # Optionale Versionen, die ignoriert werden sollen
   - package-ecosystem: "github-actions"
     directory: "/" # Der Ordner, in dem sich deine GitHub Actions befinden
     schedule:
