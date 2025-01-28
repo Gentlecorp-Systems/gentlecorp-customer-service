@@ -1,6 +1,8 @@
 package com.gentlecorp.customer;
 
 import com.gentlecorp.customer.controller.CustomerReadController;
+import io.github.cdimascio.dotenv.Dotenv;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,6 +15,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CustomerApplicationTests {
+
+	// Statischer Initialisierungsblock für .env
+	@BeforeAll
+	static void loadEnv() {
+		Dotenv dotenv = Dotenv.configure().load();
+		dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
+	}
 
 	private static final String SCHEMA_HOST = "http://localhost:";
 

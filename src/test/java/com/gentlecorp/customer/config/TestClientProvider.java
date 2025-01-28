@@ -2,7 +2,9 @@ package com.gentlecorp.customer.config;
 
 import com.gentlecorp.customer.testData.CustomerTestData;
 import jakarta.annotation.PostConstruct;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -18,7 +20,8 @@ public class TestClientProvider extends CustomerTestData {
   private final TestRestTemplate restTemplate;
 
   // Dynamisch URL mit dem Server-Port erstellen
-  int serverPort = 8099;
+  @Value("${app.server.port}")
+  int serverPort;
 
     public TestClientProvider(TestRestTemplate restTemplate) {
     this.restTemplate = restTemplate;
@@ -45,13 +48,13 @@ public class TestClientProvider extends CustomerTestData {
   private TestRestTemplate createVisitorClient() {
     TestRestTemplate visitorClient = new TestRestTemplate();
     // Basis-URL prüfen, falls für spezifische Anfragen notwendig
-    String baseUrl = String.format("http://localhost:%d", serverPort);
+    String baseUrl = String.format("http://localhost:%s", serverPort);
     visitorClient.getRestTemplate().setUriTemplateHandler(new DefaultUriBuilderFactory(baseUrl));
     return visitorClient;
   }
 
   public TestRestTemplate createAuthenticatedClient(String username, String password) {
-      String loginUrl = String.format("http://localhost:%d%s", serverPort, LOGIN_PATH);
+      String loginUrl = String.format("http://localhost:%s%s", serverPort, LOGIN_PATH);
 
     ResponseEntity<Map> response = restTemplate.postForEntity(
         loginUrl,

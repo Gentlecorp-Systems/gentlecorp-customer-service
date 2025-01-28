@@ -60,7 +60,7 @@ app:
     client-id: camunda-identity
 
   keys:
-    path: ${KEYS_PATH:../keys}
+    path: ${KEYS_PATH}
 
 # Logging-Konfiguration
 logging:
