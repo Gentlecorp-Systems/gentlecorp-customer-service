@@ -12,8 +12,6 @@
 build/
 .gradle-cache/
 !gradle-wrapper.jar
-gradle/wrapper/gradle-wrapper.properties
-gradle/wrapper/gradle-wrapper.jar
 *.lock
 
 # IntelliJ IDEA
