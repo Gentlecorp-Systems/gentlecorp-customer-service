@@ -19,7 +19,9 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Create .env file
-        run: echo "KEYS_PATH=${{ secrets.KEYS_PATH }}" >> .env
+        run: |
+         echo "KEYS_PATH=${{ secrets.KEYS_PATH }}" >> .env
+         echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
 
       # 3. Abhängigkeiten auflösen und Tests ausführen
       - name: Resolve dependencies and run tests
