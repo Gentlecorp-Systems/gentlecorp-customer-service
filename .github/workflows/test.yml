@@ -18,11 +18,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: directory
-        run: pwd
-
-      - name: update key path
-        run: echo "../keys=${{ secrets.KEYS_PATH }}" >> .env
+      - name: Create .env file
+        run: echo "KEYS_PATH=${{ secrets.KEYS_PATH }}" >> .env
 
       # 3. Abhängigkeiten auflösen und Tests ausführen
       - name: Resolve dependencies and run tests
