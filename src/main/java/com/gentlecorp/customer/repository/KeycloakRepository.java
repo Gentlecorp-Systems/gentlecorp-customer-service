@@ -23,24 +23,24 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 @HttpExchange
 public interface KeycloakRepository {
-  @GetExchange("http://localhost:8880/realms/GentleCorp-Ecosystem/.well-known/openid-configuration")
+  @GetExchange("http://localhost:18080/auth/realms/camunda-platform/.well-known/openid-configuration")
   Map<String, Object> openidConfiguration();
 
-  @PostExchange("/realms/GentleCorp-Ecosystem/protocol/openid-connect/token")
+  @PostExchange("auth/realms/camunda-platform/protocol/openid-connect/token")
   TokenDTO login(
     @RequestBody String loginData,
     @RequestHeader(AUTHORIZATION) String authorization,
     @RequestHeader(CONTENT_TYPE) String contentType
   );
 
-  @PostExchange("/admin/realms/GentleCorp-Ecosystem/users")
+  @PostExchange("auth/admin/realms/camunda-platform/users")
   HttpResponse<Void> signIn(
     @RequestBody String customer,
     @RequestHeader(AUTHORIZATION) String authorization,
     @RequestHeader(CONTENT_TYPE) String contentType
   );
 
-  @PostExchange("/admin/realms/GentleCorp-Ecosystem/users/{userId}/role-mappings/realm")
+  @PostExchange("auth/admin/realms/camunda-platform/users/{userId}/role-mappings/realm")
   void assignRoleToUser(
     @RequestBody String roleData,
     @RequestHeader(AUTHORIZATION) String authorization,
@@ -48,19 +48,19 @@ public interface KeycloakRepository {
     @PathVariable("userId") String userId
   );
 
-  @PostExchange("/realms/GentleCorp-Ecosystem/protocol/openid-connect/userinfo")
+  @PostExchange("auth/realms/camunda-platform/protocol/openid-connect/userinfo")
   UserInfoDTO userInfo(
     @RequestHeader(AUTHORIZATION) String authorization,
     @RequestHeader(CONTENT_TYPE) String contentType
   );
 
-  @GetExchange("/admin/realms/GentleCorp-Ecosystem/roles")
+  @GetExchange("auth/admin/realms/camunda-platform/roles")
   Collection<RoleDTO> getRoles(
     @RequestHeader(AUTHORIZATION) String authorization,
     @RequestHeader(CONTENT_TYPE) String contentType
   );
 
-  @PutExchange("/admin/realms/GentleCorp-Ecosystem/users/{userId}")
+  @PutExchange("auth/admin/realms/camunda-platform/users/{userId}")
   void updateUser(
     @RequestBody String userData,
     @RequestHeader(AUTHORIZATION) String authorization,
@@ -68,7 +68,7 @@ public interface KeycloakRepository {
     @PathVariable("userId") String userId
   );
 
-  @PutExchange("/admin/realms/GentleCorp-Ecosystem/users/{userId}/reset-password")
+  @PutExchange("auth/admin/realms/camunda-platform/users/{userId}/reset-password")
   void updateUserPassword(
     @RequestBody String passwordData,
     @RequestHeader(AUTHORIZATION) String authorization,
@@ -76,13 +76,13 @@ public interface KeycloakRepository {
     @PathVariable("userId") String userId
   );
 
-  @DeleteExchange("/admin/realms/GentleCorp-Ecosystem/users/{userId}")
+  @DeleteExchange("auth/admin/realms/camunda-platform/users/{userId}")
   void deleteUser(
     @RequestHeader(AUTHORIZATION) String authorization,
     @PathVariable("userId") String userId
   );
 
-  @GetExchange("/admin/realms/GentleCorp-Ecosystem/users?username={username}")
+  @GetExchange("auth/admin/realms/camunda-platform/users?username={username}")
   List<UserRepresentation> getUserByUsername(
     @RequestHeader(AUTHORIZATION) String authorization,
     @PathVariable("username") String username

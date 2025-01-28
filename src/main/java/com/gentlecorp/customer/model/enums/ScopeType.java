@@ -9,6 +9,7 @@ import java.util.Arrays;
  * Enum für Geltungsbereichstypen, unterstützt JSON-Verarbeitung.
  */
 public enum ScopeType {
+  ALL_PROFILE("openid profile email"),
   EMAIL_PROFILE("email profile");
 
   private final String value;

@@ -1,6 +1,11 @@
 [
   {
-    "_id": "00000000-0000-0000-0000-000000000000",
+    "_id": {
+      "$binary": {
+        "base64": "AAAAAAAAAAAAAAAAAAAAAA==",
+        "subType": "04"
+      }
+    },
     "version": 0,
     "lastName": "Admin",
     "firstName": "Caleb",
@@ -38,7 +43,12 @@
     "interests": null
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000001",
+    "_id": {
+      "$binary": {
+        "base64": "AAAAAAAAAAAAAAAAAAAAAQ==",
+        "subType": "04"
+      }
+    },
     "version": 0,
     "lastName": "Gyamfi",
     "firstName": "Rachel",
@@ -73,7 +83,7 @@
     "interests": null
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000002",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAAg==", "subType": "04"}},
     "version": 0,
     "lastName": "Williams",
     "firstName": "Mark",
@@ -113,7 +123,7 @@
     ]
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000003",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAAw==", "subType": "04"}},
     "version": 0,
     "lastName": "Meyer",
     "firstName": "Julia",
@@ -151,7 +161,7 @@
     ]
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000004",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAABA==", "subType": "04"}},
     "version": 0,
     "lastName": "Schmidt",
     "firstName": "Anna",
@@ -190,7 +200,7 @@
     ]
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000005",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAABQ==", "subType": "04"}},
     "version": 0,
     "lastName": "Schmidt",
     "firstName": "Erik",
@@ -231,7 +241,7 @@
     ]
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000006",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAABg==", "subType": "04"}},
     "version": 0,
     "lastName": "Brown",
     "firstName": "Laura",
@@ -272,7 +282,7 @@
     ]
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000007",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAABw==", "subType": "04"}},
     "version": 0,
     "lastName": "Gyamfi",
     "firstName": "Shamaar",
@@ -310,7 +320,7 @@
     "interests": null
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000008",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAACA==", "subType": "04"}},
     "version": 0,
     "lastName": "Müller",
     "firstName": "Emanuel",
@@ -345,7 +355,7 @@
     "interests": null
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000009",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAACQ==", "subType": "04"}},
     "version": 0,
     "lastName": "Nguyen",
     "firstName": "Linh",
@@ -385,7 +395,7 @@
     ]
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000010",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAEA==", "subType": "04"}},
     "version": 0,
     "lastName": "Garcia",
     "firstName": "Miguel",
@@ -423,7 +433,7 @@
     ]
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000011",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAEQ==", "subType": "04"}},
     "version": 0,
     "lastName": "Lee",
     "firstName": "Soojin",
@@ -462,7 +472,7 @@
     ]
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000012",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAEg==", "subType": "04"}},
     "version": 0,
     "lastName": "Doe",
     "firstName": "Jane",
@@ -506,7 +516,7 @@
     ]
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000013",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAEw==", "subType": "04"}},
     "version": 0,
     "lastName": "Williams",
     "firstName": "Mark",
@@ -546,7 +556,7 @@
     ]
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000014",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAFA==", "subType": "04"}},
     "version": 0,
     "lastName": "Rossi",
     "firstName": "Luca",
@@ -583,7 +593,7 @@
     ]
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000015",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAFQ==", "subType": "04"}},
     "version": 0,
     "lastName": "Owusu",
     "firstName": "Kwame",
@@ -620,7 +630,7 @@
     ]
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000016",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAFg==", "subType": "04"}},
     "version": 0,
     "lastName": "Osei",
     "firstName": "Yaa",
@@ -664,7 +674,7 @@
     ]
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000017",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAFw==", "subType": "04"}},
     "version": 0,
     "lastName": "Peterson",
     "firstName": "Lisa",
@@ -699,7 +709,7 @@
     "interests": null
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000018",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAGA==", "subType": "04"}},
     "version": 0,
     "lastName": "Tanaka",
     "firstName": "Hiroshi",
@@ -737,7 +747,7 @@
     ]
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000019",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAGQ==", "subType": "04"}},
     "version": 0,
     "lastName": "Smith",
     "firstName": "Emily",
@@ -780,7 +790,7 @@
     ]
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000020",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAIA==", "subType": "04"}},
     "version": 0,
     "lastName": "Jones",
     "firstName": "David",
@@ -819,7 +829,7 @@
     ]
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000021",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAIQ==", "subType": "04"}},
     "version": 0,
     "lastName": "Ivanov",
     "firstName": "Dmitry",
@@ -858,7 +868,7 @@
     ]
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000022",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAIg==", "subType": "04"}},
     "version": 0,
     "lastName": "Ivanov",
     "firstName": "Elena",
@@ -897,7 +907,7 @@
     ]
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000023",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAIw==", "subType": "04"}},
     "version": 0,
     "lastName": "Andersson",
     "firstName": "Johan",
@@ -936,7 +946,7 @@
     ]
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000024",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAJA==", "subType": "04"}},
     "version": 0,
     "lastName": "Andersson",
     "firstName": "Anna",
@@ -975,7 +985,7 @@
     ]
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000025",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAJQ==", "subType": "04"}},
     "version": 0,
     "lastName": "Gyamfi",
     "firstName": "Caleb",
@@ -1015,7 +1025,7 @@
     ]
   },
   {
-    "_id": "00000000-0000-0000-0000-000000000026",
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAJg==", "subType": "04"}},
     "version": 0,
     "lastName": "Jefferson",
     "firstName": "Leroy",
