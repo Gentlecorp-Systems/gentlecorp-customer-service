@@ -18,6 +18,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: directory
+        run: pwd
+
       # 3. Abhängigkeiten auflösen und Tests ausführen
       - name: Resolve dependencies and run tests
         run: ./gradlew clean build --no-daemon
