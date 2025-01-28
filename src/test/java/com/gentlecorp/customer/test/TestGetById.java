@@ -6,6 +6,7 @@ import com.gentlecorp.customer.model.dto.AddressDTO;
 import com.gentlecorp.customer.model.enums.*;
 import com.gentlecorp.customer.utils.CustomerCommonFunctions;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -38,133 +39,133 @@ public class TestGetById extends CustomerCommonFunctions {
     }
 
 
-//    @Test
-//    void testGetHiroshiByIdAsAdmin() {
-//        assertThat(testClientProvider).isNotNull();
-//        assertThat(testClientProvider.adminClient).isNotNull();
-//        ResponseEntity<TestCustomer> response = testClientProvider.adminClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_HIROSHI, TestCustomer.class);
-//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-//        assertThat(response.getBody()).isNotNull();
-//
-//        verifyHiroshiDetails(response.getBody());
-//    }
-//
-//    @Test
-//    void testGetHiroshiByIdAsUser() {
-//        var response = testClientProvider.userClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_HIROSHI, TestCustomer.class);
-//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-//        assertThat(response.getBody()).isNotNull();
-//
-//        verifyHiroshiDetails(response.getBody());
-//    }
-//
-//    @Test
-//    void testGetHiroshiByIdAsSupreme() {
-//        var response = testClientProvider.supremeClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_HIROSHI, TestCustomer.class);
-//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
-//    }
-//
-//    @Test
-//    void testGetHiroshiByIdAsElite() {
-//        var response = testClientProvider.eliteClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_HIROSHI, TestCustomer.class);
-//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
-//    }
-//
-//    @Test
-//    void testGetHiroshiByIdAsBasic() {
-//        var response = testClientProvider.basicClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_HIROSHI, TestCustomer.class);
-//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
-//    }
-//
-//    @Test
-//    void testGetHiroshiByIdAsVisitor() {
-//        var response = testClientProvider.visitorClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_HIROSHI, TestCustomer.class);
-//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
-//    }
-//
-//    @Test
-//    void testGetCustomerByIdNotFound() {
-//        var response = testClientProvider.adminClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + NOT_EXISTING_ID, TestCustomer.class);
-//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-//    }
-//
-//    @Test
-//    void testGetErikByIdAsErik() {
-//        var response = testClientProvider.basicClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_ERIK, TestCustomer.class);
-//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-//        assertThat(response.getBody()).isNotNull();
-//
-//        verifyErikDetails(response.getBody());
-//    }
-//
-//    @Test
-//    void testGetLeroyByIdAsLeroy() {
-//        var response = testClientProvider.eliteClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_LEROY, TestCustomer.class);
-//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-//        assertThat(response.getBody()).isNotNull();
-//
-//        verifyLeroyDetails(response.getBody());
-//    }
-//
-//    @Test
-//    void testGetCalebByIdAsCaleb() {
-//        var response = testClientProvider.supremeClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_CALEB, TestCustomer.class);
-//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-//        assertThat(response.getBody()).isNotNull();
-//
-//        verifyCalebDetails(response.getBody());
-//    }
-//
-//    @Test
-//    void testGetFullHiroshiByIdAsAdmin() {
-//        ResponseEntity<TestCustomer> response = testClientProvider.adminClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ALL_PATH + ID_HIROSHI, TestCustomer.class);
-//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-//        assertThat(response.getBody()).isNotNull();
-//
-//        verifyFullHiroshiDetails(response.getBody());
-//    }
-//
-//    @Test
-//    void testGetFullHiroshiByIdAsUser() {
-//        ResponseEntity<TestCustomer> response = testClientProvider.userClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ALL_PATH + ID_HIROSHI, TestCustomer.class);
-//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-//        assertThat(response.getBody()).isNotNull();
-//
-//        verifyFullHiroshiDetails(response.getBody());
-//    }
-//
-//    @Test
-//    void testGetFullHiroshiByIdAsSupreme() {
-//        ResponseEntity<TestCustomer> response = testClientProvider.supremeClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ALL_PATH + ID_HIROSHI, TestCustomer.class);
-//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
-//    }
-//
-//    @Test
-//    void testGetFullHiroshiByIdAsElite() {
-//        ResponseEntity<TestCustomer> response = testClientProvider.eliteClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ALL_PATH + ID_HIROSHI, TestCustomer.class);
-//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
-//    }
-//
-//    @Test
-//    void testGetFullHiroshiByIdAsBasic() {
-//        ResponseEntity<TestCustomer> response = testClientProvider.basicClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ALL_PATH + ID_HIROSHI, TestCustomer.class);
-//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
-//    }
-//
-//    @Test
-//    void testGetHiroshiByIdNotModified() {
-//        String url = SCHEMA_HOST + port + CUSTOMER_PATH + ID_HIROSHI;
-//        var headers = createHeaders(HEADER_IF_NONE_MATCH, ETAG_VALUE_0);
-//
-//        ResponseEntity<TestCustomer> response = testClientProvider.adminClient.exchange(
-//            url,
-//            HttpMethod.GET,
-//            new HttpEntity<>(headers),
-//            TestCustomer.class
-//        );
-//
-//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_MODIFIED);
-//    }
+    @Test
+    void testGetHiroshiByIdAsAdmin() {
+        assertThat(testClientProvider).isNotNull();
+        assertThat(testClientProvider.adminClient).isNotNull();
+        ResponseEntity<TestCustomer> response = testClientProvider.adminClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_HIROSHI, TestCustomer.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+
+        verifyHiroshiDetails(response.getBody());
+    }
+
+    @Test
+    void testGetHiroshiByIdAsUser() {
+        var response = testClientProvider.userClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_HIROSHI, TestCustomer.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+
+        verifyHiroshiDetails(response.getBody());
+    }
+
+    @Test
+    void testGetHiroshiByIdAsSupreme() {
+        var response = testClientProvider.supremeClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_HIROSHI, TestCustomer.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
+
+    @Test
+    void testGetHiroshiByIdAsElite() {
+        var response = testClientProvider.eliteClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_HIROSHI, TestCustomer.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
+
+    @Test
+    void testGetHiroshiByIdAsBasic() {
+        var response = testClientProvider.basicClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_HIROSHI, TestCustomer.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
+
+    @Test
+    void testGetHiroshiByIdAsVisitor() {
+        var response = testClientProvider.visitorClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_HIROSHI, TestCustomer.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+    }
+
+    @Test
+    void testGetCustomerByIdNotFound() {
+        var response = testClientProvider.adminClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + NOT_EXISTING_ID, TestCustomer.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    void testGetErikByIdAsErik() {
+        var response = testClientProvider.basicClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_ERIK, TestCustomer.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+
+        verifyErikDetails(response.getBody());
+    }
+
+    @Test
+    void testGetLeroyByIdAsLeroy() {
+        var response = testClientProvider.eliteClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_LEROY, TestCustomer.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+
+        verifyLeroyDetails(response.getBody());
+    }
+
+    @Test
+    void testGetCalebByIdAsCaleb() {
+        var response = testClientProvider.supremeClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_CALEB, TestCustomer.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+
+        verifyCalebDetails(response.getBody());
+    }
+
+    @Test
+    void testGetFullHiroshiByIdAsAdmin() {
+        ResponseEntity<TestCustomer> response = testClientProvider.adminClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ALL_PATH + ID_HIROSHI, TestCustomer.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+
+        verifyFullHiroshiDetails(response.getBody());
+    }
+
+    @Test
+    void testGetFullHiroshiByIdAsUser() {
+        ResponseEntity<TestCustomer> response = testClientProvider.userClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ALL_PATH + ID_HIROSHI, TestCustomer.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+
+        verifyFullHiroshiDetails(response.getBody());
+    }
+
+    @Test
+    void testGetFullHiroshiByIdAsSupreme() {
+        ResponseEntity<TestCustomer> response = testClientProvider.supremeClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ALL_PATH + ID_HIROSHI, TestCustomer.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
+
+    @Test
+    void testGetFullHiroshiByIdAsElite() {
+        ResponseEntity<TestCustomer> response = testClientProvider.eliteClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ALL_PATH + ID_HIROSHI, TestCustomer.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
+
+    @Test
+    void testGetFullHiroshiByIdAsBasic() {
+        ResponseEntity<TestCustomer> response = testClientProvider.basicClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ALL_PATH + ID_HIROSHI, TestCustomer.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
+
+    @Test
+    void testGetHiroshiByIdNotModified() {
+        String url = SCHEMA_HOST + port + CUSTOMER_PATH + ID_HIROSHI;
+        var headers = createHeaders(HEADER_IF_NONE_MATCH, ETAG_VALUE_0);
+
+        ResponseEntity<TestCustomer> response = testClientProvider.adminClient.exchange(
+            url,
+            HttpMethod.GET,
+            new HttpEntity<>(headers),
+            TestCustomer.class
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_MODIFIED);
+    }
 
     private void verifyHiroshiDetails(TestCustomer customer) {
         assertThat(customer.username()).isEqualTo(USERNAME_HIROSHI);

@@ -74,10 +74,11 @@ dependencies {
 	 * --------------------------------------------------------------------------------------------------------------------*/
 	testImplementation("org.springframework.boot:spring-boot-starter-test:${libs.versions.springBootTest.get()}")
 	testImplementation("org.apache.httpcomponents.client5:httpclient5:${libs.versions.httpclient5.get()}")
-	testImplementation("org.junit.jupiter:junit-jupiter")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.springframework.security:spring-security-test")
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	implementation("org.apache.httpcomponents.core5:httpcore5:${libs.versions.httpcore5.get()}")
+//	testImplementation("org.junit.jupiter:junit-jupiter")
+//	testImplementation("org.springframework.boot:spring-boot-starter-test")
+//	testImplementation("org.springframework.security:spring-security-test")
+//	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
 	/**----------------------------------------------------------------
 	 * SPRING BOOT STARTER

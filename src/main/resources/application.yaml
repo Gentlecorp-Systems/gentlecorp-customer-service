@@ -38,6 +38,11 @@ spring:
           truststore:
             certificate: "${app.keys.path}/certificate.crt"
 
+  test:
+    server:
+      port:
+        range: 5000-7000
+
 # Applikationsspezifische Einstellungen
 app:
   password: p

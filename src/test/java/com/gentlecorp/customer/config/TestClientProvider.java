@@ -2,6 +2,7 @@ package com.gentlecorp.customer.config;
 
 import com.gentlecorp.customer.testData.CustomerTestData;
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -15,7 +16,7 @@ public class TestClientProvider extends CustomerTestData {
 
   private final TestRestTemplate restTemplate;
 
-  public TestClientProvider(TestRestTemplate restTemplate) {
+    public TestClientProvider(TestRestTemplate restTemplate) {
     this.restTemplate = restTemplate;
   }
 
@@ -42,10 +43,14 @@ public class TestClientProvider extends CustomerTestData {
   }
 
   public TestRestTemplate createAuthenticatedClient(String username, String password) {
+    // Dynamisch URL mit dem Server-Port erstellen
+      int serverPort = 8099;
+      String loginUrl = String.format("http://localhost:%d%s", serverPort, LOGIN_PATH);
+
     ResponseEntity<Map> response = restTemplate.postForEntity(
-      LOGIN_PATH,
-      Map.of(USERNAME, username, PASSWORD, password),
-      Map.class
+        loginUrl,
+        Map.of(USERNAME, username, PASSWORD, password),
+        Map.class
     );
 
     assert response.getStatusCode().is2xxSuccessful();
