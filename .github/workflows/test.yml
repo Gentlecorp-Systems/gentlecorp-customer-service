@@ -21,10 +21,8 @@ jobs:
       - name: directory
         run: pwd
 
-      - name: directory 2
-        run: |
-          cd ../../../../../../keys
-          ls -al
+      - name: update key path
+        run: echo "../keys=${{ secrets.KEYS_PATH }}" >> .env
 
       # 3. Abhängigkeiten auflösen und Tests ausführen
       - name: Resolve dependencies and run tests
