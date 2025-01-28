@@ -2,6 +2,7 @@ package com.gentlecorp.customer.service;
 
 
 import com.gentlecorp.customer.exception.NotFoundException;
+import com.gentlecorp.customer.exception.UnauthorizedException;
 import com.gentlecorp.customer.model.enums.RoleType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import static com.gentlecorp.customer.model.enums.RoleType.ADMIN;
@@ -22,7 +24,7 @@ import static com.gentlecorp.customer.model.enums.RoleType.USER;
 public class JwtService {
   public String getUsername(final Jwt jwt) {
     if (jwt == null) {
-      throw new NotFoundException();
+      throw new UnauthorizedException("Missing Token");
     }
     final var username = (String) jwt.getClaims().get("preferred_username");
     log.debug("JwtService: username={}", username);
@@ -63,18 +65,25 @@ public class JwtService {
   }
 
   public List<RoleType> getRealmRole(final Jwt jwt) {
-    @SuppressWarnings("unchecked") final var realmAccess = (Map<String, List<String>>) jwt.getClaims().get("realm_access");
+    @SuppressWarnings("unchecked")
+    final var realmAccess = (Map<String, List<String>>) jwt.getClaims().get("realm_access");
     final var rolesStr = realmAccess.get("roles");
     log.trace("JwtService:: rolesStr={}", rolesStr);
+
     return rolesStr
-      .stream()
-      .filter(role -> {
-        return Stream.of(RoleType.values())
-          .anyMatch(validRole -> validRole.name().equalsIgnoreCase(role));
-      })
-      .map(RoleType::valueOf)
-      .toList();
+        .stream()
+        .map(role -> {
+          try {
+            return RoleType.fromValue(role); // Verwende die fromValue-Methode
+          } catch (IllegalArgumentException e) {
+            log.warn("Unbekannte Rolle '{}' im JWT", role);
+            return null; // Optionale Behandlung für ungültige Rollen
+          }
+        })
+        .filter(Objects::nonNull) // Entferne ungültige Rollen
+        .toList();
   }
+
 
   }
 

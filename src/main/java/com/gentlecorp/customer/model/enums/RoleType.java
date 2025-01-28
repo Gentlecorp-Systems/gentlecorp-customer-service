@@ -13,11 +13,11 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public enum RoleType {
 
-  ADMIN("admin"),
-  SUPREME("supreme"),
-  BASIC("basic"),
-  ELITE("elite"),
-  USER("user");
+  ADMIN("Admin"),
+  SUPREME("Supreme"),
+  BASIC("Basic"),
+  ELITE("Elite"),
+  USER("User");
 
   public static final String ROLE_PREFIX = "ROLE_";
 
