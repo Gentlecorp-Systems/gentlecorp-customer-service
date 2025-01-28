@@ -1,0 +1,130 @@
+name: Security - Backend
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  dependency-check:
+    name: OWASP Dependency Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '23'
+
+      - name: Run OWASP Dependency Check
+        uses: dependency-check/Dependency-Check_Action@1.1.0
+        with:
+          project: "GentleCorp-System - CustomerService"
+          path: './'
+          format: 'HTML'
+
+      - name: Upload Dependency Check report
+        uses: actions/upload-artifact@v4
+        with:
+          name: Depcheck-report
+          path: ./reports
+
+  snyk:
+    name: Snyk Vulnerability Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '23'
+
+      - name: Authenticate Snyk
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk auth "$SNYK_TOKEN"
+
+      - name: Run Snyk Scan
+        run: |
+          snyk monitor --org=GentleCorp-Systems
+          snyk test --json-file-output=snyk-report.json
+
+      - name: Generate HTML Report
+        run: |
+          java -jar snyk-to-html.jar -i snyk-report.json -o snyk-report.html
+          mkdir -p reports
+          mv snyk-report.html reports/
+
+      - name: Upload Snyk Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: Snyk-report
+          path: ./reports
+
+  docker-scout:
+    name: Docker Scout Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Docker Scout Quickview
+        id: docker-scout-quickview
+        uses: docker/scout-action@v1.15.1
+        with:
+          command: quickview
+          image: calebscript/customer:2025.28.1
+
+      - name: Docker Scout CVEs
+        id: docker-scout-cves
+        uses: docker/scout-action@v1.15.1
+        with:
+          command: cves
+          image: calebscript/customer:2025.28.1
+
+      - name: Save Docker Scout Reports
+        run: |
+          echo "${{ steps.docker-scout-quickview.outputs.quickview }}" > docker-scout-quickview.md
+          echo "${{ steps.docker-scout-cves.outputs.cves }}" > docker-scout-cves.md
+
+      - name: Upload Docker Scout Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-scout-reports
+          path: ./docker-scout-*.md
+
+  sonarcloud:
+    name: SonarQube Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '23'
+
+      - name: Run SonarQube Analysis
+        uses: SonarSource/sonarcloud-github-action@v1.11
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=customer
+            -Dsonar.projectName=Customer-Service
+            -Dsonar.organization=GentleCorp-Systems
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.sources=./
+            -Dsonar.branch.name=${{ github.ref_name }}

@@ -1,0 +1,125 @@
+# Servereinstellungen
+server:
+  port: ${app.server.port}
+  compression:
+    enabled: true
+    mime-types: application/hal+json
+    min-response-size: 2KB
+  error:
+    whitelabel:
+      enabled: false
+  http2:
+    enabled: true
+  shutdown: graceful
+
+# Spring Boot Einstellungen
+spring:
+  application:
+    name: customer
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://${app.keycloak.host}:${app.keycloak.port}/auth/realms/${app.keycloak.realm}
+  data:
+    mongodb:
+      uri: ${app.mongo.uri}
+      database: ${app.mongo.database}
+
+  ssl:
+    bundle:
+      pem:
+        microservice:
+          reload-on-update: true
+          keystore:
+            private-key: "${app.keys.path}/key.pem"
+            certificate: "${app.keys.path}/certificate.crt"
+          truststore:
+            certificate: "${app.keys.path}/certificate.crt"
+
+  test:
+    server:
+      port:
+        range: 5000-7000
+
+# Applikationsspezifische Einstellungen
+app:
+  password: p
+  server:
+    port: ${SERVER_PORT:8099}
+  mongo:
+    uri: ${MONGODB_URI:mongodb://root:p@localhost:27017}
+    database: ${MONGODB_DATABASE:Customer}
+
+  keycloak:
+    client-secret: ${KC_SERVICE_SECRET:Kir2usfqrZac2BZ4rzsBJrb2mYdBERW3}
+    host: ${KC_SERVICE_HOST:localhost}
+    port: ${KC_SERVICE_PORT:18080}
+    realm: ${KC_SERVICE_REALM:camunda-platform}
+    client-id: camunda-identity
+
+  keys:
+    path: ${KEYS_PATH}
+
+# Logging-Konfiguration
+logging:
+  file.name: ./tmp/application.log
+  logback:
+    rollingpolicy:
+      file-name-pattern: ${logging.file.name}.%d{yyyy-MM-dd}.%i.gz
+      max-file-size: 100KB
+      max-history: 3
+  pattern:
+    console: >
+      %clr(%date{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}){faint} %clr(%5level) %clr(${PID:- }){magenta}
+      %clr(---){faint} %clr([%15.15thread]){faint} %clr(%-40.40logger{39}){cyan}
+      %clr(:){faint} %msg%n%wEx
+    file: >
+      %date{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %5level ${PID:- } --- [%thread]
+      %-40.40logger{39} : %m%n%wEx
+  level:
+      com.gentlecorp: trace
+      org.apache.catalina.loader.WebappClassLoaderBase: info
+      org.springframework.boot.availability.ApplicationAvailabilityBean: debug
+      org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener: warn
+      #org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean: debug
+      org.springframework.security.core.userdetails.User: error
+      org.springframework.security.web.server.authorization.AuthorizationWebFilter: trace
+      org.springframework.web.reactive.function.client.ExchangeFunctions: trace
+      org.springframework.web.service.invoker.PathVariableArgumentResolver: trace
+      org.springframework.web.service.invoker.RequestHeaderArgumentResolver: trace
+      org.springframework.web.servlet.DispatcherServlet: debug
+      org.springframework.web.servlet.mvc.method.annotation.HttpEntityMethodProcessor: debug
+      org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: debug
+      org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: error
+      io.micrometer.observation.contextpropagation.ObservationThreadLocalAccessor: error
+
+      #    org.springframework.security: debug
+      #    org.springframework.security.oauth2: debug
+
+      #    org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider: debug
+      #    org.springframework.security.web.access.intercept.RequestMatcherDelegatingAuthorizationManager: debug
+      #    org.springframework.security.web.FilterChainProxy: debug
+
+      org.hibernate.SQL: debug
+      #    org.hibernate.orm.jdbc.bind: debug
+      org.hibernate.orm.jdbc.bind: trace
+      org.hibernate.SQL_SLOW: warn
+      org.flywaydb.core.internal.sqlscript.DefaultSqlScriptExecutor: debug
+
+      io.qameta.allure.AllureLifecycle: fatal
+      org.junit.jupiter.engine.descriptor.TestInstanceLifecycleUtils: warn
+      org.springframework.boot.test.context.SpringBootTestContextBootstrapper: warn
+      org.springframework.test.context.support.AbstractContextLoader: warn
+      org.springframework.test.context.support.AnnotationConfigContextLoaderUtils: warn
+      org.springframework.test.context.support.DefaultTestContextBootstrapper: warn
+      # root: warn
+      org.springframework.data.mongodb: debug
+      # com.gentlecorp.customer: trace
+      # org.springframework: info
+      # org.springframework.security: debug
+      # io.micrometer: error
+      # io.qameta: fatal
+      org.junit.jupiter: warn
+      #org.springframework.boot: debug

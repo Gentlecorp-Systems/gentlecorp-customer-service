@@ -35,7 +35,7 @@ Installierte globale Tools:
 2. **Datenbank konfigurieren**:
    Starte eine lokale MongoDB-Instanz oder verwende eine gehostete Lösung. Stelle sicher, dass die Verbindung in der `application.properties` korrekt konfiguriert ist:
    ```properties
-   spring.data.mongodb.uri=mongodb://localhost:27017/customer_service
+   spring.data.mongodb.uri=mongodb://localhost:27017/Customer
    ```
 
 3. **Build ausführen**:

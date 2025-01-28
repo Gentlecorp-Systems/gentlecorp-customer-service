@@ -1,0 +1,44 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Run Customer Tests
+    runs-on: self-hosted # Nutze einen lokalen Runner
+
+    steps:
+      # 1. Repository klonen
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Create .env file
+        run: |
+         echo "KEYS_PATH=${{ secrets.KEYS_PATH }}" >> .env
+         echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
+
+      # 3. Abhängigkeiten auflösen und Tests ausführen
+      - name: Resolve dependencies and run tests
+        run: ./gradlew clean build --no-daemon
+
+      # 4. Testberichte speichern
+      - name: Archive test reports
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-reports
+          path: build/reports/tests/test
+
+      # 5. Code Coverage Bericht hochladen (optional)
+      - name: Upload coverage report
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: build/reports/jacoco/test/html

@@ -1,0 +1,1073 @@
+[
+  {
+    "_id": {
+      "$binary": {
+        "base64": "AAAAAAAAAAAAAAAAAAAAAA==",
+        "subType": "04"
+      }
+    },
+    "version": 0,
+    "lastName": "Admin",
+    "firstName": "Caleb",
+    "email": "admin@gentlecorp.com",
+    "phoneNumber": "0000/0000000",
+    "username": "admin",
+    "tierLevel": 3,
+    "subscribed": true,
+    "birthdate": {
+      "$date": "1999-05-03T00:00:00.000Z"
+    },
+    "gender": "MALE",
+    "maritalStatus": "MARRIED",
+    "customerState": "ACTIVE",
+    "address": {
+      "street": "Kwame Nkrumah Street",
+      "houseNumber": "45",
+      "zipCode": "KA003",
+      "city": "Kumasi",
+      "state": "Ashanti Region",
+      "country": "Ghana"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "EMAIL",
+      "PHONE",
+      "LETTER",
+      "SMS"
+    ],
+    "interests": null
+  },
+  {
+    "_id": {
+      "$binary": {
+        "base64": "AAAAAAAAAAAAAAAAAAAAAQ==",
+        "subType": "04"
+      }
+    },
+    "version": 0,
+    "lastName": "Gyamfi",
+    "firstName": "Rachel",
+    "email": "racheldwomoh@icloud.com",
+    "phoneNumber": "0000/0000002",
+    "username": "rae",
+    "tierLevel": 3,
+    "subscribed": true,
+    "birthdate": {
+      "$date": "1998-12-21T00:00:00.000Z"
+    },
+    "gender": "FEMALE",
+    "maritalStatus": "MARRIED",
+    "customerState": "ACTIVE",
+    "address": {
+      "street": "Namurstraße",
+      "houseNumber": "4",
+      "zipCode": "70374",
+      "city": "Stuttgart",
+      "state": "Baden Württemberg",
+      "country": "Deutschland"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "LETTER"
+    ],
+    "interests": null
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAAg==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Williams",
+    "firstName": "Mark",
+    "email": "mark.williams2@example.com",
+    "phoneNumber": "+49-30-1234567",
+    "username": "mark.williams2",
+    "tierLevel": 1,
+    "subscribed": true,
+    "birthdate": {
+      "$date": "1981-03-15T00:00:00.000Z"
+    },
+    "gender": "DIVERSE",
+    "maritalStatus": "DIVORCED",
+    "customerState": "ACTIVE",
+    "address": {
+      "street": "Hauptstraße",
+      "houseNumber": "15",
+      "zipCode": "76135",
+      "city": "Karlsruhe",
+      "state": "Baden Württemberg",
+      "country": "Deutschland"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "EMAIL",
+      "PHONE",
+      "LETTER"
+    ],
+    "interests": [
+      "BANK_PRODUCTS_AND_SERVICES",
+      "TECHNOLOGY_AND_INNOVATION"
+    ]
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAAw==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Meyer",
+    "firstName": "Julia",
+    "email": "julia.meyer@example.com",
+    "phoneNumber": "030/1234567",
+    "username": "julia",
+    "tierLevel": 1,
+    "subscribed": true,
+    "birthdate": {
+      "$date": "1980-09-10T00:00:00.000Z"
+    },
+    "gender": "FEMALE",
+    "maritalStatus": "SINGLE",
+    "customerState": "ACTIVE",
+    "address": {
+      "street": "Mainzer Landstraße",
+      "houseNumber": "50",
+      "zipCode": "60329",
+      "city": "Frankfurt",
+      "state": "Hessen",
+      "country": "Deutschland"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "EMAIL",
+      "PHONE"
+    ],
+    "interests": [
+      "TECHNOLOGY_AND_INNOVATION"
+    ]
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAABA==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Schmidt",
+    "firstName": "Anna",
+    "email": "anna.schmidt@example.com",
+    "phoneNumber": "030-1234567",
+    "username": "anna.schmidt",
+    "tierLevel": 2,
+    "subscribed": true,
+    "birthdate": {
+      "$date": "1985-07-12T00:00:00.000Z"
+    },
+    "gender": "FEMALE",
+    "maritalStatus": "MARRIED",
+    "customerState": "ACTIVE",
+    "address": {
+      "street": "Eichenstraße",
+      "houseNumber": "8",
+      "zipCode": "20255",
+      "city": "Hamburg",
+      "state": "Hamburg",
+      "country": "Deutschland"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "EMAIL",
+      "PHONE"
+    ],
+    "interests": [
+      "TECHNOLOGY_AND_INNOVATION",
+      "TRAVEL"
+    ]
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAABQ==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Schmidt",
+    "firstName": "Erik",
+    "email": "erik.schmidt@example.com",
+    "phoneNumber": "030-2345678",
+    "username": "erik",
+    "tierLevel": 1,
+    "subscribed": false,
+    "birthdate": {
+      "$date": "1982-03-25T00:00:00.000Z"
+    },
+    "gender": "MALE",
+    "maritalStatus": "MARRIED",
+    "customerState": "INACTIVE",
+    "address": {
+      "street": "Eichenstraße",
+      "houseNumber": "8",
+      "zipCode": "20255",
+      "city": "Hamburg",
+      "state": "Hamburg",
+      "country": "Deutschland"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "EMAIL",
+      "LETTER",
+      "SMS"
+    ],
+    "interests": [
+      "BANK_PRODUCTS_AND_SERVICES",
+      "FINANCIAL_EDUCATION_AND_COUNSELING",
+      "SUSTAINABLE_FINANCE"
+    ]
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAABg==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Brown",
+    "firstName": "Laura",
+    "email": "laura.brown@example.com",
+    "phoneNumber": "+49-69-1234567",
+    "username": "laura.brown",
+    "tierLevel": 3,
+    "subscribed": true,
+    "birthdate": {
+      "$date": "1979-11-11T00:00:00.000Z"
+    },
+    "gender": "FEMALE",
+    "maritalStatus": "MARRIED",
+    "customerState": "ACTIVE",
+    "address": {
+      "street": "Musterstraße",
+      "houseNumber": "1",
+      "zipCode": "10117",
+      "city": "Berlin",
+      "state": "Berlin",
+      "country": "Deutschland"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "EMAIL",
+      "LETTER",
+      "SMS"
+    ],
+    "interests": [
+      "REAL_ESTATE",
+      "INVESTMENTS",
+      "CREDIT_AND_DEBT"
+    ]
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAABw==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Gyamfi",
+    "firstName": "Shamaar",
+    "email": "shamaar_g@outlook.com",
+    "phoneNumber": "0000/0000002",
+    "username": "shamaar",
+    "tierLevel": 2,
+    "subscribed": true,
+    "birthdate": {
+      "$date": "2006-04-29T00:00:00.000Z"
+    },
+    "gender": "MALE",
+    "maritalStatus": "SINGLE",
+    "customerState": "BLOCKED",
+    "address": {
+      "street": "Namurstraße",
+      "houseNumber": "1",
+      "zipCode": "70374",
+      "city": "Stuttgart",
+      "state": "Baden Württemberg",
+      "country": "Deutschland"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "EMAIL",
+      "PHONE",
+      "LETTER",
+      "SMS"
+    ],
+    "interests": null
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAACA==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Müller",
+    "firstName": "Emanuel",
+    "email": "john.muller@example.com",
+    "phoneNumber": "+49-170-1234567",
+    "username": "john.muller",
+    "tierLevel": 1,
+    "subscribed": true,
+    "birthdate": {
+      "$date": "1990-12-30T00:00:00.000Z"
+    },
+    "gender": "MALE",
+    "maritalStatus": "SINGLE",
+    "customerState": "ACTIVE",
+    "address": {
+      "street": "Ludwigstraße",
+      "houseNumber": "24",
+      "zipCode": "80333",
+      "city": "München",
+      "state": "Bayern",
+      "country": "Deutschland"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "PHONE"
+    ],
+    "interests": null
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAACQ==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Nguyen",
+    "firstName": "Linh",
+    "email": "linh.nguyen@example.com",
+    "phoneNumber": "+84-28-1234567",
+    "username": "linh.nguyen",
+    "tierLevel": 1,
+    "subscribed": true,
+    "birthdate": {
+      "$date": "1986-04-22T00:00:00.000Z"
+    },
+    "gender": "FEMALE",
+    "maritalStatus": "MARRIED",
+    "customerState": "ACTIVE",
+    "address": {
+      "street": "Nanjing Lu",
+      "houseNumber": "789",
+      "zipCode": "200001",
+      "city": "Shanghai",
+      "state": "Shanghai",
+      "country": "China"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "EMAIL",
+      "PHONE",
+      "LETTER"
+    ],
+    "interests": [
+      "SUSTAINABLE_FINANCE",
+      "TECHNOLOGY_AND_INNOVATION"
+    ]
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAEA==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Garcia",
+    "firstName": "Miguel",
+    "email": "miguel.garcia@example.com",
+    "phoneNumber": "+1-202-1234567",
+    "username": "miguel.garcia",
+    "tierLevel": 2,
+    "subscribed": true,
+    "birthdate": {
+      "$date": "1977-08-19T00:00:00.000Z"
+    },
+    "gender": "MALE",
+    "maritalStatus": "DIVORCED",
+    "customerState": "ACTIVE",
+    "address": {
+      "street": "Avenida Insurgentes",
+      "houseNumber": "123",
+      "zipCode": "06600",
+      "city": "Ciudad de México",
+      "state": "Ciudad de México",
+      "country": "Mexico"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "EMAIL",
+      "PHONE"
+    ],
+    "interests": [
+      "REAL_ESTATE"
+    ]
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAEQ==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Lee",
+    "firstName": "Soojin",
+    "email": "soojin.lee@example.com",
+    "phoneNumber": "+82-2-1234567",
+    "username": "soojin.lee",
+    "tierLevel": 3,
+    "subscribed": true,
+    "birthdate": {
+      "$date": "1990-10-14T00:00:00.000Z"
+    },
+    "gender": "FEMALE",
+    "maritalStatus": "SINGLE",
+    "customerState": "INACTIVE",
+    "address": {
+      "street": "Maple Street",
+      "houseNumber": "45",
+      "zipCode": "CA90001",
+      "city": "Los Angeles",
+      "state": "California",
+      "country": "USA"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "EMAIL",
+      "LETTER"
+    ],
+    "interests": [
+      "INVESTMENTS",
+      "TECHNOLOGY_AND_INNOVATION"
+    ]
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAEg==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Doe",
+    "firstName": "Jane",
+    "email": "jane.doe@example.com",
+    "phoneNumber": "+44-20-79460000",
+    "username": "jane.doe",
+    "tierLevel": 3,
+    "subscribed": true,
+    "birthdate": {
+      "$date": "1987-09-15T00:00:00.000Z"
+    },
+    "gender": "FEMALE",
+    "maritalStatus": "DIVORCED",
+    "customerState": "ACTIVE",
+    "address": {
+      "street": "Oxford Street",
+      "houseNumber": "13",
+      "zipCode": "OX1 1AA",
+      "city": "Oxford",
+      "state": "England",
+      "country": "UK"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "EMAIL",
+      "PHONE",
+      "LETTER",
+      "SMS"
+    ],
+    "interests": [
+      "INVESTMENTS",
+      "SAVING_AND_FINANCE",
+      "CREDIT_AND_DEBT",
+      "INSURANCE",
+      "TECHNOLOGY_AND_INNOVATION"
+    ]
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAEw==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Williams",
+    "firstName": "Mark",
+    "email": "mark.williams@example.com",
+    "phoneNumber": "+49-30-1234567",
+    "username": "mark.williams",
+    "tierLevel": 2,
+    "subscribed": true,
+    "birthdate": {
+      "$date": "1981-03-15T00:00:00.000Z"
+    },
+    "gender": "DIVERSE",
+    "maritalStatus": "WIDOWED",
+    "customerState": "CLOSED",
+    "address": {
+      "street": "King’s Road",
+      "houseNumber": "77",
+      "zipCode": "SW3 5TX",
+      "city": "London",
+      "state": "England",
+      "country": "UK"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "EMAIL",
+      "PHONE",
+      "LETTER"
+    ],
+    "interests": [
+      "BANK_PRODUCTS_AND_SERVICES",
+      "TECHNOLOGY_AND_INNOVATION"
+    ]
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAFA==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Rossi",
+    "firstName": "Luca",
+    "email": "luca.rossi@example.com",
+    "phoneNumber": "+39-06-1234567",
+    "username": "luca.rossi",
+    "tierLevel": 2,
+    "subscribed": false,
+    "birthdate": {
+      "$date": "1984-06-05T00:00:00.000Z"
+    },
+    "gender": "MALE",
+    "maritalStatus": "MARRIED",
+    "customerState": "ACTIVE",
+    "address": {
+      "street": "George Street",
+      "houseNumber": "45",
+      "zipCode": "2000",
+      "city": "Sydney",
+      "state": "New South Wales",
+      "country": "Australia"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "PHONE"
+    ],
+    "interests": [
+      "SAVING_AND_FINANCE"
+    ]
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAFQ==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Owusu",
+    "firstName": "Kwame",
+    "email": "kwame.owusu@example.com",
+    "phoneNumber": "+233-20-1234567",
+    "username": "kwame.owusu",
+    "tierLevel": 3,
+    "subscribed": false,
+    "birthdate": {
+      "$date": "1995-05-05T00:00:00.000Z"
+    },
+    "gender": "MALE",
+    "maritalStatus": "SINGLE",
+    "customerState": "ACTIVE",
+    "address": {
+      "street": "Independence Avenue",
+      "houseNumber": "10",
+      "zipCode": "AC001",
+      "city": "Accra",
+      "state": "Greater Accra Region",
+      "country": "Ghana"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "LETTER"
+    ],
+    "interests": [
+      "REAL_ESTATE"
+    ]
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAFg==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Osei",
+    "firstName": "Yaa",
+    "email": "yaa.osei@example.com",
+    "phoneNumber": "+233-24-9876543",
+    "username": "yaa.osei",
+    "tierLevel": 3,
+    "subscribed": true,
+    "birthdate": {
+      "$date": "1992-11-02T00:00:00.000Z"
+    },
+    "gender": "FEMALE",
+    "maritalStatus": "SINGLE",
+    "customerState": "ACTIVE",
+    "address": {
+      "street": "Kumasi Avenue",
+      "houseNumber": "22",
+      "zipCode": "KA002",
+      "city": "Kumasi",
+      "state": "Ashanti Region",
+      "country": "Ghana"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "EMAIL",
+      "PHONE",
+      "LETTER",
+      "SMS"
+    ],
+    "interests": [
+      "TECHNOLOGY_AND_INNOVATION",
+      "INVESTMENTS",
+      "SAVING_AND_FINANCE",
+      "REAL_ESTATE",
+      "CREDIT_AND_DEBT"
+    ]
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAFw==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Peterson",
+    "firstName": "Lisa",
+    "email": "lisa.peterson@example.com",
+    "phoneNumber": "+44-20-1234567",
+    "username": "lisa.peterson",
+    "tierLevel": 1,
+    "subscribed": false,
+    "birthdate": {
+      "$date": "1993-02-10T00:00:00.000Z"
+    },
+    "gender": "DIVERSE",
+    "maritalStatus": "WIDOWED",
+    "customerState": "BLOCKED",
+    "address": {
+      "street": "Broadway",
+      "houseNumber": "22",
+      "zipCode": "NY10001",
+      "city": "New York",
+      "state": "New York",
+      "country": "USA"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "PHONE"
+    ],
+    "interests": null
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAGA==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Tanaka",
+    "firstName": "Hiroshi",
+    "email": "hiroshi.tanaka@example.com",
+    "phoneNumber": "+81-3-1234-5678",
+    "username": "hiroshi.tanaka",
+    "tierLevel": 1,
+    "subscribed": true,
+    "birthdate": {
+      "$date": "1988-06-20T00:00:00.000Z"
+    },
+    "gender": "MALE",
+    "maritalStatus": "MARRIED",
+    "customerState": "ACTIVE",
+    "address": {
+      "street": "Shibuya Crossing",
+      "houseNumber": "1-2-3",
+      "zipCode": "150-0001",
+      "city": "Tokyo",
+      "state": "Kanto",
+      "country": "Japan"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "EMAIL",
+      "PHONE"
+    ],
+    "interests": [
+      "TECHNOLOGY_AND_INNOVATION"
+    ]
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAGQ==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Smith",
+    "firstName": "Emily",
+    "email": "emily.smith@example.com",
+    "phoneNumber": "+64-9-1234567",
+    "username": "emily.smith",
+    "tierLevel": 3,
+    "subscribed": true,
+    "birthdate": {
+      "$date": "1991-08-08T00:00:00.000Z"
+    },
+    "gender": "FEMALE",
+    "maritalStatus": "MARRIED",
+    "customerState": "ACTIVE",
+    "address": {
+      "street": "Queen Street",
+      "houseNumber": "16",
+      "zipCode": "1010",
+      "city": "Auckland",
+      "state": "North Island",
+      "country": "New Zealand"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "EMAIL",
+      "LETTER",
+      "SMS"
+    ],
+    "interests": [
+      "TECHNOLOGY_AND_INNOVATION",
+      "INVESTMENTS",
+      "REAL_ESTATE",
+      "CREDIT_AND_DEBT",
+      "INSURANCE"
+    ]
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAIA==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Jones",
+    "firstName": "David",
+    "email": "david.jones@example.com",
+    "phoneNumber": "+64-9-5555555",
+    "username": "david.jones",
+    "tierLevel": 2,
+    "subscribed": true,
+    "birthdate": {
+      "$date": "1983-07-21T00:00:00.000Z"
+    },
+    "gender": "MALE",
+    "maritalStatus": "MARRIED",
+    "customerState": "INACTIVE",
+    "address": {
+      "street": "George Street",
+      "houseNumber": "45",
+      "zipCode": "2000",
+      "city": "Sydney",
+      "state": "New South Wales",
+      "country": "Australia"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "EMAIL",
+      "PHONE"
+    ],
+    "interests": [
+      "SUSTAINABLE_FINANCE",
+      "BANK_PRODUCTS_AND_SERVICES"
+    ]
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAIQ==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Ivanov",
+    "firstName": "Dmitry",
+    "email": "dmitry.ivanov@example.ru",
+    "phoneNumber": "+7-495-1234567",
+    "username": "dmitry.ivanov",
+    "tierLevel": 1,
+    "subscribed": true,
+    "birthdate": {
+      "$date": "1984-02-15T00:00:00.000Z"
+    },
+    "gender": "MALE",
+    "maritalStatus": "MARRIED",
+    "customerState": "ACTIVE",
+    "address": {
+      "street": "Leninsky Prospekt",
+      "houseNumber": "12",
+      "zipCode": "119991",
+      "city": "Moscow",
+      "state": "Moscow",
+      "country": "Russia"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "EMAIL",
+      "PHONE"
+    ],
+    "interests": [
+      "TECHNOLOGY_AND_INNOVATION",
+      "REAL_ESTATE"
+    ]
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAIg==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Ivanov",
+    "firstName": "Elena",
+    "email": "elena.ivanov@example.ru",
+    "phoneNumber": "+7-495-7654321",
+    "username": "elena.ivanova",
+    "tierLevel": 1,
+    "subscribed": true,
+    "birthdate": {
+      "$date": "1986-07-20T00:00:00.000Z"
+    },
+    "gender": "FEMALE",
+    "maritalStatus": "MARRIED",
+    "customerState": "ACTIVE",
+    "address": {
+      "street": "Leninsky Prospekt",
+      "houseNumber": "12",
+      "zipCode": "119991",
+      "city": "Moscow",
+      "state": "Moscow",
+      "country": "Russia"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "EMAIL",
+      "PHONE"
+    ],
+    "interests": [
+      "TRAVEL",
+      "TECHNOLOGY_AND_INNOVATION"
+    ]
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAIw==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Andersson",
+    "firstName": "Johan",
+    "email": "johan.andersson@example.se",
+    "phoneNumber": "+46-8-1234567",
+    "username": "johan.andersson",
+    "tierLevel": 2,
+    "subscribed": true,
+    "birthdate": {
+      "$date": "1982-11-30T00:00:00.000Z"
+    },
+    "gender": "MALE",
+    "maritalStatus": "MARRIED",
+    "customerState": "ACTIVE",
+    "address": {
+      "street": "Storgatan",
+      "houseNumber": "1",
+      "zipCode": "11122",
+      "city": "Stockholm",
+      "state": "Stockholm",
+      "country": "Sweden"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "EMAIL",
+      "PHONE"
+    ],
+    "interests": [
+      "TRAVEL",
+      "TECHNOLOGY_AND_INNOVATION"
+    ]
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAJA==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Andersson",
+    "firstName": "Anna",
+    "email": "anna.andersson@example.se",
+    "phoneNumber": "+46-8-7654321",
+    "username": "anna.andersson",
+    "tierLevel": 2,
+    "subscribed": true,
+    "birthdate": {
+      "$date": "1985-03-10T00:00:00.000Z"
+    },
+    "gender": "FEMALE",
+    "maritalStatus": "MARRIED",
+    "customerState": "ACTIVE",
+    "address": {
+      "street": "Storgatan",
+      "houseNumber": "1",
+      "zipCode": "11122",
+      "city": "Stockholm",
+      "state": "Stockholm",
+      "country": "Sweden"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "EMAIL",
+      "PHONE"
+    ],
+    "interests": [
+      "TRAVEL",
+      "TECHNOLOGY_AND_INNOVATION"
+    ]
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAJQ==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Gyamfi",
+    "firstName": "Caleb",
+    "email": "caleb_g@outlook.de",
+    "phoneNumber": "015111951223",
+    "username": "gentlecg99",
+    "tierLevel": 3,
+    "subscribed": true,
+    "birthdate": {
+      "$date": "1999-05-03T00:00:00.000Z"
+    },
+    "gender": "MALE",
+    "maritalStatus": "MARRIED",
+    "customerState": "ACTIVE",
+    "address": {
+      "street": "Namurstraße",
+      "houseNumber": "4",
+      "zipCode": "70374",
+      "city": "Stuttgart",
+      "state": "Baden Württemberg",
+      "country": "Deutschland"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "EMAIL",
+      "PHONE",
+      "LETTER",
+      "SMS"
+    ],
+    "interests": [
+      "TECHNOLOGY_AND_INNOVATION"
+    ]
+  },
+  {
+    "_id": {"$binary": {"base64": "AAAAAAAAAAAAAAAAAAAAJg==", "subType": "04"}},
+    "version": 0,
+    "lastName": "Jefferson",
+    "firstName": "Leroy",
+    "email": "leroy135@icloud.com",
+    "phoneNumber": "015111951223",
+    "username": "leroy135",
+    "tierLevel": 2,
+    "subscribed": true,
+    "birthdate": {
+      "$date": "1999-05-03T00:00:00.000Z"
+    },
+    "gender": "MALE",
+    "maritalStatus": "SINGLE",
+    "customerState": "ACTIVE",
+    "address": {
+      "street": "Connell Street",
+      "houseNumber": "42",
+      "zipCode": "D01 C3N0",
+      "city": "Dublin",
+      "state": "Leinster",
+      "country": "Ireland"
+    },
+    "created": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "updated": {
+      "$date": "2023-10-05T12:00:00.000Z"
+    },
+    "contactOptions": [
+      "EMAIL"
+    ],
+    "interests": [
+      "INVESTMENTS",
+      "SAVING_AND_FINANCE",
+      "CREDIT_AND_DEBT",
+      "BANK_PRODUCTS_AND_SERVICES",
+      "FINANCIAL_EDUCATION_AND_COUNSELING",
+      "REAL_ESTATE",
+      "INSURANCE",
+      "SUSTAINABLE_FINANCE",
+      "TECHNOLOGY_AND_INNOVATION",
+      "TRAVEL"
+    ]
+  }
+]

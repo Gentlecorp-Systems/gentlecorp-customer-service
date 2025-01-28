@@ -1,7 +1,14 @@
 package com.gentlecorp.customer.model.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
+import java.util.Arrays;
+
+/**
+ * Enum für verschiedene Problemtypen in der Anwendung, z. B. Fehlerarten oder Statuscodes.
+ */
 @Getter
 public enum ProblemType {
   CONSTRAINTS("constraints"),
@@ -16,5 +23,33 @@ public enum ProblemType {
 
   ProblemType(final String value) {
     this.value = value;
+  }
+
+  /**
+   * Gibt die String-Repräsentation des Enum-Werts zurück.
+   *
+   * @return die String-Repräsentation des Problemtyps.
+   */
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  /**
+   * Wandelt einen String-Wert in den entsprechenden Enum-Wert um.
+   * Unterstützt JSON- und MongoDB-Datenverarbeitung.
+   *
+   * @param value der String-Wert des Problemtyps.
+   * @return der entsprechende Enum-Wert.
+   * @throws IllegalArgumentException wenn der Wert ungültig ist.
+   */
+  @JsonCreator
+  public static ProblemType fromValue(final String value) {
+    return Arrays.stream(values())
+        .filter(problemType -> problemType.value.equalsIgnoreCase(value))
+        .findFirst()
+        .orElseThrow(() -> new IllegalArgumentException(
+            String.format("Ungültiger Wert '%s' für ProblemType", value)
+        ));
   }
 }

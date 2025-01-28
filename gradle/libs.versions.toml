@@ -10,6 +10,7 @@ lombokMapstructBinding = "0.2.0"
 mapstruct = "1.6.0.Beta1"
 springdocOpenapi = "2.3.0"
 springAddonsStarterOidc = "7.8.1"
+dotenv = "3.0.0"
 
 # -----------------------------------------------------------------------------------------
 # B O M s   u n d   s p e z i f i s c h e   V e r s i o n e n   u e b e r s c h r e i b e n
@@ -33,7 +34,8 @@ spotbugs = "4.8.3"
 # ----------------------------------------------------------------------------------------
 
 springBootTest = "3.3.4"
-httpclient5 = "5.2.1"
+httpclient5 = "5.4.1"
+httpcore5 = "5.3.2"
 
 # ----------------------------------------------------------------------------------------
 # C o d e a n a l y s e ,   R e p o r t s ,   D o k u m e n t a t i o n

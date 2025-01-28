@@ -5,6 +5,11 @@
  * anschließend: ./gradlew wrapper --gradle-version {neue version}
  */
 
+/**
+ * ./gradlew dependencyUpdates
+ *
+ */
+
 val javaLanguageVersion = project.properties["javaLanguageVersion"] as String? ?: JavaVersion.VERSION_23.majorVersion
 val javaVersion = project.properties["javaVersion"] ?: libs.versions.javaVersion.get()
 
@@ -39,6 +44,8 @@ repositories {
 	mavenCentral()
 }
 
+extra["snippetsDir"] = file("build/generated-snippets")
+
 dependencies {
 
 	/**--------------------------------------------------------------------------------------------------------------------
@@ -46,7 +53,7 @@ dependencies {
 	 * --------------------------------------------------------------------------------------------------------------------*/
 	runtimeOnly("org.bouncycastle:bcpkix-jdk18on:${libs.versions.bouncycastle.get()}") // Argon2
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
-	implementation("com.c4-soft.springaddons:spring-addons-starter-oidc:${libs.versions.springAddonsStarterOidc.get()}")
+	// implementation("com.c4-soft.springaddons:spring-addons-starter-oidc:${libs.versions.springAddonsStarterOidc.get()}")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 
 
@@ -69,9 +76,11 @@ dependencies {
 	 * --------------------------------------------------------------------------------------------------------------------*/
 	testImplementation("org.springframework.boot:spring-boot-starter-test:${libs.versions.springBootTest.get()}")
 	testImplementation("org.apache.httpcomponents.client5:httpclient5:${libs.versions.httpclient5.get()}")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.springframework.security:spring-security-test")
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	implementation("org.apache.httpcomponents.core5:httpcore5:${libs.versions.httpcore5.get()}")
+//	testImplementation("org.junit.jupiter:junit-jupiter")
+//	testImplementation("org.springframework.boot:spring-boot-starter-test")
+//	testImplementation("org.springframework.security:spring-security-test")
+//	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
 	/**----------------------------------------------------------------
 	 * SPRING BOOT STARTER
@@ -102,6 +111,7 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok:${libs.versions.lombok.get()}")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	annotationProcessor("org.hibernate:hibernate-jpamodelgen:${libs.versions.hibernateJpamodelgen.get()}")
+	implementation("io.github.cdimascio:dotenv-java:${libs.versions.dotenv.get()}") // Bibliothek für .env-Datei
 
 	/**------------------------------------------------------------------------------------------------------------------------
 	 * WEITERE EXTRAS
@@ -163,4 +173,8 @@ tasks.named("bootBuildImage", org.springframework.boot.gradle.tasks.bundling.Boo
 	println("")
 	println("Buildpacks: JVM durch   B e l l s o f t   L i b e r i c a   (default)")
 	println("")
+}
+
+tasks.test {
+	outputs.dir(project.extra["snippetsDir"]!!)
 }

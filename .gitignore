@@ -1,11 +1,85 @@
-HELP.md
-.gradle
-build/
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.log
+*.tmp
+*.out
 
-### STS ###
+# Gradle
+.gradle/
+build/
+.gradle-cache/
+!gradle-wrapper.jar
+*.lock
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/shelf/
+.idea/**/gradle.xml
+.idea/**/libraries/
+.idea/**/runConfigurations/
+
+# Visual Studio Code
+.vscode/
+.history/
+
+# Logs and temporary files
+*.log
+logs/
+*.pid
+*.seed
+*.swo
+*.swp
+*.orig
+*.rej
+
+# System Files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+.trash
+
+# Maven
+.mvn/
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Gradle Wrapper
+!gradlew
+!gradlew.bat
+
+# User-Specific Files
+*.idx
+*.dat
+*.diff
+*.patch
+
+# JUnit Reports
+test-output/
+surefire-reports/
+failsafe-reports/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# Spring Tools Suite (STS)
 .apt_generated
 .classpath
 .factorypath
@@ -14,24 +88,12 @@ build/
 .springBeans
 .sts4-cache
 bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
+# Environment Variables
+.env
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+# Temporary files
+tmp/
 
-### VS Code ###
-.vscode/
+# Action Runner
+.github/actions-runner/**

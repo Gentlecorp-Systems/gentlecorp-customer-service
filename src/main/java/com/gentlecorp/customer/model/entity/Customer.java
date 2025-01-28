@@ -1,11 +1,14 @@
 package com.gentlecorp.customer.model.entity;
 
 import com.gentlecorp.customer.model.enums.*;
+import jakarta.persistence.GeneratedValue;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,6 +25,7 @@ import java.util.UUID;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Customer {
 
     /**
@@ -29,7 +33,8 @@ public class Customer {
      * Automatische UUID-Generierung bei der Erstellung.
      */
     @Id
-    private UUID id = UUID.randomUUID();
+    @GeneratedValue
+    private UUID id;
 
     /**
      * Versionsnummer für die Optimistic Locking-Strategie.
