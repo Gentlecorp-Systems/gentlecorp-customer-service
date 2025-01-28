@@ -10,7 +10,7 @@ on:
 
 jobs:
   test:
-    name: Run Java Tests
+    name: Run Customer Tests
     runs-on: self-hosted # Nutze einen lokalen Runner
 
     steps:
