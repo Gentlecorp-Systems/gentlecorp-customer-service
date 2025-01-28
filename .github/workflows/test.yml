@@ -11,7 +11,7 @@ on:
 jobs:
   test:
     name: Run Java Tests
-    runs-on: Customer # Nutze einen lokalen Runner
+    runs-on: self-hosted # Nutze einen lokalen Runner
 
     steps:
       # 3. Abhängigkeiten auflösen und Tests ausführen
