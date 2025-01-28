@@ -14,6 +14,10 @@ jobs:
     runs-on: self-hosted # Nutze einen lokalen Runner
 
     steps:
+      # 1. Repository klonen
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       # 3. Abhängigkeiten auflösen und Tests ausführen
       - name: Resolve dependencies and run tests
         run: ./gradlew clean build --no-daemon
