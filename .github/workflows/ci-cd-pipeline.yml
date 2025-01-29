@@ -10,6 +10,12 @@ on:
     tags:
       - 'v*'  # Nur für Versionstags (z.B. v1.0.0)
 
+permissions:
+  contents: read      # Erlaubt das Lesen von Repository-Inhalten
+  security-events: write  # Erlaubt das Schreiben von Security-Analysen
+  actions: read       # Erlaubt das Lesen von Actions
+  packages: write     # Notwendig für Docker-Image Uploads
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -92,7 +98,7 @@ jobs:
 
       # 5. Code Coverage Bericht hochladen
       - name: Upload Coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v5.3.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: build/reports/jacoco/test/html/jacocoTestReport.xml
