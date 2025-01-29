@@ -23,8 +23,8 @@ jobs:
       - name: Cache Gradle Dependencies
         uses: actions/cache@v4
         with:
-          path: backend/.gradle
-          key: ${{ runner.os }}-gradle-${{ hashFiles('backend/gradle/wrapper/gradle-wrapper.properties') }}
+          path: .gradle
+          key: ${{ runner.os }}-gradle-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
 
@@ -79,8 +79,8 @@ jobs:
       - name: Upload JAR Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: backend-jar
-          path: backend/build/libs/*.jar
+          name: customer-jar
+          path: build/libs/*.jar
 
   docker:
     runs-on: self-hosted
@@ -92,8 +92,8 @@ jobs:
       - name: Download JAR File
         uses: actions/download-artifact@v4
         with:
-          name: backend-jar
-          path: backend/build/libs
+          name: customer-jar
+          path: build/libs
 
       - name: Build Docker Image
         run: |
