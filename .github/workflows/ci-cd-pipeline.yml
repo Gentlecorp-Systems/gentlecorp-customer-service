@@ -74,6 +74,7 @@ jobs:
           files: build/reports/jacoco/test/html/jacocoTestReport.xml
           fail_ci_if_error: true
           verbose: true
+          skip_gpg: true 
 
   package:
     runs-on: ubuntu-latest
