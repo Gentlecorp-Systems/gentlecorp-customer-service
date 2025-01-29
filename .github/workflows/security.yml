@@ -99,32 +99,4 @@ jobs:
         with:
           name: docker-scout-reports
           path: ./docker-scout-*.md
-
-  sonarcloud:
-    name: SonarQube Analysis
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '23'
-
-      - name: Run SonarQube Analysis
-        uses: SonarSource/sonarcloud-github-action@v2.0.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >
-            -Dsonar.projectKey=Gentlecorp-Systems_gentlecorp-customer-service
-            -Dsonar.projectName=Customer-Service
-            -Dsonar.organization=gentlecorp-systems
-            -Dsonar.host.url=https://sonarcloud.io
-            -Dsonar.sources=./src/main/java
-            -Dsonar.exclusions=**/*.java
-            -Dsonar.branch.name=${{ github.ref_name }}
          

@@ -12,10 +12,16 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '23'
 
       - name: Grant execute permission to Gradle Wrapper
         run: chmod +x ./gradlew
@@ -32,11 +38,32 @@ jobs:
         run: ./gradlew clean build --build-cache
 
   analyze:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs: build
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '23'
+
+      - name: Analyze with SonarCloud
+        uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=Gentlecorp-Systems_gentlecorp-customer-service
+            -Dsonar.projectName=Customer-Service
+            -Dsonar.organization=gentlecorp-systems
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.sources=./src/main/java
+            -Dsonar.exclusions=**/*.java
+            -Dsonar.branch.name=${{ github.ref_name }}
 
   test:
     name: Run Customer Tests
@@ -81,6 +108,12 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '23'
 
       - name: Package Application
         run: ./gradlew bootJar --build-cache
