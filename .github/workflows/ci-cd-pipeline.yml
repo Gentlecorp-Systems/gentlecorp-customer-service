@@ -70,7 +70,6 @@ jobs:
 
   test:
     name: Run Customer Tests
-    needs: analyze
     runs-on: self-hosted # Nutze einen lokalen Runner
 
     steps:
@@ -151,7 +150,7 @@ jobs:
             -t gentlecorp-systems/customer:${{ env.CURRENT_DATE }} .
 
       - name: Log in to Docker Hub
-        uses: docker/login-action@62d8a6de97b2c1386675a0d366e1f49d0c144927
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
