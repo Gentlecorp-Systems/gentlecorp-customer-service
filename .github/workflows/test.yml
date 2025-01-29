@@ -24,19 +24,11 @@ jobs:
           echo "KEYS_PATH=${{ secrets.KEYS_PATH }}" >> .env
           echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
 
-      # 3. Setup JDK
-      - name: Setup Java
-        uses: actions/setup-java@v4.6.0
-        with:
-          distribution: 'temurin'
-          java-version: '23'
-          cache: 'gradle'
-
-      # 4. Tests ausführen mit Code Coverage
+      # 3. Tests ausführen mit Code Coverage
       - name: Run Tests with Coverage
         run: ./gradlew clean build jacocoTestReport --no-daemon
 
-      # 5. Testberichte speichern
+      # 4. Testberichte speichern
       - name: Archive test reports
         if: always()
         uses: actions/upload-artifact@v3
@@ -44,7 +36,7 @@ jobs:
           name: test-reports
           path: build/reports/tests/test
 
-      # 6. Code Coverage Bericht hochladen
+      # 5. Code Coverage Bericht hochladen
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
