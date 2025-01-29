@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run OWASP Dependency Check
-        uses: dependency-check/Dependency-Check_Action@7d0fbd47c77c7085d5d8cb31ef09edb6c92607f6
+        uses: dependency-check/Dependency-Check_Action@75ba02d6183445fe0761d26e836bde58b1560600
         with:
           project: "GentleCorp-System - CustomerService"
           path: './'
@@ -74,21 +74,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Log in to Docker Hub
-        uses: docker/login-action@62d8a6de97b2c1386675a0d366e1f49d0c144927
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Docker Scout Quickview
         id: docker-scout-quickview
-        uses: docker/scout-action@bbdf249382ae1a5eb1928eb6a1b399f91dffdfcd
+        uses: docker/scout-action@b23590dc1e4d09febc00cfcbc51e9e8c0f7ee9f3
         with:
           command: quickview
           image: calebscript/customer:2025.28.1
 
       - name: Docker Scout CVEs
         id: docker-scout-cves
-        uses: docker/scout-action@bbdf249382ae1a5eb1928eb6a1b399f91dffdfcd
+        uses: docker/scout-action@b23590dc1e4d09febc00cfcbc51e9e8c0f7ee9f3
         with:
           command: cves
           image: calebscript/customer:2025.28.1
