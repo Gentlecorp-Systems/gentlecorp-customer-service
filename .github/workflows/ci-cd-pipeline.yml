@@ -66,12 +66,36 @@ jobs:
           name: test-reports
           path: build/reports/tests/test
 
+      # 5. Code Coverage Bericht hochladen
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: build/reports/jacoco/test/html/jacocoTestReport.xml
+          fail_ci_if_error: true
+          verbose: true
+
   package:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs: [build, analyze, test]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+#      - name: Download jacoco.xml
+#        uses: actions/download-artifact@v4
+#        with:
+#          name: jacoco.xml
+#          path: build/reports/jacoco/jacoco.xml
+
+#      # 5. Code Coverage Bericht hochladen
+#      - name: Upload Coverage to Codecov
+#        uses: codecov/codecov-action@v5
+#        with:
+#          token: ${{ secrets.CODECOV_TOKEN }}
+#          files: build/reports/jacoco/jacoco.xml
+#          fail_ci_if_error: true
+#          verbose: true
 
       - name: Package Application
         run: ./gradlew bootJar
