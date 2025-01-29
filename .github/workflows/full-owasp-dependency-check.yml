@@ -6,6 +6,12 @@ on:
     - cron: "0 2 * * 1" # Wöchentlich jeden Montag um 02:00 Uhr UTC
   workflow_dispatch:
 
+permissions:
+  contents: read       # Nur Lesezugriff auf Repository-Dateien
+  security-events: write  # Notwendig für Sicherheitsberichte (z. B. OWASP Scan)
+  actions: read        # Erlaubt das Lesen von Actions
+
+
 jobs:
   dependency-check:
     runs-on: ubuntu-latest

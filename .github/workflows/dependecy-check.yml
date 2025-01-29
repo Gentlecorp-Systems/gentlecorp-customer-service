@@ -5,6 +5,11 @@ on:
   schedule:
     - cron: "0 12 * * 1" # Wöchentlich jeden Montag um 12:00 Uhr UTC
 
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
 jobs:
   dependency-check:
     runs-on: ubuntu-latest
