@@ -16,21 +16,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Java
-        uses: actions/setup-java@v3
+      - name: Run OWASP Dependency Check
+        uses: dependency-check/Dependency-Check_Action@1.1.0
         with:
-          distribution: 'temurin'
-          java-version: '21'
-
-      - name: Install OWASP Dependency Check CLI
-        run: |
-            curl -sSLO https://github.com/jeremylong/DependencyCheck/releases/download/v8.4.0/dependency-check-8.4.0-release.zip
-            unzip dependency-check-8.4.0-release.zip
-            mv dependency-check /usr/local/bin/
-
-      - name: Run OWASP Dependency Check (ohne Docker)
-        run: |
-                dependency-check/bin/dependency-check.sh --project "GentleCorp-System - CustomerService" --scan "./" --format "HTML" --out "./reports"
+          project: "GentleCorp-System - CustomerService"
+          path: './'
+          format: 'HTML'
 
       - name: Upload Dependency Check report
         uses: actions/upload-artifact@v4
