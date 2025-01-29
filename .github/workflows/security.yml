@@ -53,7 +53,7 @@ jobs:
 
       - name: Run Snyk Scan
         run: |
-          snyk monitor --org=GentleCorp-Systems
+          snyk monitor
           snyk test --json-file-output=snyk-report.json
 
       - name: Generate HTML Report
