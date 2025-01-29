@@ -34,9 +34,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Build Project
-        run: ./gradlew clean build --build-cache
-
   analyze:
     runs-on: ubuntu-latest
     needs: build
