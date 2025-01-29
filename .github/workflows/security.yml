@@ -123,9 +123,11 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=customer
+            -Dsonar.projectKey=Gentlecorp-Systems_gentlecorp-customer-service
             -Dsonar.projectName=Customer-Service
             -Dsonar.organization=gentlecorp-systems
             -Dsonar.host.url=https://sonarcloud.io
-            -Dsonar.sources=./
+            -Dsonar.sources=./src/main/java
+            -Dsonar.exclusions=**/*.java
             -Dsonar.branch.name=${{ github.ref_name }}
+         
