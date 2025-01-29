@@ -16,7 +16,7 @@ sealed interface KeycloakClientConfig permits ApplicationConfig {
   default KeycloakRepository keycloakRepository(
     final RestClient.Builder clientBuilder
   ) {
-    final var kcDefaultPort = 8880;
+    final var kcDefaultPort = 18080;
 
     final var kcSchemaEnv = EnvConfig.get("KC_SERVICE_SCHEMA");
     final var kcHostEnv = EnvConfig.get("KC_SERVICE_HOST");

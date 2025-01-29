@@ -1,4 +1,4 @@
-![Codecov](https://codecov.io/gh/USERNAME/REPOSITORY/branch/main/graph/badge.svg)
+![Codecov](https://codecov.io/gh/Gentlecorp-Systems/gentlecorp-customer-service/branch/main/graph/badge.svg)
 
 # Customer Service
 
