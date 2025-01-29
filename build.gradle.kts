@@ -20,6 +20,7 @@ val alternativeBuildpack = project.properties["buildpack"]
 
 plugins {
 	java
+	jacoco
 	id("org.springframework.boot") version libs.versions.springBootPlugin.get()
 	id("io.spring.dependency-management") version libs.versions.dependencyManagement.get()
 }
@@ -129,6 +130,16 @@ dependencies {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+	finalizedBy(tasks.jacocoTestReport) // Nach Tests Coverage Report erstellen
+}
+
+tasks.jacocoTestReport {
+	dependsOn(tasks.test) // Coverage-Report erst nach den Tests generieren
+	reports {
+		xml.required.set(true) // Codecov benötigt das XML-Format
+		html.required.set(true)
+		csv.required.set(false)
+	}
 }
 
 tasks.named<JavaExec>("bootRun") {
