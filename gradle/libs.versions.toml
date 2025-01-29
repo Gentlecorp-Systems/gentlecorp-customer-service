@@ -20,6 +20,7 @@ flyway = "10.6.0"
 hibernateJpamodelgen = "6.4.4.Final"
 jackson = "2.16.1"
 lombok = "1.18.34"
+guava = "33.4.0-jre"
 
 # ----------------------------------------------------------------------------------------
 # Q S ,   R e p o r t s ,   D o k u m e n t a t i o n

@@ -116,7 +116,7 @@ dependencies {
 	/**------------------------------------------------------------------------------------------------------------------------
 	 * WEITERE EXTRAS
 	 * --------------------------------------------------------------------------------------------------------------------*/
-	implementation("com.google.guava:guava:33.4.0-jre") //für Splitt-operation in FlightRepository
+	implementation("com.google.guava:guava:${libs.versions.guava.get()}") //für Splitt-operation
 	developmentOnly("org.springframework.boot:spring-boot-devtools:${libs.versions.springBoot.get()}")
 
 	/**------------------------------------------------------------------------------------------------------------------------
