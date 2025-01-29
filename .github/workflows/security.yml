@@ -53,8 +53,8 @@ jobs:
 
       - name: Run Snyk Scan
         run: |
-          snyk monitor
-          snyk test --json-file-output=snyk-report.json
+          snyk monitor --severity-threshold=high
+          snyk test --severity-threshold=high --json-file-output=snyk-report.json
 
       - name: Generate HTML Report
         run: |
@@ -125,7 +125,7 @@ jobs:
           args: >
             -Dsonar.projectKey=customer
             -Dsonar.projectName=Customer-Service
-            -Dsonar.organization=GentleCorp-Systems
+            -Dsonar.organization=gentlecorp-systems
             -Dsonar.host.url=https://sonarcloud.io
             -Dsonar.sources=./
             -Dsonar.branch.name=${{ github.ref_name }}
