@@ -1,3 +1,5 @@
+![Codecov](https://codecov.io/gh/USERNAME/REPOSITORY/branch/main/graph/badge.svg)
+
 # Customer Service
 
 Der Customer Service ist eine zentrale Komponente des GentleCorp-Ecosystems, die Kundenanfragen und -interaktionen effizient verwaltet. Dieses Dokument beschreibt die Einrichtung, Nutzung und Wartung des Customer Service.

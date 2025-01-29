@@ -18,16 +18,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # 2. `.env`-Datei mit Secrets erstellen
       - name: Create .env file
         run: |
-         echo "KEYS_PATH=${{ secrets.KEYS_PATH }}" >> .env
-         echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
+          echo "KEYS_PATH=${{ secrets.KEYS_PATH }}" >> .env
+          echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
 
-      # 3. Abhängigkeiten auflösen und Tests ausführen
-      - name: Resolve dependencies and run tests
-        run: ./gradlew clean build --no-daemon
+      # 3. Setup JDK
+      - name: Setup Java
+        uses: actions/setup-java@v4.6.0
+        with:
+          distribution: 'temurin'
+          java-version: '23'
+          cache: 'gradle'
 
-      # 4. Testberichte speichern
+      # 4. Tests ausführen mit Code Coverage
+      - name: Run Tests with Coverage
+        run: ./gradlew clean build jacocoTestReport --no-daemon
+
+      # 5. Testberichte speichern
       - name: Archive test reports
         if: always()
         uses: actions/upload-artifact@v3
@@ -35,10 +44,11 @@ jobs:
           name: test-reports
           path: build/reports/tests/test
 
-      # 5. Code Coverage Bericht hochladen (optional)
-      - name: Upload coverage report
-        if: success()
-        uses: actions/upload-artifact@v3
+      # 6. Code Coverage Bericht hochladen
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v4
         with:
-          name: coverage-report
-          path: build/reports/jacoco/test/html
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: build/reports/jacoco/jacoco.xml
+          fail_ci_if_error: true
+          verbose: true
