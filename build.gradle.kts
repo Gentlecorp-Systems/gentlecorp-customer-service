@@ -320,6 +320,9 @@ tasks.named<Javadoc>("javadoc") {
 	}
 }
 
+tasks.named<Jar>("jar") {
+	archiveFileName.set("kunde-2024.04.0.jar")
+}
 
 tasks.named("dependencyUpdates", com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask::class) {
 	checkConstraints = true
