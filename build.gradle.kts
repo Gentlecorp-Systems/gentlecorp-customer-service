@@ -67,7 +67,6 @@
 //        gradle wrapper --gradle-version=8.8-rc-2 --distribution-type=bin
 
 import java.nio.file.Paths
-import net.ltgt.gradle.errorprone.errorprone
 
 val javaLanguageVersion = project.properties["javaLanguageVersion"] as String? ?: JavaVersion.VERSION_23.majorVersion
 val javaVersion = project.properties["javaVersion"] ?: libs.versions.javaVersion.get()
@@ -86,7 +85,6 @@ val activeProfiles = if (project.properties["https"] != "false" && project.prope
 plugins {
 	java
 	jacoco
-	checkstyle
 	idea
 	`project-report`
 	id("org.springframework.boot") version libs.versions.springBootPlugin.get()
@@ -101,15 +99,6 @@ plugins {
 	// https://github.com/markelliot/gradle-versions
 	// Aufruf: gradle checkNewVersions
 	id("com.markelliot.versions") version libs.versions.markelliotVersions.get()
-	id("com.github.spotbugs") version libs.versions.spotbugsPlugin.get()
-
-	// https://github.com/diffplug/spotless
-	id("com.diffplug.spotless") version libs.versions.spotless.get()
-
-	// https://github.com/andygoossens/gradle-modernizer-plugin
-	id("com.github.andygoossens.modernizer") version libs.versions.modernizerPlugin.get()
-
-	id("net.ltgt.errorprone") version libs.versions.errorpronePlugin.get()
 
 	id("org.asciidoctor.jvm.convert") version libs.versions.asciidoctor.get()
 	id("org.asciidoctor.jvm.pdf") version libs.versions.asciidoctor.get()
@@ -137,11 +126,6 @@ repositories {
 
 extra["snippetsDir"] = file("build/generated-snippets")
 
-configurations.checkstyle {
-	resolutionStrategy.capabilitiesResolution.withCapability("com.google.collections:google-collections") {
-		select("com.google.guava:guava:0")
-	}
-}
 
 dependencies {
 
@@ -216,7 +200,6 @@ dependencies {
 	implementation("com.google.guava:guava:${libs.versions.guava.get()}") //für Splitt-operation
 	developmentOnly("org.springframework.boot:spring-boot-devtools:${libs.versions.springBoot.get()}")
 
-	errorprone("com.google.errorprone:error_prone_core:${libs.versions.errorprone.get()}")
 	compileOnly("com.github.spotbugs:spotbugs-annotations:${libs.versions.spotbugs.get()}")
 	testCompileOnly("com.github.spotbugs:spotbugs-annotations:${libs.versions.spotbugs.get()}")
 	testImplementation("org.gaul:modernizer-maven-annotations:${libs.versions.modernizer.get()}")
@@ -278,41 +261,18 @@ tasks.named("bootRun", org.springframework.boot.gradle.tasks.run.BootRun::class.
 }
 
 tasks.named<JavaCompile>("compileJava") {
-	// https://docs.gradle.org/current/dsl/org.gradle.api.tasks.compile.JavaCompile.html
-	// https://docs.gradle.org/current/dsl/org.gradle.api.tasks.compile.CompileOptions.html
-	// https://dzone.com/articles/gradle-goodness-enabling-preview-features-for-java
 	with(options) {
 		isDeprecation = true
 		with(compilerArgs) {
 			if (enablePreview != null) {
 				add(enablePreview)
 			}
-
 			// javac --help-lint
 			add("-Xlint:all,-serial,-processing,-preview")
-
-			// https://github.com/tbroyer/gradle-errorprone-plugin#jdk-16-support
 			add("--add-opens")
 			add("--add-exports")
-
-			// https://mapstruct.org/documentation/stable/reference/html/#configuration-options
-			if (mapStructVerbose) {
-				add("-Amapstruct.verbose=true")
-			}
-			//add("-Amapstruct.unmappedTargetPolicy=ERROR")
-			//add("-Amapstruct.unmappedSourcePolicy=ERROR")
 		}
-
-		// https://uber.github.io/AutoDispose/error-prone
-		// https://errorprone.info/docs/flags
-		// https://stackoverflow.com/questions/56975581/how-to-setup-error-prone-with-gradle-getting-various-errors
-		errorprone.errorproneArgs.add("-Xep:MissingSummary:OFF")
-
-		// ohne sourceCompatiblity und targetCompatibility:
-		//release = javaLanguageVersion
 	}
-
-	// https://blog.gradle.org/incremental-compiler-avoidance#about-annotation-processors
 }
 
 tasks.named("bootBuildImage", org.springframework.boot.gradle.tasks.bundling.BootBuildImage::class.java) {
@@ -337,133 +297,6 @@ tasks.named("bootBuildImage", org.springframework.boot.gradle.tasks.bundling.Boo
 
 tasks.test {
 	outputs.dir(project.extra["snippetsDir"]!!)
-}
-
-tasks.named<Test>("test") {
-	useJUnitPlatform {
-		includeTags = when (project.properties["test"]) {
-			"all" -> setOf("integration", "unit")
-			"integration" -> setOf("integration")
-			"rest" -> setOf("rest")
-			"rest-get" -> setOf("rest-get")
-			"rest-write" -> setOf("rest-write")
-			"graphql" -> setOf("graphql")
-			"query" -> setOf("query")
-			"mutation" -> setOf("mutation")
-			"unit" -> setOf("unit")
-			"service-read" -> setOf("service-read")
-			"service-write" -> setOf("service-write")
-			else -> setOf("integration", "unit")
-		}
-	}
-
-	systemProperty("spring.profiles.active", activeProfiles)
-	systemProperty("junit.platform.output.capture.stdout", true)
-	systemProperty("junit.platform.output.capture.stderr", true)
-
-	val logLevelTest = project.properties["logLevelTest"] ?: "INFO"
-	// systemProperty("logging.level.com.acme", logLevelTest)
-	systemProperty("logging.level.org.hibernate.SQL", logLevelTest)
-	systemProperty("logging.level.org.hibernate.orm.jdbc.bind", logLevelTest)
-	systemProperty("logging.level.org.flywaydb.core.internal.sqlscript.DefaultSqlScriptExecutor", logLevelTest)
-	systemProperty("logging.level.org.springframework.web.reactive.function.client.ExchangeFunctions", logLevelTest)
-	systemProperty("logging.level.org.springframework.web.service.invoker.PathVariableArgumentResolver", logLevelTest)
-	systemProperty("logging.level.org.springframework.web.service.invoker.RequestHeaderArgumentResolver", logLevelTest)
-	systemProperty("logging.level.org.springframework.web.servlet.mvc.method.annotation.HttpEntityMethodProcessor", logLevelTest)
-	systemProperty("logging.level.org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping", logLevelTest)
-
-	// $env:TEMP\tomcat-docbase.* -> src\main\webapp (urspruengl. fuer WAR)
-	// Document Base = Context Root, siehe https://tomcat.apache.org/tomcat-10.1-doc/config/context.html
-	// $env:TEMP\hsperfdata_<USERNAME>\<PID> Java HotSpot Performance data log: bei jedem Start der JVM neu angelegt.
-	// https://support.oracle.com/knowledge/Middleware/2325910_1.html
-	// https://blog.mygraphql.com/zh/notes/java/diagnostic/hsperfdata/hsperfdata
-	systemProperty("server.tomcat.basedir", "build/tomcat")
-	systemProperty("keycloak.client-secret", project.properties["keycloak.client-secret"]!!)
-	systemProperty("keycloak.issuer", project.properties["keycloak.issuer"]!!)
-	//systemProperty("app.keycloak.host", project.properties["keycloak.host"]!!)
-
-	if (enablePreview != null) {
-		jvmArgs(enablePreview)
-	}
-	if (tracePinnedThreads) {
-		systemProperty("tracePinnedThreads", "full")
-	}
-
-	if (project.properties["showTestStandardStreams"] == "true" || project.properties["showTestStandardStreams"] == "TRUE") {
-		testLogging.showStandardStreams = true
-	}
-
-	extensions.configure(JacocoTaskExtension::class) {
-		excludes = listOf("**/entity/*_.class", "**/dev/*.class")
-	}
-
-	// https://docs.gradle.org/current/userguide/java_testing.html#sec:debugging_java_tests
-	// https://www.jetbrains.com/help/idea/run-debug-configuration-junit.html
-	// https://docs.gradle.org/current/userguide/java_testing.html#sec:debugging_java_tests
-	// debug = true
-
-	// finalizedBy("jacocoTestReport")
-}
-
-jacoco {
-	toolVersion = libs.versions.jacoco.get()
-}
-
-// https://docs.gradle.org/current/userguide/task_configuration_avoidance.html
-// https://guides.gradle.org/migrating-build-logic-from-groovy-to-kotlin/#configuring-tasks
-tasks.named<JacocoReport>("jacocoTestReport") {
-	reports {
-		xml.required = true
-		html.required = true
-	}
-
-	classDirectories.setFrom(classDirectories.files.map {
-		fileTree(it).matching {
-			exclude(listOf("**/entity/*_.class", "**/dev/*.class"))
-		}
-	})
-
-	// https://docs.gradle.org/current/userguide/jacoco_plugin.html
-	// https://github.com/gradle/gradle/pull/12626
-	dependsOn(tasks.test)
-}
-
-tasks.named<JacocoCoverageVerification>("jacocoTestCoverageVerification") {
-	violationRules {
-		rule {
-			limit { minimum = BigDecimal("0.7") }
-		}
-	}
-}
-
-checkstyle {
-	toolVersion = libs.versions.checkstyle.get()
-	isIgnoreFailures = false
-}
-
-tasks.withType<Checkstyle>().configureEach {
-	reports {
-		xml.required = true
-		html.required = true
-	}
-}
-
-spotbugs {
-	// https://github.com/spotbugs/spotbugs/releases
-	toolVersion = libs.versions.spotbugs.get()
-}
-
-tasks.named("spotbugsMain", com.github.spotbugs.snom.SpotBugsTask::class.java) {
-	reportLevel = com.github.spotbugs.snom.Confidence.LOW
-	reports.create("html") { required = true }
-	// val excludePath = File("config/spotbugs/exclude.xml")
-	val excludePath = Paths.get("config", "spotbugs", "exclude.xml")
-	excludeFilter = file(excludePath)
-}
-
-modernizer {
-	toolVersion = libs.versions.modernizer.get()
-	includeTestClasses = true
 }
 
 tasks.named<Javadoc>("javadoc") {
