@@ -66,15 +66,6 @@ jobs:
           name: test-reports
           path: build/reports/tests/test
 
-      # 5. Code Coverage Bericht hochladen
-      - name: Upload Coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: build/reports/jacoco/jacoco.xml
-          fail_ci_if_error: true
-          verbose: true
-
   package:
     runs-on: self-hosted
     needs: [build, analyze, test]
