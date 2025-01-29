@@ -82,23 +82,8 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-#      - name: Download jacoco.xml
-#        uses: actions/download-artifact@v4
-#        with:
-#          name: jacoco.xml
-#          path: build/reports/jacoco/jacoco.xml
-
-#      # 5. Code Coverage Bericht hochladen
-#      - name: Upload Coverage to Codecov
-#        uses: codecov/codecov-action@v5
-#        with:
-#          token: ${{ secrets.CODECOV_TOKEN }}
-#          files: build/reports/jacoco/jacoco.xml
-#          fail_ci_if_error: true
-#          verbose: true
-
       - name: Package Application
-        run: ./gradlew bootJar
+        run: ./gradlew bootJar --build-cache
 
       - name: Upload JAR Artifact
         uses: actions/upload-artifact@v4
@@ -119,10 +104,15 @@ jobs:
           name: customer-jar
           path: build/libs
 
+      - name: Get Current Date
+        id: date
+        run: |
+            echo "CURRENT_DATE=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
+
       - name: Build Docker Image
         run: |
           docker build \
-            -t gentlecorp-systems/customer:2025.01.29 .
+            -t gentlecorp-systems/customer:${{ env.CURRENT_DATE }} .
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
@@ -132,5 +122,5 @@ jobs:
 
       - name: Push Docker Image
         run: |
-          docker tag gentlecorp-systems/customer:2025.01.29 calebscript/customer:2025.01.29
-          docker push calebscript/customer:2025.01.29
+          docker tag gentlecorp-systems/customer:2025.01.29 calebscript/customer:${{ env.CURRENT_DATE }}
+          docker push calebscript/customer:${{ env.CURRENT_DATE }}
