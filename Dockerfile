@@ -31,11 +31,11 @@ set -eux
 
 # Gradle:
 ./gradlew --no-configuration-cache --no-daemon --no-watch-fs bootJar
-java -Djarmode=layertools -jar ./build/libs/kunde-2024.04.0.jar extract
+java -Djarmode=layertools -jar ./build/libs/customer-27.01.2025.jar extract
 
 # Maven:
 #./mvnw package spring-boot:repackage -Dmaven.test.skip=true -Dspring-boot.build-image.skip=true
-#java -Djarmode=layertools -jar ./target/kunde-2024.04.0.jar extract
+#java -Djarmode=layertools -jar ./target/customer-27.01.2025.jar extract
 EOF
 
 # ---------------------------------------------------------------------------------------
