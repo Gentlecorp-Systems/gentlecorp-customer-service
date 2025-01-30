@@ -65,6 +65,9 @@ jobs:
       - name: Run Snyk Code Test JSON
         run:  snyk test --severity-threshold=high --json-file-output=snyk-report.json
         continue-on-error: true
+
+      - name: Download snyk-to-html
+        run: wget -q https://github.com/snyk/snyk-to-html/releases/latest/download/snyk-to-html.jar
         
       - name: Generate HTML Report
         run: |
