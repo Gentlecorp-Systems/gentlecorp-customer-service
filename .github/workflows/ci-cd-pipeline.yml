@@ -15,10 +15,12 @@ permissions:
   security-events: write  # Erlaubt das Schreiben von Security-Analysen
   actions: read       # Erlaubt das Lesen von Actions
   packages: write     # Notwendig für Docker-Image Uploads
+  id-token: write   # Erlaubt Zugriff auf GitHub Environments00
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: workflow-env  # Nutzt GitHub Environment
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -41,10 +43,11 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Get Current Date
-        run: |
-          echo "CURRENT_DATE=$(date +'%Y.%m.%d')" | gh secret set CURRENT_DATE
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: echo "CURRENT_DATE=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
+
+      - name: Speichere `CURRENT_DATE` im Environment
+        run: echo "CURRENT_DATE=${{ env.CURRENT_DATE }}" >> $GITHUB_ENV
+
   analyze:
     runs-on: ubuntu-latest
     needs: build
