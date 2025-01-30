@@ -1,4 +1,23 @@
+
+
+![GitHub Created At](https://img.shields.io/github/created-at/Gentlecorp-Systems/gentlecorp-customer-service)
+![Primary Language](https://img.shields.io/github/languages/top/Gentlecorp-Systems/gentlecorp-customer-service)
+![GitHub language count](https://img.shields.io/github/languages/count/Gentlecorp-Systems/gentlecorp-customer-service)
+
+
+![CD/CI Pipeline](https://github.com/Gentlecorp-Systems/gentlecorp-customer-service/actions/workflows/ci-cd-pipeline.yml/badge.svg)
+![security-backend](https://github.com/Gentlecorp-Systems/gentlecorp-customer-service/actions/workflows/security.yml/badge.svg)
 ![Codecov](https://codecov.io/gh/Gentlecorp-Systems/gentlecorp-customer-service/branch/main/graph/badge.svg)
+
+![Build Status](https://img.shields.io/github/actions/workflow/status/Gentlecorp-Systems/gentlecorp-customer-service/ci-cd-pipeline.yml)
+![Dependencies](https://img.shields.io/librariesio/github/Gentlecorp-Systems/gentlecorp-customer-service)
+
+![Last Commit](https://img.shields.io/github/last-commit/Gentlecorp-Systems/gentlecorp-customer-service)
+![Issues](https://img.shields.io/github/issues/Gentlecorp-Systems/gentlecorp-customer-service)
+![Pull Requests](https://img.shields.io/github/issues-pr/Gentlecorp-Systems/gentlecorp-customer-service)
+![Activity](https://img.shields.io/github/commit-activity/m/Gentlecorp-Systems/gentlecorp-customer-service)
+![Code Size](https://img.shields.io/github/languages/code-size/Gentlecorp-Systems/gentlecorp-customer-service)
+
 
 # Customer Service
 
@@ -30,7 +49,7 @@ Installierte globale Tools:
 
 1. **Repository klonen**:
    ```bash
-   git clone https://github.com/FlowCraft-AG/customer-service.git
+   git clone https://github.com/Gentlecorp-Systems/customer-service.git
    cd customer-service
    ```
 
