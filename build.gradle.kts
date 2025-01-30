@@ -66,7 +66,6 @@
 //      dazu ist ggf. eine Internetverbindung erforderlich
 //        gradle wrapper --gradle-version=8.8-rc-2 --distribution-type=bin
 
-import java.nio.file.Paths
 
 val javaLanguageVersion = project.properties["javaLanguageVersion"] as String? ?: JavaVersion.VERSION_23.majorVersion
 val javaVersion = project.properties["javaVersion"] ?: libs.versions.javaVersion.get()
@@ -80,7 +79,12 @@ val alternativeBuildpack = project.properties["buildpack"]
 val mapStructVerbose = project.properties["mapStructVerbose"] == "true" || project.properties["mapStructVerbose"] == "TRUE"
 val useTracing = project.properties["tracing"] != "false" && project.properties["tracing"] != "FALSE"
 val useDevTools = project.properties["devTools"] != "false" && project.properties["devTools"] != "FALSE"
-val activeProfiles = if (project.properties["https"] != "false" && project.properties["https"] != "FALSE") "dev" else "dev,http"
+val activeProfilesProtocol = if (project.properties["https"] != "false" && project.properties["https"] != "FALSE") "dev" else "dev,http"
+val activeProfiles = if (System.getenv("ACTIVE_PROFILE") == "test") {
+	"test"
+} else {
+	activeProfilesProtocol
+}
 
 plugins {
 	java
@@ -243,7 +247,7 @@ tasks.named("bootRun", org.springframework.boot.gradle.tasks.run.BootRun::class.
 
 	// "System Properties", z.B. fuer Spring Properties oder fuer logback
 	// https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties
-	systemProperty("spring.profiles.active", activeProfiles)
+	// systemProperty("spring.profiles.active", activeProfiles)
 	systemProperty("logging.file.name", "./build/log/application.log")
 	// $env:TEMP\tomcat-docbase.* -> src\main\webapp (urspruengl. fuer WAR)
 	// Document Base = Context Root, siehe https://tomcat.apache.org/tomcat-10.1-doc/config/context.html

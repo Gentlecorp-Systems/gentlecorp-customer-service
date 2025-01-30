@@ -5,7 +5,7 @@ javaVersion = "23"
 
 springBoot = "3.4.2"
 springBootPlugin = "3.4.2"
-bouncycastle = "1.77"
+bouncycastle = "1.78"
 lombokMapstructBinding = "0.2.0"
 mapstruct = "1.6.0.Beta1"
 springdocOpenapi = "2.3.0"
