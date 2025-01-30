@@ -159,8 +159,20 @@ jobs:
           name: customer-jar
           path: build/libs
       
+      - name: Debug CURRENT_DATE
+        run: |
+          echo "CURRENT_DATE=$CURRENT_DATE"
+          echo "CURRENT_DATE=${{ needs.build.outputs.CURRENT_DATE }}"
+
+      
       - name: Use CURRENT_DATE
         run: echo "CURRENT_DATE=${{ env.CURRENT_DATE }}"
+      
+      - name: Set CURRENT_DATE
+        run: echo "CURRENT_DATE=${{ needs.build.outputs.CURRENT_DATE }}" >> $GITHUB_ENV
+
+      - name: Debug CURRENT_DATE
+        run: echo "CURRENT_DATE=$CURRENT_DATE"
 
       - name: Build Docker Image
         run: |
