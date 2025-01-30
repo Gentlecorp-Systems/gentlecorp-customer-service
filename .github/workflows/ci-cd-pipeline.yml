@@ -56,7 +56,7 @@ jobs:
           -d '{"value": "${{ steps.set_date.outputs.CURRENT_DATE }}"}'
 
       - name: Debug Output
-        run: echo "Gesetztes Datum: ${{ steps.set_date.outputs.CURRENT_DATE }}"
+        run: echo "Gesetztes Datum ${{ steps.set_date.outputs.CURRENT_DATE }}"
 
   analyze:
     runs-on: ubuntu-latest
