@@ -23,7 +23,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # ✅ Setzt Java 23 als Standard-JDK
       - name: Set up Java 23
         uses: actions/setup-java@v3
         with:
@@ -35,34 +34,30 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-      # ✅ Gradle Dependencies auflösen, damit Snyk arbeiten kann
+      - name: Authenticate with Snyk
+        run: snyk auth ${{ secrets.SNYK_TOKEN }}
+
       - name: Resolve Gradle Dependencies
         run: ./gradlew dependencies
 
-      # ✅ Snyk Code Security Scan (SAST)
       - name: Run Snyk Code Test
         run: snyk code test --sarif > snyk-code.sarif
         continue-on-error: true
 
-      # ✅ Snyk Open Source Scan für Gradle
       - name: Run Snyk Monitor for Gradle
         if: github.event_name == 'push'
         run: snyk monitor --all-projects
 
-      # ✅ Snyk IaC (Infrastructure as Code) Scan
       - name: Run Snyk IaC Test
         run: snyk iac test --report
         continue-on-error: true
 
-      # ✅ Docker-Image bauen
       - name: Build a Docker Image
         run: docker build -t gentlecorp-systems/customer:${{ env.CURRENT_DATE }} .
 
-      # ✅ Snyk Container Security Scan
       - name: Run Snyk Container Monitor
         run: snyk container monitor gentlecorp-systems/customer:${{ env.CURRENT_DATE }} --file=Dockerfile
 
-      # ✅ SARIF Report in GitHub Security hochladen
       - name: Upload SARIF Report to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
         with:

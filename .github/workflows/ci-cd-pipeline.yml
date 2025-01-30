@@ -4,9 +4,9 @@ on:
   pull_request:
     branches:
       - '**'
-  push:
-    branches:
-      - main
+#  push:
+#    branches:
+#      - main
     tags:
       - 'v*'  # Nur für Versionstags (z.B. v1.0.0)
 
