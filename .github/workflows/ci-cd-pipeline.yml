@@ -162,7 +162,7 @@ jobs:
 
   docker:
     runs-on: ubuntu-latest
-    needs: package
+    needs: [build, package]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -177,6 +177,9 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: current-date
+      
+      - name: Set CURRENT_DATE from Build Output
+        run: echo "CURRENT_DATE=${{ needs.build.outputs.CURRENT_DATE }}" >> $GITHUB_ENV
 
       - name: Load CURRENT_DATE from file
         run: echo "CURRENT_DATE=$(cat current_date.txt)" >> $GITHUB_ENV
