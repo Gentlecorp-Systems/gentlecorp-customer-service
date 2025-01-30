@@ -11,7 +11,7 @@ permissions:
   
 jobs:
   dependency-check:
-    name: OWASP Dependency Check
+    name: "Security-Dependency-Check-${{ vars.CURRENT_DATE }}"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -31,7 +31,7 @@ jobs:
           path: ./reports
 
   snyk:
-    name: Snyk Vulnerability Scan
+    name: "Security-Snyk-Scan-${{ vars.CURRENT_DATE }}"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -70,17 +70,16 @@ jobs:
           path: ./reports
 
   docker-scout:
-    name: Docker Scout Analysis
+    name: "Security-Docker-Scout-${{ vars.CURRENT_DATE }}"
     runs-on: ubuntu-latest
+    env:
+      CURRENT_DATE: ${{ vars.CURRENT_DATE }}
     steps:
       - name: Log in to Docker Hub
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Lade `CURRENT_DATE` aus Repository-Variablen
-        run: echo "CURRENT_DATE=${{ vars.CURRENT_DATE }}" >> $GITHUB_ENV
 
       - name: Docker Scout Quickview
         id: docker-scout-quickview
