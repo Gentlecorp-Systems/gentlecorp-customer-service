@@ -178,5 +178,5 @@ jobs:
 
       - name: Push Docker Image
         run: |
-          docker tag gentlecorp-systems/customer:${{ env.CURRENT_DATE }}calebscript/customer:${{ env.CURRENT_DATE }}
+          docker tag gentlecorp-systems/customer:${{ env.CURRENT_DATE }} calebscript/customer:${{ env.CURRENT_DATE }}
           docker push calebscript/customer:${{ env.CURRENT_DATE }}
