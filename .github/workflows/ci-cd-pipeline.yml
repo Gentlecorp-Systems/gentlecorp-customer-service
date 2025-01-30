@@ -50,6 +50,7 @@ jobs:
             echo "CURRENT_DATE=$DATE" >> $GITHUB_OUTPUT
 
       - name: Speichere CURRENT_DATE in Repository-Variable
+        if: ${{ vars.CURRENT_DATE != steps.set_date.outputs.CURRENT_DATE }}  # Bedingung hinzufügen
         run: |
           curl -X PATCH \
           -H "Authorization: token ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
