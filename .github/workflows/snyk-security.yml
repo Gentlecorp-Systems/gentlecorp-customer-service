@@ -47,7 +47,7 @@ jobs:
       # ✅ Snyk Open Source Scan für Gradle
       - name: Run Snyk Monitor for Gradle
         if: github.event_name == 'push'
-        run: snyk monitor --all-projects --package-manager=gradle
+        run: snyk monitor --all-projects
 
       # ✅ Snyk IaC (Infrastructure as Code) Scan
       - name: Run Snyk IaC Test
