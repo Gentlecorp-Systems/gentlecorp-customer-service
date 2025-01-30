@@ -29,14 +29,12 @@ jobs:
 
       - name: Pull Latest Docker Image from Docker Hub
         run: |
-          docker pull calebscript/customer:latest
+          docker pull calebscript/customer:${{ env.CURRENT_DATE }}
 
       - name: Tag Docker Image for GHCR
         run: |
-          docker tag calebscript/customer:latest ghcr.io/gentlecorp-systems/customer:latest
-          docker tag calebscript/customer:latest ghcr.io/gentlecorp-systems/customer:${{ env.CURRENT_DATE }}
+          docker tag calebscript/customer:${{ env.CURRENT_DATE }} ghcr.io/gentlecorp-systems/customer:${{ env.CURRENT_DATE }}
 
       - name: Push Docker Image to GHCR
         run: |
-          docker push ghcr.io/gentlecorp-systems/customer:latest
           docker push ghcr.io/gentlecorp-systems/customer:${{ env.CURRENT_DATE }}
