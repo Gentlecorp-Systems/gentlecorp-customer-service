@@ -44,16 +44,16 @@ jobs:
             ${{ runner.os }}-gradle-0
 
       - name: Set CURRENT_DATE
-        id: set_date  # ID der Step
+        id: set_date
         run: echo "CURRENT_DATE=$(date +'%Y.%m.%d')" >> $GITHUB_OUTPUT
 
-      - name: Aktualisiere Repository-Variable `CURRENT_DATE`
+      - name: Speichere CURRENT_DATE in Repository-Variable
         run: |
           curl -X PATCH \
           -H "Authorization: token ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
           -H "Accept: application/vnd.github+json" \
           https://api.github.com/repos/${{ github.repository }}/actions/variables/CURRENT_DATE \
-          -d '{"value": "${{ env.CURRENT_DATE }}"}'
+          -d '{"value": "${{ steps.set_date.outputs.CURRENT_DATE }}"}'
 
   analyze:
     runs-on: ubuntu-latest
