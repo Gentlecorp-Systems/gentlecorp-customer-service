@@ -104,6 +104,17 @@ jobs:
           echo "KEYS_PATH=${{ secrets.KEYS_PATH }}" >> .env
           echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
           echo "ACTIVE_PROFILE=${{ secrets.ACTIVE_PROFILE }}" >> .env
+          echo "KC_SERVICE_HOST=${{ secrets.KC_SERVICE_HOST }}" >> .env"
+          echo "KC_SERVICE_PORT=${{ secrets.KC_SERVICE_PORT }}" >> .env"
+          echo "KC_SERVICE_REALM=${{ secrets.KC_SERVICE_REALM }}" >> .env"
+          echo "KC_SERVICE_CLIENT_ID=${{ secrets.KC_SERVICE_CLIENT_ID }}" >> .env"
+          echo "KC_SERVICE_SECRET=${{ secrets.KC_SERVICE_SECRET }}" >> .env"
+          echo "MONGODB_USER_NAME${{ secrets.MONGODB_USER_NAME }}" >> .env"
+          echo "MONGODB_USER_PASSWORT${{ secrets.MONGODB_USER_PASSWORT }}" >> .env"
+          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env"
+          echo "MONGODB_DATABASE${{ secrets.MONGODB_DATABASE }}" >> .env"
+          echo "TEST_SERVER_PORT${{ secrets.TEST_SERVER_PORT }}" >> .env"
+          echo "TEST_MONGODB_DATABASE${{ secrets.TEST_MONGODB_DATABASE }}" >> .env"
 
       # 3. Tests ausführen mit Code Coverage
       - name: Run Tests with Coverage
