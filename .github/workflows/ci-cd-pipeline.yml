@@ -111,7 +111,7 @@ jobs:
           echo "KC_SERVICE_SECRET=${{ secrets.KC_SERVICE_SECRET }}" >> .env
           echo "MONGODB_USER_NAME${{ secrets.MONGODB_USER_NAME }}" >> .env
           echo "MONGODB_USER_PASSWORT${{ secrets.MONGODB_USER_PASSWORT }}" >> .env
-          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env"
+          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env
           echo "MONGODB_DATABASE${{ secrets.MONGODB_DATABASE }}" >> .env
           echo "TEST_SERVER_PORT${{ secrets.TEST_SERVER_PORT }}" >> .env
           echo "TEST_MONGODB_DATABASE${{ secrets.TEST_MONGODB_DATABASE }}" >> .env
