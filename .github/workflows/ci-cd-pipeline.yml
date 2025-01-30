@@ -96,7 +96,7 @@ jobs:
     steps:
       # 1. Repository klonen
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # 2. `.env`-Datei mit Secrets erstellen
       - name: Create .env file
