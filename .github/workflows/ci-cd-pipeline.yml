@@ -246,8 +246,12 @@ jobs:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Tag Docker Image
+        run: |
+          docker tag gentlecorp-systems/customer:${{ env.CURRENT_DATE }} calebscript/customer:latest
+          docker tag gentlecorp-systems/customer:${{ env.CURRENT_DATE }} calebscript/customer:${{ env.CURRENT_DATE }}
+
       - name: Push Docker Image
         run: |
-          docker tag gentlecorp-systems/customer:${{ env.CURRENT_DATE }} calebscript/customer:${{ env.CURRENT_DATE }}
           docker push calebscript/customer:${{ env.CURRENT_DATE }}
           docker push calebscript/customer:latest
