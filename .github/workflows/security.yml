@@ -66,32 +66,12 @@ jobs:
         run:  snyk test --severity-threshold=high --json-file-output=snyk-report.json
         continue-on-error: true
 
-      - name: Alternative Download snyk-to-html.jar
-        run: |
-          curl -L -o snyk-to-html.jar https://github.com/snyk/snyk-to-html/releases/download/v1.6.0/snyk-to-html.jar || \
-          wget -O snyk-to-html.jar https://github.com/snyk/snyk-to-html/releases/download/v1.6.0/snyk-to-html.jar
-
-      - name: Verify snyk-to-html.jar
-        run: |
-          ls -lh snyk-to-html.jar
-          file snyk-to-html.jar
-          if [ ! -s snyk-to-html.jar ]; then
-            echo "❌ snyk-to-html.jar ist leer oder beschädigt!"
-            exit 1
-          fi
-          
-      - name: Generate HTML Report
-        run: |
-          java -jar snyk-to-html.jar -i snyk-report.json -o snyk-report.html || \
-          echo "❌ Fehler beim Generieren des Reports!"
-          mkdir -p reports
-          mv snyk-report.html reports/
 
       - name: Upload Snyk Report
         uses: actions/upload-artifact@v4
         with:
           name: Snyk-report
-          path: ./reports
+          path: ./snyk-report.json
 
       - name: Run Snyk Monitor for Gradle
         if: github.event_name == 'push'
