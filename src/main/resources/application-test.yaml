@@ -1,0 +1,13 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+  ssl:
+    enabled: false
+
+# Applikationsspezifische Einstellungen
+app:
+  server:
+    port: ${TEST_SERVER_PORT}
+  mongo:
+    database: ${TEST_MONGODB_DATABASE}
