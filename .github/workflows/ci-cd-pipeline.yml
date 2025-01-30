@@ -91,7 +91,7 @@ jobs:
 
   test:
     name: Run Customer Tests
-    runs-on: self-hosted # Nutze einen lokalen Runner
+    runs-on: self-hosted
 
     steps:
       # 1. Repository klonen
