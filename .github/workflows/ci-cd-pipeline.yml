@@ -49,6 +49,13 @@ jobs:
             DATE=$(date +'%Y.%m.%d')
             echo "CURRENT_DATE=$DATE" >> $GITHUB_OUTPUT
             echo "CURRENT_DATE=$DATE" >> $GITHUB_ENV
+            echo $DATE > current_date.txt
+
+      - name: Upload CURRENT_DATE Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: current-date
+          path: current_date.txt
 
       - name: Speichere CURRENT_DATE in Repository-Variable
         run: |
@@ -70,6 +77,9 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+      
+      - name: Set CURRENT_DATE from Build Output
+        run: echo "CURRENT_DATE=${{ needs.build.outputs.CURRENT_DATE }}" >> $GITHUB_ENV
 
       - name: Setup Java
         uses: actions/setup-java@v3
@@ -162,21 +172,14 @@ jobs:
         with:
           name: customer-jar
           path: build/libs
-      
-      - name: Debug CURRENT_DATE
-        run: |
-          echo "CURRENT_DATE=$CURRENT_DATE"
-          echo "CURRENT_DATE=${{ needs.build.outputs.CURRENT_DATE }}"
+    
+      - name: Download CURRENT_DATE Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: current-date
 
-      
-      - name: Use CURRENT_DATE
-        run: echo "CURRENT_DATE=${{ env.CURRENT_DATE }}"
-      
-      - name: Set CURRENT_DATE
-        run: echo "CURRENT_DATE=${{ needs.build.outputs.CURRENT_DATE }}" >> $GITHUB_ENV
-
-      - name: Debug CURRENT_DATE
-        run: echo "CURRENT_DATE=$CURRENT_DATE"
+      - name: Load CURRENT_DATE from file
+        run: echo "CURRENT_DATE=$(cat current_date.txt)" >> $GITHUB_ENV
 
       - name: Build Docker Image
         run: |
