@@ -89,8 +89,40 @@ jobs:
 #            -Dsonar.exclusions=**/*.java
 #            -Dsonar.branch.name=${{ github.ref_name }}
 
+  camunda:
+    name: Start Camunda Container
+    runs-on: self-hosted
+    if: github.actor == 'caleb-script'  # Nur wenn der Actor 'caleb-script' ist
+
+    steps:
+      - name: Start Camunda container (if not running)
+        run: |
+          if [ "$(docker ps -q -f name=zeebe)" ]; then
+            echo "Camunda container is already running."
+          else
+            cd "${{ secrets.COMPOSE_PATH }}/camunda"
+            docker compose up -d
+          fi
+
+  mongoDB:
+   name: Start MongoDB Container
+   runs-on: self-hosted
+   if: github.actor == 'caleb-script'  # Nur wenn der Actor 'caleb-script' ist 
+   steps:
+     - name: Start MongoDB container (if not running)
+       run: |
+         if [ "$(docker ps -q -f name=mongodb)" ]; then
+           echo "MongoDB container is already running."
+         else
+           cd "${{ secrets.COMPOSE_PATH }}/mongoDb"
+           docker compose up -d
+         fi
+
   test:
-    name: Run Customer Tests
+    name: Run Tests
+    needs:
+      - mongoDB
+      - camunda
     runs-on: self-hosted
     if: github.actor == 'caleb-script'  # Nur wenn der Actor 'caleb-script' ist
 
@@ -104,26 +136,6 @@ jobs:
       # 1. Repository klonen
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      
-      - name: Start Camunda container (if not running)
-        run: |
-          if [ "$(docker ps -q -f name=zeebe)" ]; then
-            echo "Camunda container is already running."
-          else
-            cd "${{ secrets.COMPOSE_PATH }}/camunda"
-            docker compose up -d
-          fi
-
-      - name: Start MongoDB container (if not running)
-        run: |
-          if [ "$(docker ps -q -f name=mongodb)" ]; then
-            echo "MongoDB container is already running."
-          else
-            cd "${{ secrets.COMPOSE_PATH }}/mongoDb"
-            docker compose up -d
-          fi
-
 
       # 2. `.env`-Datei mit Secrets erstellen
       - name: Create .env file
