@@ -40,6 +40,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      - name: Get Current Date
+        run: |
+          echo "CURRENT_DATE=$(date +'%Y.%m.%d')" | gh secret set CURRENT_DATE
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   analyze:
     runs-on: ubuntu-latest
     needs: build
@@ -139,10 +144,8 @@ jobs:
           name: customer-jar
           path: build/libs
 
-      - name: Get Current Date
-        id: date
-        run: |
-            echo "CURRENT_DATE=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
+      - name: Setze CURRENT_DATE aus Secret
+        run: echo "CURRENT_DATE=${{ secrets.CURRENT_DATE }}" >> $GITHUB_ENV
 
       - name: Build Docker Image
         run: |
