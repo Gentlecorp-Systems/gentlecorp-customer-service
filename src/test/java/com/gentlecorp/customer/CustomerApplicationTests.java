@@ -5,6 +5,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -13,10 +14,10 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import static com.gentlecorp.customer.util.Constants.CUSTOMER_PATH;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 class CustomerApplicationTests {
 
-	// Statischer Initialisierungsblock für .env
+	// Statischer Initialisierungsblock für .envs
 	@BeforeAll
 	static void loadEnv() {
 		Dotenv dotenv = Dotenv.configure().load();
@@ -33,7 +34,7 @@ class CustomerApplicationTests {
 		assertThat(customerReadController).isNotNull();
 	}
 
-	@LocalServerPort
+	@Value("${app.server.port}")
 	private int port;
 
 	@Autowired

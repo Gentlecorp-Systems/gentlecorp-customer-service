@@ -1,12 +1,16 @@
 package com.gentlecorp.customer.test;
 
 
+import com.gentlecorp.customer.config.TestClientProvider;
 import com.gentlecorp.customer.model.TestCustomer;
 import com.gentlecorp.customer.model.dto.AddressDTO;
 import com.gentlecorp.customer.model.enums.*;
 import com.gentlecorp.customer.utils.CustomerCommonFunctions;
+import io.github.cdimascio.dotenv.Dotenv;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -19,6 +23,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TestGetById extends CustomerCommonFunctions {
 
+    @BeforeAll
+    void setup() {
+        Dotenv dotenv = Dotenv.configure().load();
+        dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
+        testClientProvider = new TestClientProvider(new TestRestTemplate());
+        testClientProvider.init(serverPort);
+        System.out.println();
+    }
+
     @Test
     void testGetAllCustomersByIds() {
         assertThat(testClientProvider).isNotNull();
@@ -26,7 +39,7 @@ public class TestGetById extends CustomerCommonFunctions {
 
         for (int i = 0; i <= 26; i++) {
             String customerId = String.format("00000000-0000-0000-0000-%012d", i); // Erstelle UUIDs im Format 00000000-0000-0000-0000-000000000000 bis 00000000-0000-0000-0000-000000000026
-            String url = SCHEMA_HOST + port + CUSTOMER_PATH + "/" + customerId;
+            String url = SCHEMA_HOST + serverPort + CUSTOMER_PATH + "/" + customerId;
 
             ResponseEntity<TestCustomer> response = testClientProvider.adminClient.getForEntity(url, TestCustomer.class);
 
@@ -43,7 +56,7 @@ public class TestGetById extends CustomerCommonFunctions {
     void testGetHiroshiByIdAsAdmin() {
         assertThat(testClientProvider).isNotNull();
         assertThat(testClientProvider.adminClient).isNotNull();
-        ResponseEntity<TestCustomer> response = testClientProvider.adminClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_HIROSHI, TestCustomer.class);
+        ResponseEntity<TestCustomer> response = testClientProvider.adminClient.getForEntity(SCHEMA_HOST + serverPort + CUSTOMER_PATH + ID_HIROSHI, TestCustomer.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
 
@@ -52,7 +65,7 @@ public class TestGetById extends CustomerCommonFunctions {
 
     @Test
     void testGetHiroshiByIdAsUser() {
-        var response = testClientProvider.userClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_HIROSHI, TestCustomer.class);
+        var response = testClientProvider.userClient.getForEntity(SCHEMA_HOST + serverPort + CUSTOMER_PATH + ID_HIROSHI, TestCustomer.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
 
@@ -61,37 +74,37 @@ public class TestGetById extends CustomerCommonFunctions {
 
     @Test
     void testGetHiroshiByIdAsSupreme() {
-        var response = testClientProvider.supremeClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_HIROSHI, TestCustomer.class);
+        var response = testClientProvider.supremeClient.getForEntity(SCHEMA_HOST + serverPort + CUSTOMER_PATH + ID_HIROSHI, TestCustomer.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @Test
     void testGetHiroshiByIdAsElite() {
-        var response = testClientProvider.eliteClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_HIROSHI, TestCustomer.class);
+        var response = testClientProvider.eliteClient.getForEntity(SCHEMA_HOST + serverPort + CUSTOMER_PATH + ID_HIROSHI, TestCustomer.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @Test
     void testGetHiroshiByIdAsBasic() {
-        var response = testClientProvider.basicClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_HIROSHI, TestCustomer.class);
+        var response = testClientProvider.basicClient.getForEntity(SCHEMA_HOST + serverPort + CUSTOMER_PATH + ID_HIROSHI, TestCustomer.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @Test
     void testGetHiroshiByIdAsVisitor() {
-        var response = testClientProvider.visitorClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_HIROSHI, TestCustomer.class);
+        var response = testClientProvider.visitorClient.getForEntity(SCHEMA_HOST + serverPort + CUSTOMER_PATH + ID_HIROSHI, TestCustomer.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
 
     @Test
     void testGetCustomerByIdNotFound() {
-        var response = testClientProvider.adminClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + NOT_EXISTING_ID, TestCustomer.class);
+        var response = testClientProvider.adminClient.getForEntity(SCHEMA_HOST + serverPort + CUSTOMER_PATH + NOT_EXISTING_ID, TestCustomer.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
     void testGetErikByIdAsErik() {
-        var response = testClientProvider.basicClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_ERIK, TestCustomer.class);
+        var response = testClientProvider.basicClient.getForEntity(SCHEMA_HOST + serverPort + CUSTOMER_PATH + ID_ERIK, TestCustomer.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
 
@@ -100,7 +113,7 @@ public class TestGetById extends CustomerCommonFunctions {
 
     @Test
     void testGetLeroyByIdAsLeroy() {
-        var response = testClientProvider.eliteClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_LEROY, TestCustomer.class);
+        var response = testClientProvider.eliteClient.getForEntity(SCHEMA_HOST + serverPort + CUSTOMER_PATH + ID_LEROY, TestCustomer.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
 
@@ -109,7 +122,7 @@ public class TestGetById extends CustomerCommonFunctions {
 
     @Test
     void testGetCalebByIdAsCaleb() {
-        var response = testClientProvider.supremeClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ID_CALEB, TestCustomer.class);
+        var response = testClientProvider.supremeClient.getForEntity(SCHEMA_HOST + serverPort + CUSTOMER_PATH + ID_CALEB, TestCustomer.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
 
@@ -118,7 +131,7 @@ public class TestGetById extends CustomerCommonFunctions {
 
 //    @Test
 //    void testGetFullHiroshiByIdAsAdmin() {
-//        ResponseEntity<TestCustomer> response = testClientProvider.adminClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ALL_PATH + ID_HIROSHI, TestCustomer.class);
+//        ResponseEntity<TestCustomer> response = testClientProvider.adminClient.getForEntity(SCHEMA_HOST + serverPort + CUSTOMER_PATH + ALL_PATH + ID_HIROSHI, TestCustomer.class);
 //        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 //        assertThat(response.getBody()).isNotNull();
 //
@@ -127,7 +140,7 @@ public class TestGetById extends CustomerCommonFunctions {
 //
 //    @Test
 //    void testGetFullHiroshiByIdAsUser() {
-//        ResponseEntity<TestCustomer> response = testClientProvider.userClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ALL_PATH + ID_HIROSHI, TestCustomer.class);
+//        ResponseEntity<TestCustomer> response = testClientProvider.userClient.getForEntity(SCHEMA_HOST + serverPort + CUSTOMER_PATH + ALL_PATH + ID_HIROSHI, TestCustomer.class);
 //        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 //        assertThat(response.getBody()).isNotNull();
 //
@@ -136,25 +149,25 @@ public class TestGetById extends CustomerCommonFunctions {
 //
 //    @Test
 //    void testGetFullHiroshiByIdAsSupreme() {
-//        ResponseEntity<TestCustomer> response = testClientProvider.supremeClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ALL_PATH + ID_HIROSHI, TestCustomer.class);
+//        ResponseEntity<TestCustomer> response = testClientProvider.supremeClient.getForEntity(SCHEMA_HOST + serverPort + CUSTOMER_PATH + ALL_PATH + ID_HIROSHI, TestCustomer.class);
 //        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 //    }
 //
 //    @Test
 //    void testGetFullHiroshiByIdAsElite() {
-//        ResponseEntity<TestCustomer> response = testClientProvider.eliteClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ALL_PATH + ID_HIROSHI, TestCustomer.class);
+//        ResponseEntity<TestCustomer> response = testClientProvider.eliteClient.getForEntity(SCHEMA_HOST + serverPort + CUSTOMER_PATH + ALL_PATH + ID_HIROSHI, TestCustomer.class);
 //        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 //    }
 //
 //    @Test
 //    void testGetFullHiroshiByIdAsBasic() {
-//        ResponseEntity<TestCustomer> response = testClientProvider.basicClient.getForEntity(SCHEMA_HOST + port + CUSTOMER_PATH + ALL_PATH + ID_HIROSHI, TestCustomer.class);
+//        ResponseEntity<TestCustomer> response = testClientProvider.basicClient.getForEntity(SCHEMA_HOST + serverPort + CUSTOMER_PATH + ALL_PATH + ID_HIROSHI, TestCustomer.class);
 //        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 //    }
 
     @Test
     void testGetHiroshiByIdNotModified() {
-        String url = SCHEMA_HOST + port + CUSTOMER_PATH + ID_HIROSHI;
+        String url = SCHEMA_HOST + serverPort + CUSTOMER_PATH + ID_HIROSHI;
         var headers = createHeaders(HEADER_IF_NONE_MATCH, ETAG_VALUE_0);
 
         ResponseEntity<TestCustomer> response = testClientProvider.adminClient.exchange(

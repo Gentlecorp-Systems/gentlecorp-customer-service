@@ -5,7 +5,11 @@ import com.gentlecorp.customer.model.HateoasLinks;
 import com.gentlecorp.customer.model.TestCustomer;
 import com.gentlecorp.customer.model.dto.AddressDTO;
 import com.gentlecorp.customer.testData.CustomerTestData;
+import io.github.cdimascio.dotenv.Dotenv;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -18,7 +22,9 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 
+import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,15 +35,20 @@ import java.util.Objects;
 import static com.gentlecorp.customer.util.Constants.CUSTOMER_PATH;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CustomerCommonFunctions extends CustomerTestData {
-
-
   @Autowired
   protected TestClientProvider testClientProvider;
 
-  @LocalServerPort
-  public int port;
+  @Value("${server.port}")
+  public int serverPort;
+
+  @BeforeAll
+  void setup()  {
+    Dotenv dotenv = Dotenv.configure().load();
+    dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
+  }
 
   String extractIdFromLocationHeader(URI locationUri) {
     String path = locationUri.getPath();
@@ -86,7 +97,7 @@ public class CustomerCommonFunctions extends CustomerTestData {
     var request = createRequestBody(username, email, tierLevel);
 
     ResponseEntity<Void> response = testClientProvider.visitorClient.postForEntity(
-      SCHEMA_HOST + port + CUSTOMER_PATH,
+      SCHEMA_HOST + serverPort + CUSTOMER_PATH,
       request,
       Void.class
     );
@@ -95,7 +106,7 @@ public class CustomerCommonFunctions extends CustomerTestData {
     assertThat(response.getBody()).isNull();
     assertThat(response.getHeaders().getLocation()).isNotNull();
     assertThat(response.getHeaders().getLocation().toString())
-      .startsWith(SCHEMA_HOST + port + CUSTOMER_PATH);
+      .startsWith(SCHEMA_HOST + serverPort + CUSTOMER_PATH);
 
     return extractIdFromLocationHeader(response.getHeaders().getLocation());
   }
@@ -104,7 +115,7 @@ public class CustomerCommonFunctions extends CustomerTestData {
     var newCustomerClient = testClientProvider.createAuthenticatedClient(expectedUsername, NEW_USER_PASSWORD);
 
     var getResponse = newCustomerClient.getForEntity(
-      SCHEMA_HOST + port + CUSTOMER_PATH + customerId,
+      SCHEMA_HOST + serverPort + CUSTOMER_PATH + customerId,
       TestCustomer.class
     );
 
@@ -118,7 +129,7 @@ public class CustomerCommonFunctions extends CustomerTestData {
 
   void verifyCustomerAsCustomer(final String customerId, final String expectedUsername, final String expectedEmail, int expectedTierLevel) {
     ResponseEntity<TestCustomer> getResponse = testClientProvider.adminClient.getForEntity(
-      SCHEMA_HOST + port + CUSTOMER_PATH +  customerId,
+      SCHEMA_HOST + serverPort + CUSTOMER_PATH +  customerId,
       TestCustomer.class
     );
     assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -131,17 +142,17 @@ public class CustomerCommonFunctions extends CustomerTestData {
 
   void verifyAccessRights(String customerId) {
     assertThat(testClientProvider.supremeClient.getForEntity(
-      SCHEMA_HOST + port + CUSTOMER_PATH +  customerId,
+      SCHEMA_HOST + serverPort + CUSTOMER_PATH +  customerId,
       TestCustomer.class
     ).getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 
     assertThat(testClientProvider.eliteClient.getForEntity(
-      SCHEMA_HOST + port + CUSTOMER_PATH +  customerId,
+      SCHEMA_HOST + serverPort + CUSTOMER_PATH +  customerId,
       TestCustomer.class
     ).getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 
     assertThat(testClientProvider.basicClient.getForEntity(
-      SCHEMA_HOST + port + CUSTOMER_PATH +  customerId,
+      SCHEMA_HOST + serverPort + CUSTOMER_PATH +  customerId,
       TestCustomer.class
     ).getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
   }
@@ -150,7 +161,7 @@ public class CustomerCommonFunctions extends CustomerTestData {
     var newCustomerClient = testClientProvider.createAuthenticatedClient(username, NEW_USER_PASSWORD);
 
     ResponseEntity<TestCustomer> getResponse = newCustomerClient.getForEntity(
-      SCHEMA_HOST + port + CUSTOMER_PATH +  originalCustomerId,
+      SCHEMA_HOST + serverPort + CUSTOMER_PATH +  originalCustomerId,
       TestCustomer.class
     );
     assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -167,7 +178,7 @@ public class CustomerCommonFunctions extends CustomerTestData {
   void deleteAndVerifyCustomer(String customerId) {
     var requestEntity = createHeaders(HEADER_IF_MATCH, ETAG_VALUE_0);
     ResponseEntity<Void> deleteResponse = testClientProvider.adminClient.exchange(
-      SCHEMA_HOST + port + CUSTOMER_PATH +  customerId,
+      SCHEMA_HOST + serverPort + CUSTOMER_PATH +  customerId,
       HttpMethod.DELETE,
       new HttpEntity<>(requestEntity),
       Void.class
@@ -176,7 +187,7 @@ public class CustomerCommonFunctions extends CustomerTestData {
     assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 
     ResponseEntity<TestCustomer> getDeletedCustomerResponse = testClientProvider.adminClient.getForEntity(
-      SCHEMA_HOST + port + CUSTOMER_PATH +  customerId,
+      SCHEMA_HOST + serverPort + CUSTOMER_PATH +  customerId,
       TestCustomer.class
     );
     assertThat(getDeletedCustomerResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -202,7 +213,7 @@ public class CustomerCommonFunctions extends CustomerTestData {
   }
 
   protected void verifyLinks(HateoasLinks hateoaslinks, String customerId) {
-    String baseUri = SCHEMA_HOST + port + CUSTOMER_PATH;
+    String baseUri = SCHEMA_HOST + serverPort + CUSTOMER_PATH;
     String idUri = baseUri + customerId;
     assertThat(hateoaslinks).satisfies(links -> {
       assertThat(links.self().href()).isEqualTo(idUri);
@@ -234,7 +245,7 @@ public class CustomerCommonFunctions extends CustomerTestData {
   void deleteAndVerifyCustomer2(String customerId) {
     var requestEntity = createHeaders(HEADER_IF_MATCH, ETAG_VALUE_1);
     ResponseEntity<Void> deleteResponse = testClientProvider.adminClient.exchange(
-      SCHEMA_HOST + port + CUSTOMER_PATH +  customerId,
+      SCHEMA_HOST + serverPort + CUSTOMER_PATH +  customerId,
       HttpMethod.DELETE,
       new HttpEntity<>(requestEntity),
       Void.class
@@ -243,7 +254,7 @@ public class CustomerCommonFunctions extends CustomerTestData {
     assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 
     ResponseEntity<TestCustomer> getDeletedCustomerResponse = testClientProvider.adminClient.getForEntity(
-      SCHEMA_HOST + port + CUSTOMER_PATH +  customerId,
+      SCHEMA_HOST + serverPort + CUSTOMER_PATH +  customerId,
       TestCustomer.class
     );
     assertThat(getDeletedCustomerResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -259,7 +270,7 @@ public class CustomerCommonFunctions extends CustomerTestData {
 
     try {
       ResponseEntity<Void> deleteResponse = testClientProvider.adminClient.exchange(
-        SCHEMA_HOST + port + CUSTOMER_PATH +  customerId,
+        SCHEMA_HOST + serverPort + CUSTOMER_PATH +  customerId,
         HttpMethod.DELETE,
         null,
         Void.class
@@ -267,7 +278,7 @@ public class CustomerCommonFunctions extends CustomerTestData {
       assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 
       ResponseEntity<TestCustomer> getDeletedCustomerResponse = testClientProvider.adminClient.getForEntity(
-        SCHEMA_HOST + port + CUSTOMER_PATH +  customerId,
+        SCHEMA_HOST + serverPort + CUSTOMER_PATH +  customerId,
         TestCustomer.class
       );
       assertThat(getDeletedCustomerResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);

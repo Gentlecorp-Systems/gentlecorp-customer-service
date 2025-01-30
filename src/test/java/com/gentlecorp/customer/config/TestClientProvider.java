@@ -1,8 +1,11 @@
 package com.gentlecorp.customer.config;
 
 import com.gentlecorp.customer.testData.CustomerTestData;
+import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -20,7 +23,7 @@ public class TestClientProvider extends CustomerTestData {
   private final TestRestTemplate restTemplate;
 
   // Dynamisch URL mit dem Server-Port erstellen
-  @Value("${app.server.port}")
+  @Value("${server.port}")
   int serverPort;
 
     public TestClientProvider(TestRestTemplate restTemplate) {
@@ -35,8 +38,9 @@ public class TestClientProvider extends CustomerTestData {
   public TestRestTemplate visitorClient;
 
 
-  @PostConstruct
-  public void init() {
+  //@PostConstruct
+  public void init(final int port) {
+    serverPort = port;
     adminClient = createAuthenticatedClient(ROLE_ADMIN, ROLE_PASSWORD);
     userClient = createAuthenticatedClient(ROLE_USER, ROLE_PASSWORD);
     basicClient = createAuthenticatedClient(ROLE_BASIC, ROLE_PASSWORD);

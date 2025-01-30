@@ -94,9 +94,34 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: Print ref name
+        run: echo "This workflow was triggered by ${{ github.ref_name }}"
+
+      - name: Print actor (Collaborator)
+        run: echo "The actor is ${{ github.actor }}"
+
       # 1. Repository klonen
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      
+      - name: Start required containers (if not running)
+        run: |
+          declare -A services=(
+            [zeebe]="${{ secrets.COMPOSE_PATH }}/camunda"
+            [mongodb]="${{ secrets.COMPOSE_PATH }}/mongoDb"
+          )
+      
+          for service in "${!services[@]}"; do
+            if [ "$(docker ps -q -f name=$service)" ]; then
+              echo "$service is already running."
+            else
+              echo "Starting $service..."
+              cd "${services[$service]}" && docker compose up -d
+            fi
+          done
+
+
 
       # 2. `.env`-Datei mit Secrets erstellen
       - name: Create .env file
@@ -136,6 +161,21 @@ jobs:
           files: build/reports/jacoco/test/html/jacocoTestReport.xml
           fail_ci_if_error: true
           verbose: true
+
+  compose_down:
+    name: Stop Docker Compose
+    needs: test
+    runs-on: self-hosted
+    steps:
+      - name: Stop Camunda container
+        run: |
+          cd "${{ secrets.COMPOSE_PATH }}"/camunda
+          docker compose down
+
+      - name: Stop MongoDB container
+        run: |
+          cd "${{ secrets.COMPOSE_PATH }}"/mongoDb
+          docker compose down
 
   package:
     runs-on: ubuntu-latest
