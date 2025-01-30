@@ -72,7 +72,6 @@ jobs:
   docker-scout:
     name: Docker Scout Analysis
     runs-on: ubuntu-latest
-    environment: workflow-env  # Nutzt GitHub Environment
     steps:
       - name: Log in to Docker Hub
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567
@@ -80,8 +79,8 @@ jobs:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Lade `CURRENT_DATE` aus Environment
-        run: echo "CURRENT_DATE=${{ env.CURRENT_DATE }}" >> $GITHUB_ENV
+      - name: Lade `CURRENT_DATE` aus Repository-Variablen
+        run: echo "CURRENT_DATE=${{ vars.CURRENT_DATE }}" >> $GITHUB_ENV
 
       - name: Docker Scout Quickview
         id: docker-scout-quickview

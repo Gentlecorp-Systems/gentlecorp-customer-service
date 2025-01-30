@@ -20,7 +20,8 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: workflow-env  # Nutzt GitHub Environment
+    outputs:
+      CURRENT_DATE: ${{ steps.set_date.outputs.CURRENT_DATE }}  # Definiere Output
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -40,13 +41,19 @@ jobs:
           path: .gradle
           key: ${{ runner.os }}-gradle-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: |
-            ${{ runner.os }}-gradle-
+            ${{ runner.os }}-gradle-0
 
-      - name: Get Current Date
-        run: echo "CURRENT_DATE=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
+      - name: Set CURRENT_DATE
+        id: set_date  # ID der Step
+        run: echo "CURRENT_DATE=$(date +'%Y.%m.%d')" >> $GITHUB_OUTPUT
 
-      - name: Speichere `CURRENT_DATE` im Environment
-        run: echo "CURRENT_DATE=${{ env.CURRENT_DATE }}" >> $GITHUB_ENV
+      - name: **Aktualisiere Repository-Variable `CURRENT_DATE`**
+        run: |
+          curl -X PATCH \
+          -H "Authorization: token ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
+          -H "Accept: application/vnd.github+json" \
+          https://api.github.com/repos/${{ github.repository }}/actions/variables/CURRENT_DATE \
+          -d '{"value": "${{ env.CURRENT_DATE }}"}'
 
   analyze:
     runs-on: ubuntu-latest
@@ -147,8 +154,8 @@ jobs:
           name: customer-jar
           path: build/libs
 
-      - name: Setze CURRENT_DATE aus Secret
-        run: echo "CURRENT_DATE=${{ secrets.CURRENT_DATE }}" >> $GITHUB_ENV
+      - name: Use CURRENT_DATE
+        run: echo "CURRENT_DATE=${{ needs.build.outputs.CURRENT_DATE }}"
 
       - name: Build Docker Image
         run: |
