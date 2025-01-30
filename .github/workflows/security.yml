@@ -66,13 +66,24 @@ jobs:
         run:  snyk test --severity-threshold=high --json-file-output=snyk-report.json
         continue-on-error: true
 
-      - name: Download snyk-to-html.jar
-        run: wget -q -O snyk-to-html.jar https://github.com/snyk/snyk-to-html/releases/latest/download/snyk-to-html.jar || curl -L -o snyk-to-html.jar https://github.com/snyk/snyk-to-html/releases/latest/download/snyk-to-html.jar
+      - name: Alternative Download snyk-to-html.jar
+        run: |
+          curl -L -o snyk-to-html.jar https://github.com/snyk/snyk-to-html/releases/download/v1.6.0/snyk-to-html.jar || \
+          wget -O snyk-to-html.jar https://github.com/snyk/snyk-to-html/releases/download/v1.6.0/snyk-to-html.jar
 
-
+      - name: Verify snyk-to-html.jar
+        run: |
+          ls -lh snyk-to-html.jar
+          file snyk-to-html.jar
+          if [ ! -s snyk-to-html.jar ]; then
+            echo "❌ snyk-to-html.jar ist leer oder beschädigt!"
+            exit 1
+          fi
+          
       - name: Generate HTML Report
         run: |
-          java -jar snyk-to-html.jar -i snyk-report.json -o snyk-report.html
+          java -jar snyk-to-html.jar -i snyk-report.json -o snyk-report.html || \
+          echo "❌ Fehler beim Generieren des Reports!"
           mkdir -p reports
           mv snyk-report.html reports/
 
