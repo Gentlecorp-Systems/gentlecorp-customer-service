@@ -55,6 +55,9 @@ jobs:
           https://api.github.com/repos/${{ github.repository }}/actions/variables/CURRENT_DATE \
           -d '{"value": "${{ steps.set_date.outputs.CURRENT_DATE }}"}'
 
+      - name: Debug Output
+        run: echo "Gesetztes Datum: ${{ steps.set_date.outputs.CURRENT_DATE }}"
+
   analyze:
     runs-on: ubuntu-latest
     needs: build
