@@ -66,9 +66,9 @@ jobs:
         run:  snyk test --severity-threshold=high --json-file-output=snyk-report.json
         continue-on-error: true
 
-      - name: Debug Snyk HTML Converter
-        run: curl -L -I https://static.snyk.io/cli/latest/snyk-to-html
-      
+      - name: Download snyk-to-html.jar
+        run: wget -q -O snyk-to-html.jar https://github.com/snyk/snyk-to-html/releases/latest/download/snyk-to-html.jar || curl -L -o snyk-to-html.jar https://github.com/snyk/snyk-to-html/releases/latest/download/snyk-to-html.jar
+
 
       - name: Generate HTML Report
         run: |
