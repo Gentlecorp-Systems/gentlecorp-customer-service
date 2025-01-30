@@ -47,7 +47,7 @@ jobs:
         id: set_date  # ID der Step
         run: echo "CURRENT_DATE=$(date +'%Y.%m.%d')" >> $GITHUB_OUTPUT
 
-      - name: **Aktualisiere Repository-Variable `CURRENT_DATE`**
+      - name: Aktualisiere Repository-Variable `CURRENT_DATE`
         run: |
           curl -X PATCH \
           -H "Authorization: token ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
