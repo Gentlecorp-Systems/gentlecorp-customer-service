@@ -250,3 +250,4 @@ jobs:
         run: |
           docker tag gentlecorp-systems/customer:${{ env.CURRENT_DATE }} calebscript/customer:${{ env.CURRENT_DATE }}
           docker push calebscript/customer:${{ env.CURRENT_DATE }}
+          docker push calebscript/customer:latest
