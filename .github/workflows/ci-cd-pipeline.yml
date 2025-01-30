@@ -112,7 +112,7 @@ jobs:
       # 4. Testberichte speichern
       - name: Archive test reports
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-reports
           path: build/reports/tests/test
