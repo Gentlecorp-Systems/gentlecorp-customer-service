@@ -1,0 +1,26 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+  ssl:
+    bundle:
+      pem:
+        microservice:
+          reload-on-update: true
+          keystore:
+            private-key: "${app.keys.path}/key.pem"
+            certificate: "${app.keys.path}/certificate.crt"
+          truststore:
+            certificate: "${app.keys.path}/certificate.crt"
+
+# Applikationsspezifische Einstellungen
+app:
+  server:
+    port: ${SERVER_PORT}
+  mongo:
+    database: ${MONGODB_DATABASE}
+  keys:
+    path: ${KEYS_PATH}
+
+server:
+  ssl.bundle: microservice

@@ -1,4 +1,4 @@
-# Gemeinsame Konfiguration
+# Servereinstellungen
 server:
   port: ${app.server.port}
   compression:
@@ -14,10 +14,9 @@ server:
 
 # Spring Boot Einstellungen
 spring:
-  profiles:
-    active: ${app.env}
   application:
     name: customer
+
   security:
     oauth2:
       resourceserver:
@@ -28,18 +27,41 @@ spring:
       uri: ${app.mongo.uri}
       database: ${app.mongo.database}
 
+  ssl:
+    bundle:
+      pem:
+        microservice:
+          reload-on-update: true
+          keystore:
+            private-key: "${app.keys.path}/key.pem"
+            certificate: "${app.keys.path}/certificate.crt"
+          truststore:
+            certificate: "${app.keys.path}/certificate.crt"
+
+  test:
+    server:
+      port:
+        range: 5000-7000
+
 # Applikationsspezifische Einstellungen
 app:
-  env: ${ACTIVE_PROFILE:test}
   password: p
-  keycloak:
-    client-secret: ${KC_SERVICE_SECRET}
-    host: ${KC_SERVICE_HOST}
-    port: ${KC_SERVICE_PORT}
-    realm: ${KC_SERVICE_REALM}
-    client-id: ${KC_SERVICE_CLIENT_ID}
+  server:
+    port: ${SERVER_PORT:8099}
   mongo:
-    uri: ${MONGODB_URI}
+    uri: ${MONGODB_URI:mongodb://root:p@localhost:27017}
+    database: ${MONGODB_DATABASE:Customer}
+
+  keycloak:
+    client-secret: ${KC_SERVICE_SECRET:Kir2usfqrZac2BZ4rzsBJrb2mYdBERW3}
+    host: ${KC_SERVICE_HOST:localhost}
+    port: ${KC_SERVICE_PORT:18080}
+    realm: ${KC_SERVICE_REALM:camunda-platform}
+    client-id: camunda-identity
+
+  keys:
+    path: ${KEYS_PATH}
+
 # Logging-Konfiguration
 logging:
   file.name: ./tmp/application.log
@@ -61,6 +83,7 @@ logging:
       org.apache.catalina.loader.WebappClassLoaderBase: info
       org.springframework.boot.availability.ApplicationAvailabilityBean: debug
       org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener: warn
+      #org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean: debug
       org.springframework.security.core.userdetails.User: error
       org.springframework.security.web.server.authorization.AuthorizationWebFilter: trace
       org.springframework.web.reactive.function.client.ExchangeFunctions: trace
@@ -71,15 +94,32 @@ logging:
       org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: debug
       org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: error
       io.micrometer.observation.contextpropagation.ObservationThreadLocalAccessor: error
+
+      #    org.springframework.security: debug
+      #    org.springframework.security.oauth2: debug
+
+      #    org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider: debug
+      #    org.springframework.security.web.access.intercept.RequestMatcherDelegatingAuthorizationManager: debug
+      #    org.springframework.security.web.FilterChainProxy: debug
+
       org.hibernate.SQL: debug
+      #    org.hibernate.orm.jdbc.bind: debug
       org.hibernate.orm.jdbc.bind: trace
       org.hibernate.SQL_SLOW: warn
       org.flywaydb.core.internal.sqlscript.DefaultSqlScriptExecutor: debug
+
       io.qameta.allure.AllureLifecycle: fatal
       org.junit.jupiter.engine.descriptor.TestInstanceLifecycleUtils: warn
       org.springframework.boot.test.context.SpringBootTestContextBootstrapper: warn
       org.springframework.test.context.support.AbstractContextLoader: warn
       org.springframework.test.context.support.AnnotationConfigContextLoaderUtils: warn
       org.springframework.test.context.support.DefaultTestContextBootstrapper: warn
+      # root: warn
       org.springframework.data.mongodb: debug
+      # com.gentlecorp.customer: trace
+      # org.springframework: info
+      # org.springframework.security: debug
+      # io.micrometer: error
+      # io.qameta: fatal
       org.junit.jupiter: warn
+      #org.springframework.boot: debug

@@ -91,7 +91,8 @@ jobs:
 
   test:
     name: Run Customer Tests
-    runs-on: self-hosted # Nutze einen lokalen Runner
+    # runs-on: self-hosted # Nutze einen lokalen Runner
+    runs-on: ubuntu-latest
 
     steps:
       # 1. Repository klonen
@@ -103,6 +104,7 @@ jobs:
         run: |
           echo "KEYS_PATH=${{ secrets.KEYS_PATH }}" >> .env
           echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
+          echo "ACTIVE_PROFILE=${{ secrets.ACTIVE_PROFILE }}" >> .env
 
       # 3. Tests ausführen mit Code Coverage
       - name: Run Tests with Coverage
