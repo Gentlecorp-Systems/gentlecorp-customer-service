@@ -79,10 +79,8 @@ jobs:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Get Current Date
-        id: date
-        run: |
-          echo "CURRENT_DATE=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
+      - name: Lade `CURRENT_DATE` aus Repository-Variablen
+        run: echo "CURRENT_DATE=${{ vars.CURRENT_DATE }}" >> $GITHUB_ENV
 
       - name: Docker Scout Quickview
         id: docker-scout-quickview

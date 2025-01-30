@@ -15,10 +15,13 @@ permissions:
   security-events: write  # Erlaubt das Schreiben von Security-Analysen
   actions: read       # Erlaubt das Lesen von Actions
   packages: write     # Notwendig für Docker-Image Uploads
+  id-token: write   # Erlaubt Zugriff auf GitHub Environments00
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      CURRENT_DATE: ${{ steps.set_date.outputs.CURRENT_DATE }}  # Definiere Output
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -38,7 +41,21 @@ jobs:
           path: .gradle
           key: ${{ runner.os }}-gradle-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: |
-            ${{ runner.os }}-gradle-
+            ${{ runner.os }}-gradle-0
+
+      - name: Set CURRENT_DATE
+        id: set_date
+        run: |
+            DATE=$(date +'%Y.%m.%d')
+            echo "CURRENT_DATE=$DATE" >> $GITHUB_OUTPUT
+
+      - name: Speichere CURRENT_DATE in Repository-Variable
+        run: |
+          curl -X PATCH \
+          -H "Authorization: token ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
+          -H "Accept: application/vnd.github+json" \
+          https://api.github.com/repos/${{ github.repository }}/actions/variables/CURRENT_DATE \
+          -d '{"value": "${{ steps.set_date.outputs.CURRENT_DATE }}"}'
 
   analyze:
     runs-on: ubuntu-latest
@@ -46,6 +63,9 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+      
+      - name: Set CURRENT_DATE from Build Output
+        run: echo "CURRENT_DATE=${{ needs.build.outputs.CURRENT_DATE }}" >> $GITHUB_ENV
 
       - name: Setup Java
         uses: actions/setup-java@v3
@@ -106,7 +126,7 @@ jobs:
 
   package:
     runs-on: ubuntu-latest
-    needs: [build, analyze, test]
+    needs: [analyze, test]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -127,8 +147,8 @@ jobs:
           path: build/libs/*.jar
 
   docker:
-    runs-on: self-hosted
-    needs: package
+    runs-on: ubuntu-latest
+    needs: [build, package]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -139,10 +159,11 @@ jobs:
           name: customer-jar
           path: build/libs
 
-      - name: Get Current Date
-        id: date
-        run: |
-            echo "CURRENT_DATE=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
+      - name: Set CURRENT_DATE from Build Output
+        run: echo "CURRENT_DATE=${{ needs.build.outputs.CURRENT_DATE }}" >> $GITHUB_ENV
+
+      - name: Set CURRENT_DATE from Build Output
+        run: echo "${{ env.CURRENT_DATE }}"
 
       - name: Build Docker Image
         run: |
@@ -157,5 +178,5 @@ jobs:
 
       - name: Push Docker Image
         run: |
-          docker tag gentlecorp-systems/customer:2025.01.29 calebscript/customer:${{ env.CURRENT_DATE }}
+          docker tag gentlecorp-systems/customer:${{ env.CURRENT_DATE }} calebscript/customer:${{ env.CURRENT_DATE }}
           docker push calebscript/customer:${{ env.CURRENT_DATE }}
