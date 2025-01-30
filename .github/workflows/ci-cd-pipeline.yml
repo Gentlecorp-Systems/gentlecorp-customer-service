@@ -147,6 +147,8 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     needs: package
+    env:
+      CURRENT_DATE: ${{ needs.build.outputs.CURRENT_DATE }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -156,9 +158,9 @@ jobs:
         with:
           name: customer-jar
           path: build/libs
-
+      
       - name: Use CURRENT_DATE
-        run: echo "CURRENT_DATE=${{ needs.build.outputs.CURRENT_DATE }}"
+        run: echo "CURRENT_DATE=${{ env.CURRENT_DATE }}"
 
       - name: Build Docker Image
         run: |
@@ -173,5 +175,5 @@ jobs:
 
       - name: Push Docker Image
         run: |
-          docker tag gentlecorp-systems/customer:2025.01.29 calebscript/customer:${{ env.CURRENT_DATE }}
+          docker tag gentlecorp-systems/customer:${{ env.CURRENT_DATE }}calebscript/customer:${{ env.CURRENT_DATE }}
           docker push calebscript/customer:${{ env.CURRENT_DATE }}
