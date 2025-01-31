@@ -83,7 +83,8 @@ public class CustomerReadController {
         @RequestParam @NonNull final MultiValueMap<String, String> searchCriteria,
         final HttpServletRequest request
     ) {
-        log.debug("get: searchCriteria={}", searchCriteria);
+        String sanitizedSearchCriteria = searchCriteria.toString().replace("\n", "").replace("\r", "");
+        log.debug("get: searchCriteria={}", sanitizedSearchCriteria);
         final var baseUri = uriHelper.getBaseUri(request).toString();
 
         final var models = customerReadService.find(searchCriteria)
