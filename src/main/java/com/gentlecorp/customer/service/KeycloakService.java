@@ -88,7 +88,7 @@ public class KeycloakService {
       password // Ensure password is present in Customer object
     );
 
-    log.debug("signIn: customerData={}", customerData);
+    // log.debug("signIn: customerData={}", customerData);
 
     try {
       // Register user in Keycloak and get user ID

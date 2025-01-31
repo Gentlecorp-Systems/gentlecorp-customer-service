@@ -45,7 +45,7 @@ public class CustomerCommonFunctions extends CustomerTestData {
   public int serverPort;
 
   @BeforeAll
-  void setup()  {
+  protected void setup()  {
     Dotenv dotenv = Dotenv.configure().load();
     dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
   }
