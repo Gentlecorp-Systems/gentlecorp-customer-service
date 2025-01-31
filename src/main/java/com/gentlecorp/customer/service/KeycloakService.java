@@ -56,14 +56,15 @@ public class KeycloakService {
   }
 
   private String getUserInfo(final String token) {
-    log.debug("getUserInfo: token={}", token);
+    // log.debug("getUserInfo: token={}", token);
 
     final var info = keycloakRepository.userInfo("Bearer " + token, APPLICATION_FORM_URLENCODED_VALUE);
     return info.sub();
   }
 
   public void signIn(final Customer customer, final String password, final String role) {
-    log.debug("signIn: customer={}", customer);
+    log.debug("signIn: customer data prepared for registration");
+    // log.debug("signIn: customer={}", customer.getUsername());
 
     // JSON data for registration
     final var customerData = """
@@ -91,7 +92,7 @@ public class KeycloakService {
 
     try {
       // Register user in Keycloak and get user ID
-      final var response = keycloakRepository.signIn(
+      keycloakRepository.signIn(
         customerData,
         "Bearer " + getAdminToken(),
         APPLICATION_JSON_VALUE
@@ -141,7 +142,8 @@ public class KeycloakService {
   }
 
   private String getRole(final String roleName, final String token) {
-    log.debug("getRole: roleName={}, token={}", roleName, token);
+    log.debug("getRole: roleName={}", roleName);
+    // log.debug("getRole: roleName={}, token={}", roleName, token);
 
     final var roles = keycloakRepository.getRoles("Bearer " + token, APPLICATION_JSON_VALUE);
     log.debug("getRole: roles={}", roles);
@@ -217,7 +219,8 @@ public class KeycloakService {
           }
           """.formatted(newPassword);
 
-    log.debug("updatePassword: passwordData={}", passwordData);
+    log.debug("updatePassword: updating password for user with ID={}", userId);
+    //  log.debug("updatePassword: passwordData={}", passwordData);
 
     try {
       keycloakRepository.updateUserPassword(

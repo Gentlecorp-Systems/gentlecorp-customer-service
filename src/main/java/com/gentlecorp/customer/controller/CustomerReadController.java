@@ -62,7 +62,8 @@ public class CustomerReadController {
         final HttpServletRequest request,
         @AuthenticationPrincipal final Jwt jwt
     ) {
-        log.info("getById: id={}, if-none-match={}", id,version);
+        String sanitizedVersion = version != null ? version.replace("\n", "").replace("\r", "") : null;
+        log.info("getById: id={}, if-none-match={}", id, sanitizedVersion);
         final var customer = customerReadService.findById(id, jwt, false);
         final var currentVersion = createETag(customer.getVersion());
 
@@ -83,7 +84,8 @@ public class CustomerReadController {
         @RequestParam @NonNull final MultiValueMap<String, String> searchCriteria,
         final HttpServletRequest request
     ) {
-        log.debug("get: searchCriteria={}", searchCriteria);
+        String sanitizedSearchCriteria = searchCriteria.toString().replace("\n", "").replace("\r", "");
+        log.debug("get: searchCriteria={}", sanitizedSearchCriteria);
         final var baseUri = uriHelper.getBaseUri(request).toString();
 
         final var models = customerReadService.find(searchCriteria)

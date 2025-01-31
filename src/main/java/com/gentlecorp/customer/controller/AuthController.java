@@ -53,7 +53,8 @@ public class AuthController {
 
   @PostMapping("login")
   public ResponseEntity<TokenDTO> login(@RequestBody final LoginDTO login) {
-    log.debug("login: {}", login);
+    String sanitizedLogin = login.toString().replace("\n", "").replace("\r", "");
+    log.debug("login: {}", sanitizedLogin);
     final var username = login.username();
     final var password = login.password();
     final TokenDTO result = keycloakService.login(username, password);
@@ -69,8 +70,8 @@ public class AuthController {
     return ResponseEntity.status(UNAUTHORIZED).body(ex.getMessage());
   }
 
-  @ExceptionHandler
-  @ResponseStatus(UNAUTHORIZED)
-  void onUnauthorized(@SuppressWarnings("unused") final HttpClientErrorException.Unauthorized ex) {
-  }
+//  @ExceptionHandler
+//  @ResponseStatus(UNAUTHORIZED)
+//  void onUnauthorized(@SuppressWarnings("unused") final HttpClientErrorException.Unauthorized ex) {
+//  }
 }
