@@ -79,7 +79,7 @@ sealed interface SecurityConfig permits ApplicationConfig {
       // Spring Security does not create or use HttpSession for SecurityContext
       .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
       .formLogin(AbstractHttpConfigurer::disable)
-      .csrf(AbstractHttpConfigurer::disable) // NOSONAR
+      .csrf(AbstractHttpConfigurer::disable)
       .headers(headers -> headers.frameOptions(FrameOptionsConfig::sameOrigin))
       .build();
   }

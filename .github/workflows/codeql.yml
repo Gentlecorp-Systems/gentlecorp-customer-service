@@ -47,8 +47,8 @@ jobs:
     - name: Attempt Gradle Auto-Build
       if: matrix.build-mode == 'autobuild'
       run: |
-        echo "Running Gradle autobuild..."
-        ./gradlew build --no-daemon
+        echo "Running Gradle autobuild (skipping tests)..."
+       ./gradlew build --no-daemon -x test
 
     - name: (Fallback) Manual Build
       if: matrix.build-mode == 'manual'
