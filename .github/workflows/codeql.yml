@@ -1,0 +1,62 @@
+name: "CodeQL Advanced"
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '16 22 * * 0'  # Wöchentliche Scans am Sonntag um 22:16 UTC
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write  # Erforderlich für Code Scanning Berichte
+      packages: read  # Falls private Abhängigkeiten verwendet werden
+      actions: read
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: java-kotlin
+            build-mode: autobuild  # Versucht, das Projekt automatisch zu bauen
+          # Falls weitere Sprachen benötigt werden, hier ergänzen
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 23
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '23'
+        cache: 'gradle'  # Gradle Cache aktivieren für schnelleren Build
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ${{ matrix.language }}
+        build-mode: ${{ matrix.build-mode }}
+        queries: +security-extended,security-and-quality  # Erweiterte Sicherheits- und Qualitätsprüfungen
+
+    - name: Attempt Gradle Auto-Build
+      if: matrix.build-mode == 'autobuild'
+      run: |
+        echo "Running Gradle autobuild..."
+        ./gradlew build --no-daemon
+
+    - name: Fallback: Manual Build
+      if: matrix.build-mode == 'manual'
+      run: |
+        echo "Performing manual build..."
+        ./gradlew clean build --no-daemon --scan
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:${{matrix.language}}"
