@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -73,7 +74,18 @@ public class CustomerReadService {
     }
 
     public @NonNull Collection<Customer> find(@NonNull final Map<String, List<String>> searchCriteria) {
-        log.debug("find: searchCriteria={}", searchCriteria);
+        Map<String, List<String>> sanitizedSearchCriteria = sanitizeSearchCriteria(searchCriteria);
+        log.debug("find: searchCriteria={}", sanitizedSearchCriteria);
             return customerRepository.findAll();
+    }
+
+    private Map<String, List<String>> sanitizeSearchCriteria(Map<String, List<String>> searchCriteria) {
+        return searchCriteria.entrySet().stream()
+            .collect(Collectors.toMap(
+                entry -> entry.getKey().replaceAll("[\\r\\n]", ""),
+                entry -> entry.getValue().stream()
+                    .map(value -> value.replaceAll("[\\r\\n]", ""))
+                    .collect(Collectors.toList())
+            ));
     }
 }

@@ -18,7 +18,8 @@ interface LogPasswordEncoding {
   ) {
     return event -> {
       if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug("Argon2id with password \"{}\": {}", password, passwordEncoder.encode(password));
+        // LOGGER.debug("Argon2id with password \"{}\": {}", password, passwordEncoder.encode(password));
+        LOGGER.debug("Password encoding process completed using Argon2id.");
       }
     };
   }

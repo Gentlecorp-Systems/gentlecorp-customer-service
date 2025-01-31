@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TestGetById extends CustomerCommonFunctions {
 
     @BeforeAll
-    void setup() {
+    protected void setup() {
         Dotenv dotenv = Dotenv.configure().load();
         dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
         testClientProvider = new TestClientProvider(new TestRestTemplate());

@@ -62,7 +62,8 @@ public class CustomerReadController {
         final HttpServletRequest request,
         @AuthenticationPrincipal final Jwt jwt
     ) {
-        log.info("getById: id={}, if-none-match={}", id,version);
+        String sanitizedVersion = version != null ? version.replace("\n", "").replace("\r", "") : null;
+        log.info("getById: id={}, if-none-match={}", id, sanitizedVersion);
         final var customer = customerReadService.findById(id, jwt, false);
         final var currentVersion = createETag(customer.getVersion());
 

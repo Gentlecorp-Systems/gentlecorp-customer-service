@@ -24,7 +24,13 @@ sealed interface KeycloakClientConfig permits ApplicationConfig {
 
     final var schema = kcSchemaEnv == null ? "http" : kcSchemaEnv;
     final var host = kcHostEnv == null ? "localhost" : kcHostEnv;
-    final int port = kcPortEnv == null ? kcDefaultPort : Integer.parseInt(kcPortEnv);
+    int port;
+    try {
+      port = kcPortEnv == null ? kcDefaultPort : Integer.parseInt(kcPortEnv);
+    } catch (NumberFormatException e) {
+      LOGGER.warn("Ungültiger Portwert in KC_SERVICE_PORT: '{}'. Fallback auf {}", kcPortEnv, kcDefaultPort);
+      port = kcDefaultPort; // Fallback-Port verwenden
+    }
     final var baseUri = UriComponentsBuilder.newInstance()
       .scheme(schema)
       .host(host)
