@@ -66,15 +66,13 @@ jobs:
         run:  snyk test --severity-threshold=high --json-file-output=snyk-report.json
         continue-on-error: true
 
-      - name: Install snyk-to-html (Java-Version)
+      - name: Install snyk-to-html
         run: |
-          curl -L -o snyk-to-html.jar https://github.com/snyk/snyk-to-html/releases/download/v1.6.0/snyk-to-html.jar || \
-          wget -O snyk-to-html.jar https://github.com/snyk/snyk-to-html/releases/download/v1.6.0/snyk-to-html.jar
-
+          npm install snyk-to-html -g
 
       - name: Generate HTML Report
         run: |
-          java -jar snyk-to-html.jar -i snyk-report.json -o snyk-report.html
+          snyk-to-html -i snyk-report.json -o snyk-report.html
           mkdir -p reports
           mv snyk-report.html reports/
 
