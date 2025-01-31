@@ -50,7 +50,7 @@ jobs:
         echo "Running Gradle autobuild..."
         ./gradlew build --no-daemon
 
-    - name: Fallback: Manual Build
+    - name: (Fallback) Manual Build
       if: matrix.build-mode == 'manual'
       run: |
         echo "Performing manual build..."
