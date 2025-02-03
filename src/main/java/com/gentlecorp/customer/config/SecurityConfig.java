@@ -59,7 +59,8 @@ sealed interface SecurityConfig permits ApplicationConfig {
           .requestMatchers(DELETE, CUSTOMER_PATH + "/**").hasAnyRole(ADMIN.name())
 
           .requestMatchers(GET, AUTH_PATH + "/me").hasRole(ADMIN.name())
-          .requestMatchers(POST, AUTH_PATH + "/login").permitAll()
+            .requestMatchers(POST,"/graphql", AUTH_PATH + "/login").permitAll()
+            .requestMatchers("/graphiql").permitAll()
 
           .requestMatchers(POST,"dev/db_populate").hasRole(ADMIN.name())
           .requestMatchers(

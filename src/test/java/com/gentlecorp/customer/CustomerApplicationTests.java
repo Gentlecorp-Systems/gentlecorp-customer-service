@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Import;
 
 
 import static com.gentlecorp.customer.util.Constants.CUSTOMER_PATH;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Import(TestcontainersConfiguration.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 class CustomerApplicationTests {
 

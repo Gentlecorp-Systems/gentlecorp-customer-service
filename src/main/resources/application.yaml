@@ -14,6 +14,13 @@ server:
 
 # Spring Boot Einstellungen
 spring:
+  graphql:
+    graphiql:
+     enabled: true
+    schema:
+     printer:
+      enabled: true
+
   profiles:
     active: ${app.env}
   application:
@@ -83,3 +90,5 @@ logging:
       org.springframework.test.context.support.DefaultTestContextBootstrapper: warn
       org.springframework.data.mongodb: debug
       org.junit.jupiter: warn
+
+      # org.springframework.graphql: debug

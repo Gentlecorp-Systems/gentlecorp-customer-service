@@ -5,6 +5,7 @@ import com.gentlecorp.customer.exception.NotFoundException;
 import com.gentlecorp.customer.exception.UnauthorizedException;
 import com.gentlecorp.customer.model.entity.Customer;
 import com.gentlecorp.customer.repository.CustomerRepository;
+import io.netty.util.concurrent.Promise;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -88,4 +89,5 @@ public class CustomerReadService {
                     .collect(Collectors.toList())
             ));
     }
+
 }

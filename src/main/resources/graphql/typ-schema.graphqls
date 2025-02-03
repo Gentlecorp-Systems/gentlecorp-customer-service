@@ -1,0 +1,193 @@
+
+"""
+Sortierreihenfolge für Abfragen, z. B. aufsteigend (ASC) oder absteigend (DESC).
+"""
+enum directionInput {
+    ASC
+    DESC
+}
+
+"""
+Mögliche Vergleichsoperatoren für Filterbedingungen, z. B. 'EQ' für Gleichheit.
+"""
+enum Operator {
+    EQ
+    IN
+    GTE
+    LTE
+    LIKE
+}
+
+"""
+Filterbare Felder für dynamische Abfragen, spezifisch für verschiedene Entitäten.
+"""
+enum FilterOptions {
+    id
+    version
+    lastName
+    firstName
+    email
+    phoneNumber
+    username
+    tierLevel
+    subscribed
+    birthdate
+    gender
+    maritalStatus
+    customerState
+    address
+    contactOptions
+    interests
+}
+
+"""
+Filterbedingungen als Output-Typ.
+"""
+type Filter {
+    """
+    Das zu filternde Feld, z. B. userId oder orgUnit.
+    """
+    field: FilterOptions
+
+    """
+    Der Vergleichsoperator, z. B. EQ oder IN.
+    """
+    operator: Operator
+
+    """
+    Der Vergleichswert.
+    """
+    value: String
+
+    """
+    Logische UND-Verknüpfung mit weiteren Filtern.
+    """
+    AND: [Filter]
+
+    """
+    Logische ODER-Verknüpfung mit weiteren Filtern.
+    """
+    OR: [Filter]
+
+    """
+    Logische NOR-Verknüpfung mit weiteren Filtern.
+    """
+    NOR: [Filter]
+}
+
+"""
+Pagination-Parameter als Output-Typ.
+"""
+type Pagination {
+    """
+    Anzahl der zurückzugebenden Ergebnisse.
+    """
+    limit: Int
+    """
+    Startpunkt der Ergebnisse.
+    """
+    offset: Int
+}
+
+"""
+Sortierparameter als Output-Typ.
+"""
+type Sort {
+    """
+    Feld, nach dem sortiert werden soll.
+    """
+    field: FilterOptions
+    """
+    Sortierreihenfolge, z. B. ASC oder DESC.
+    """
+    direction: directionInput
+}
+
+"""
+Generisches Ergebnis für Mutations.
+"""
+type MutationResponse {
+    """
+    Gibt an, ob die Operation erfolgreich war.
+    """
+    success: Boolean!
+    """
+    Zusätzliche Informationen oder Fehlermeldungen.
+    """
+    message: String
+    """
+    Das Ergebnis der Mutation, z. B. die erstellte oder aktualisierte Entität.
+    """
+    result: Customer
+    """
+    Anzahl der betroffenen Entitäten.
+    """
+    affectedCount: Int
+    """
+    Warnungen oder Hinweise zur Operation.
+    """
+    warnings: [String]
+}
+
+type Customer {
+    id: String
+version:  Int
+lastName: String
+firstName: String
+email: String
+phoneNumber: String
+username: String
+tierLevel: Int
+subscribed: Boolean
+birthdate: String
+gender: String,
+maritalStatus: String,
+customerState: String,
+address: Addresse
+contactOptions: [String]
+interests: [String]
+}
+
+type Addresse {
+street: String,
+houseNumber: String,
+zipCode: String,
+city: String,
+state: String,
+country: String
+}
+
+"""
+Ergebnis einer Authentifizierungsoperation.
+"""
+type TokenResult {
+    """
+    Zugriffstoken für authentifizierte Operationen.
+    """
+    access_token: String!
+
+    """
+    Gültigkeitsdauer des Zugriffstokens (in Sekunden).
+    """
+    expires_in: Int!
+
+    """
+    Token zur Erneuerung des Zugriffstokens.
+    """
+    refresh_token: String!
+
+    """
+    Gültigkeitsdauer des Refresh-Tokens (in Sekunden).
+    """
+    refresh_expires_in: Int!
+
+    """
+    ID-Token, das Benutzerinformationen enthält.
+    """
+    id_token: String!
+
+    """
+    Gültigkeitsbereich des Tokens.
+    """
+    scope: String!
+}
