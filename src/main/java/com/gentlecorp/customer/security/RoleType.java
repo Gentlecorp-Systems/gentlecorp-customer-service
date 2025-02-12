@@ -1,4 +1,4 @@
-package com.gentlecorp.customer.model.enums;
+package com.gentlecorp.customer.security;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

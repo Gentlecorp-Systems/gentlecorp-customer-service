@@ -7,11 +7,11 @@ input PaginationInput {
     """
     Anzahl der zurückzugebenden Ergebnisse (Standard: 10).
     """
-    limit: Int = 10
+    limit: Int
     """
     Startpunkt der Ergebnisse (Standard: 0).
     """
-    offset: Int = 0
+    offset: Int
 }
 
 """

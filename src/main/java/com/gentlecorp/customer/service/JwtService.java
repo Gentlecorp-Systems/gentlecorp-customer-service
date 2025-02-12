@@ -3,7 +3,7 @@ package com.gentlecorp.customer.service;
 
 import com.gentlecorp.customer.exception.NotFoundException;
 import com.gentlecorp.customer.exception.UnauthorizedException;
-import com.gentlecorp.customer.model.enums.RoleType;
+import com.gentlecorp.customer.security.RoleType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
@@ -11,12 +11,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Stream;
 
-import static com.gentlecorp.customer.model.enums.RoleType.ADMIN;
-import static com.gentlecorp.customer.model.enums.RoleType.ELITE;
-import static com.gentlecorp.customer.model.enums.RoleType.SUPREME;
-import static com.gentlecorp.customer.model.enums.RoleType.USER;
+import static com.gentlecorp.customer.security.RoleType.ADMIN;
+import static com.gentlecorp.customer.security.RoleType.ELITE;
+import static com.gentlecorp.customer.security.RoleType.SUPREME;
+import static com.gentlecorp.customer.security.RoleType.USER;
 
 @Service
 @Slf4j

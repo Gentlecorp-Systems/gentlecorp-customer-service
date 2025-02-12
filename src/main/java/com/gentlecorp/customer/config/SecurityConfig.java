@@ -1,11 +1,10 @@
 package com.gentlecorp.customer.config;
 
+import com.gentlecorp.customer.security.JwtToUserDetailsConverter;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.actuate.health.HealthEndpoint;
 import org.springframework.boot.actuate.metrics.export.prometheus.PrometheusScrapeEndpoint;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.password.CompromisedPasswordChecker;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -13,7 +12,6 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
@@ -26,11 +24,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import static com.gentlecorp.customer.model.enums.RoleType.ADMIN;
-import static com.gentlecorp.customer.model.enums.RoleType.BASIC;
-import static com.gentlecorp.customer.model.enums.RoleType.ELITE;
-import static com.gentlecorp.customer.model.enums.RoleType.SUPREME;
-import static com.gentlecorp.customer.model.enums.RoleType.USER;
+import static com.gentlecorp.customer.security.RoleType.ADMIN;
+import static com.gentlecorp.customer.security.RoleType.BASIC;
+import static com.gentlecorp.customer.security.RoleType.ELITE;
+import static com.gentlecorp.customer.security.RoleType.SUPREME;
 import static com.gentlecorp.customer.util.Constants.AUTH_PATH;
 import static com.gentlecorp.customer.util.Constants.CUSTOMER_PATH;
 import static org.springframework.http.HttpMethod.DELETE;
@@ -45,44 +42,45 @@ sealed interface SecurityConfig permits ApplicationConfig {
 
   @Bean
   default SecurityFilterChain securityFilterChain(
-    final HttpSecurity httpSecurity
+      final HttpSecurity httpSecurity,
+      JwtToUserDetailsConverter converter
   ) throws Exception {
     return httpSecurity
-      .authorizeHttpRequests(authorize -> {
-        authorize
-          .requestMatchers(GET, CUSTOMER_PATH + "/hallo").permitAll()
-          .requestMatchers(GET, CUSTOMER_PATH).permitAll()
-          .requestMatchers(GET, CUSTOMER_PATH + "/**").permitAll()
-          .requestMatchers(POST, CUSTOMER_PATH).permitAll()
-          .requestMatchers(PUT, CUSTOMER_PATH + "**").hasAnyRole(ADMIN.name(),SUPREME.name(), ELITE.name(), BASIC.name())
-          .requestMatchers(DELETE, CUSTOMER_PATH + "/*/**").hasAnyRole(ADMIN.name(),SUPREME.name(), ELITE.name(), BASIC.name())
-          .requestMatchers(DELETE, CUSTOMER_PATH + "/**").hasAnyRole(ADMIN.name())
+        .authorizeHttpRequests(authorize -> {
+          authorize
+              .requestMatchers(GET, CUSTOMER_PATH + "/hallo").permitAll()
+              .requestMatchers(GET, CUSTOMER_PATH).permitAll()
+              .requestMatchers(GET, CUSTOMER_PATH + "/**").permitAll()
+              .requestMatchers(POST, CUSTOMER_PATH).permitAll()
+              .requestMatchers(PUT, CUSTOMER_PATH + "**").hasAnyRole(ADMIN.name(),SUPREME.name(), ELITE.name(), BASIC.name())
+              .requestMatchers(DELETE, CUSTOMER_PATH + "/*/**").hasAnyRole(ADMIN.name(),SUPREME.name(), ELITE.name(), BASIC.name())
+              .requestMatchers(DELETE, CUSTOMER_PATH + "/**").hasAnyRole(ADMIN.name())
 
-          .requestMatchers(GET, AUTH_PATH + "/me").hasRole(ADMIN.name())
-            .requestMatchers(POST,"/graphql", AUTH_PATH + "/login").permitAll()
-            .requestMatchers("/graphiql").permitAll()
+              .requestMatchers(GET, AUTH_PATH + "/me").hasRole(ADMIN.name())
+              .requestMatchers(POST,"/graphql", AUTH_PATH + "/login").permitAll()
+              .requestMatchers("/graphiql").permitAll()
 
-          .requestMatchers(POST,"dev/db_populate").hasRole(ADMIN.name())
-          .requestMatchers(
-            // Actuator: Health for liveness and readiness for Kubernetes
-            EndpointRequest.to(HealthEndpoint.class),
-            // Actuator: Prometheus for monitoring
-            EndpointRequest.to(PrometheusScrapeEndpoint.class)
-          ).permitAll()
-          // OpenAPI or Swagger UI and GraphiQL
-          .requestMatchers(GET, "/v3/api-docs.yaml", "/v3/api-docs", "/graphiql").permitAll()
-          .requestMatchers("/error", "/error/**").permitAll()
+              .requestMatchers(POST,"dev/db_populate").hasRole(ADMIN.name())
+              .requestMatchers(
+                  // Actuator: Health for liveness and readiness for Kubernetes
+                  EndpointRequest.to(HealthEndpoint.class),
+                  // Actuator: Prometheus for monitoring
+                  EndpointRequest.to(PrometheusScrapeEndpoint.class)
+              ).permitAll()
+              // OpenAPI or Swagger UI and GraphiQL
+              .requestMatchers(GET, "/v3/api-docs.yaml", "/v3/api-docs", "/graphiql").permitAll()
+              .requestMatchers("/error", "/error/**").permitAll()
 
-          .anyRequest().authenticated();
-      })
-
-        .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
-      // Spring Security does not create or use HttpSession for SecurityContext
-      .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
-      .formLogin(AbstractHttpConfigurer::disable)
-      .csrf(AbstractHttpConfigurer::disable)
-      .headers(headers -> headers.frameOptions(FrameOptionsConfig::sameOrigin))
-      .build();
+              .anyRequest().authenticated();
+        })
+        //.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
+        .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(converter)))
+        // Spring Security does not create or use HttpSession for SecurityContext
+        .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
+        .formLogin(AbstractHttpConfigurer::disable)
+        .csrf(AbstractHttpConfigurer::disable)
+        .headers(headers -> headers.frameOptions(FrameOptionsConfig::sameOrigin))
+        .build();
   }
   /**
    * Definiert die Passwortkodierung für die Anwendung.
