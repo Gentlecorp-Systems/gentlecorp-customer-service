@@ -4,46 +4,61 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Stream;
 
 /**
- * Enum für Kontaktoptionen, angepasst für die Verwendung mit MongoDB.
+ * Enum für Kontaktoptionen, angepasst für die Verwendung mit MongoDB und JSON.
  */
 @RequiredArgsConstructor
 public enum ContactOptionsType {
 
-  EMAIL("E"),
-  PHONE("P"),
-  LETTER("L"),
-  SMS("S");
+  EMAIL("E", "EMAIL"),
+  PHONE("P", "PHONE"),
+  LETTER("L", "LETTER"),
+  SMS("S", "SMS");
 
-  private final String option;
+  private final String shortValue;
+  private final String longValue;
 
   /**
-   * Gibt die String-Repräsentation des Enums zurück.
+   * Gibt die JSON-kompatible String-Repräsentation zurück.
    *
-   * @return die String-Repräsentation der Option.
+   * @return die Langform der Kontaktoption als String.
    */
   @JsonValue
-  public String getOption() {
-    return option;
+  public String getJsonValue() {
+    return longValue; // Gibt die Langform aus, z. B. "EMAIL"
   }
 
+  private static final Map<String, ContactOptionsType> lookup = Stream.of(values())
+      .collect(java.util.stream.Collectors.toMap(
+          e -> e.shortValue.toUpperCase(), e -> e
+      ));
+
   /**
-   * Erzeugt einen Enum-Wert aus einem String-Wert.
-   * Unterstützt sowohl Jackson für JSON-Daten als auch MongoDB.
+   * Wandelt einen String-Wert in den entsprechenden Enum-Wert um.
+   * Unterstützt sowohl "E", "P", "L", "S" als auch "EMAIL", "PHONE", "LETTER", "SMS".
    *
-   * @param value die String-Repräsentation der Option.
+   * @param value der String-Wert der Kontaktoption.
    * @return der entsprechende Enum-Wert.
    * @throws IllegalArgumentException wenn der Wert ungültig ist.
    */
   @JsonCreator
   public static ContactOptionsType fromValue(final String value) {
-    return Arrays.stream(values())
-        .filter(option -> option.option.equalsIgnoreCase(value))
-        .findFirst()
-        .orElseThrow(() -> new IllegalArgumentException(
-            String.format("Ungültiger Wert '%s' für ContactOptionsType", value)
-        ));
+    if (value == null) {
+      throw new IllegalArgumentException("ContactOptionsType darf nicht null sein.");
+    }
+
+    String upperValue = value.toUpperCase();
+    for (ContactOptionsType type : values()) {
+      if (type.shortValue.equalsIgnoreCase(upperValue) || type.longValue.equalsIgnoreCase(upperValue)) {
+        return type;
+      }
+    }
+
+    throw new IllegalArgumentException(
+        String.format("Ungültiger Wert '%s' für ContactOptionsType. Erlaubt: E, P, L, S oder EMAIL, PHONE, LETTER, SMS", value)
+    );
   }
 }

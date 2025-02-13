@@ -65,7 +65,7 @@ logging:
       %date{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %5level ${PID:- } --- [%thread]
       %-40.40logger{39} : %m%n%wEx
   level:
-      com.gentlecorp: trace
+      com.gentlecorp.customer: trace
       org.apache.catalina.loader.WebappClassLoaderBase: info
       org.springframework.boot.availability.ApplicationAvailabilityBean: debug
       org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener: warn

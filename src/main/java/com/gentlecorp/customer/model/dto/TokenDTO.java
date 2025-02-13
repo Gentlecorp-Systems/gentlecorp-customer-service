@@ -5,31 +5,23 @@ import com.gentlecorp.customer.model.enums.ScopeType;
 import com.gentlecorp.customer.model.enums.TokenType;
 
 public record TokenDTO(
-  @JsonProperty("access_token")
-  String accessToken,
+  String access_token,
 
-  @JsonProperty("expires_in")
-  int expiresIn,
+  int expires_in,
 
-  @JsonProperty("refresh_expires_in")
-  int refreshExpiresIn,
+  int refresh_expires_in,
 
-  @JsonProperty("refresh_token")
-  String refreshToken,
+  String refresh_token,
 
-  @JsonProperty("token_type")
-  TokenType tokenType,
+  TokenType token_type,
 
   @JsonProperty("not-before-policy")
   int notBeforePolicy,
 
-  @JsonProperty("session_state")
-  String sessionState,
+  String session_state,
 
-  @JsonProperty("id_token")
-  String idToken,
+  String id_token,
 
-  @JsonProperty("scope")
   ScopeType scope
 ) {
 }

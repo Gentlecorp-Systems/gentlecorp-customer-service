@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * Enum für Familienstandstypen, angepasst für JSON und MongoDB.
@@ -12,26 +13,32 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public enum MaritalStatusType {
 
-  SINGLE("S"),
-  MARRIED("M"),
-  DIVORCED("D"),
-  WIDOWED("W");
+  SINGLE("S", "SINGLE"),
+  MARRIED("M", "MARRIED"),
+  DIVORCED("D", "DIVORCED"),
+  WIDOWED("W", "WIDOWED");
 
-  private final String status;
+  private final String shortValue;
+  private final String longValue;
 
   /**
    * Gibt die String-Repräsentation des Enum-Werts zurück.
    *
-   * @return die String-Repräsentation des Familienstandes.
+   * @return die JSON-kompatible String-Repräsentation.
    */
   @JsonValue
-  public String getStatus() {
-    return status;
+  public String getJsonValue() {
+    return longValue; // Gibt den langen Namen zurück, z. B. "SINGLE"
   }
+
+  private static final Map<String, MaritalStatusType> lookup = Stream.of(values())
+      .collect(java.util.stream.Collectors.toMap(
+          e -> e.shortValue.toUpperCase(), e -> e
+      ));
 
   /**
    * Erstellt einen Enum-Wert aus einem String-Wert.
-   * Unterstützt JSON- und MongoDB-Datenverarbeitung.
+   * Unterstützt "S", "M", "D", "W" sowie "SINGLE", "MARRIED", "DIVORCED", "WIDOWED".
    *
    * @param value der String-Wert des Familienstandes.
    * @return der entsprechende Enum-Wert.
@@ -39,11 +46,19 @@ public enum MaritalStatusType {
    */
   @JsonCreator
   public static MaritalStatusType fromValue(final String value) {
-    return Arrays.stream(values())
-        .filter(statusType -> statusType.status.equalsIgnoreCase(value))
-        .findFirst()
-        .orElseThrow(() -> new IllegalArgumentException(
-            String.format("Ungültiger Wert '%s' für MaritalStatusType", value)
-        ));
+    if (value == null) {
+      throw new IllegalArgumentException("MaritalStatusType darf nicht null sein.");
+    }
+
+    String upperValue = value.toUpperCase();
+    for (MaritalStatusType type : values()) {
+      if (type.shortValue.equalsIgnoreCase(upperValue) || type.longValue.equalsIgnoreCase(upperValue)) {
+        return type;
+      }
+    }
+
+    throw new IllegalArgumentException(
+        String.format("Ungültiger Wert '%s' für MaritalStatusType. Erlaubt: S, M, D, W oder SINGLE, MARRIED, DIVORCED, WIDOWED", value)
+    );
   }
 }

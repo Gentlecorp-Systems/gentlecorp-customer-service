@@ -191,3 +191,8 @@ type TokenResult {
     """
     scope: String!
 }
+
+type UserInfo {
+    subject: String
+    claims: String
+}

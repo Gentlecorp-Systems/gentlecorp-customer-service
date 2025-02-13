@@ -9,19 +9,20 @@ public class CustomerTestData {
   public static final String LOGIN_PATH = "/auth/login";
   public static final String ALL_PATH = "/all/";
   public static final String CONTACT_PATH = "/contact";
+  public static final String GRAPHQL_ENDPOINT = "/graphql";
 
   public static final String CONTACT_URL_TEMPLATE = SCHEMA_HOST + "%d" + CUSTOMER_PATH + CONTACT_PATH + "%s";
 
   public static final String ADMIN_ID = "/00000000-0000-0000-0000-000000000000";
 
-  public static final String ID_CALEB = "/00000000-0000-0000-0000-000000000025";
+  public static final String ID_CALEB = "00000000-0000-0000-0000-000000000025";
   public static final String ID_ANNA = "/00000000-0000-0000-0000-000000000024";
-  public static final String ID_HIROSHI = "/00000000-0000-0000-0000-000000000018";
-  public static final String ID_ERIK = "/00000000-0000-0000-0000-000000000005";
-  public static final String ID_LEROY = "/00000000-0000-0000-0000-000000000026";
+  public static final String ID_HIROSHI = "00000000-0000-0000-0000-000000000018";
+  public static final String ID_ERIK = "00000000-0000-0000-0000-000000000005";
+  public static final String ID_LEROY = "00000000-0000-0000-0000-000000000026";
 
   public final static String CONTACT_R_ID = "/00000000-0000-0000-0000-000000000057";
-  public static final String NOT_EXISTING_ID = "/20000000-0000-0000-0000-000000000000";
+  public static final String NOT_EXISTING_ID = "20000000-0000-0000-0000-000000000000";
   public static final String CALEB_CONTACT_ID_1 = "/20000000-0000-0000-0000-000000000000";
 
   public static final String SUPREME = "SUPREME";
@@ -280,6 +281,55 @@ public class CustomerTestData {
 
 
 
+ public static final String customerQuery = """
+                query Customer($id: ID!) {
+                    customer(id: $id) {
+                          id
+                          version
+                          lastName
+                          firstName
+                          email
+                          phoneNumber
+                          username
+                          tierLevel
+                          subscribed
+                          birthdate
+                          gender
+                          maritalStatus
+                          customerState
+                      }
+                }
+                """;
+
+  public static final String fullCustomerQuery = """
+      query Customer($id: ID!) {
+          customer(id: $id) {
+              id
+              version
+              lastName
+              firstName
+              email
+              phoneNumber
+              username
+              tierLevel
+              subscribed
+              birthdate
+              gender
+              maritalStatus
+              customerState
+              contactOptions
+              interests
+              address {
+                  street
+                  houseNumber
+                  zipCode
+                  city
+                  state
+                  country
+              }
+          }
+      }
+      """;
 
 
 

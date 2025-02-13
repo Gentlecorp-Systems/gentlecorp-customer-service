@@ -2,6 +2,7 @@ package com.gentlecorp.customer.controller;
 
 import com.gentlecorp.customer.exception.AccessForbiddenException;
 import com.gentlecorp.customer.exception.EmailExistsException;
+import com.gentlecorp.customer.exception.NotFoundException;
 import com.gentlecorp.customer.exception.UnauthorizedException;
 import com.gentlecorp.customer.exception.UsernameExistsException;
 import com.gentlecorp.customer.model.entity.Customer;
@@ -38,6 +39,7 @@ import java.util.stream.StreamSupport;
 import static java.util.Collections.emptyMap;
 import static org.springframework.graphql.execution.ErrorType.BAD_REQUEST;
 import static org.springframework.graphql.execution.ErrorType.FORBIDDEN;
+import static org.springframework.graphql.execution.ErrorType.NOT_FOUND;
 import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
@@ -159,6 +161,16 @@ public class QueryController {
     GraphQLError onAccessForbidden(final AccessForbiddenException ex, DataFetchingEnvironment env) {
         return GraphQLError.newError()
             .errorType(FORBIDDEN)
+            .message(ex.getMessage())
+            .path(env.getExecutionStepInfo().getPath().toList()) // Dynamischer Query-Pfad
+            .location(env.getExecutionStepInfo().getField().getSingleField().getSourceLocation()) // GraphQL Location
+            .build();
+    }
+
+    @GraphQlExceptionHandler
+    GraphQLError onNotFound(final NotFoundException ex, DataFetchingEnvironment env) {
+        return GraphQLError.newError()
+            .errorType(NOT_FOUND)
             .message(ex.getMessage())
             .path(env.getExecutionStepInfo().getPath().toList()) // Dynamischer Query-Pfad
             .location(env.getExecutionStepInfo().getField().getSingleField().getSourceLocation()) // GraphQL Location

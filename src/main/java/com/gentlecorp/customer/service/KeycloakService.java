@@ -52,7 +52,7 @@ public class KeycloakService {
   private String getAdminToken() {
     log.debug("getAdminToken");
     final var adminToken = login("admin", "p");
-    return adminToken.accessToken();
+    return adminToken.access_token();
   }
 
   private String getUserInfo(final String token) {
@@ -99,7 +99,7 @@ public class KeycloakService {
       );
       log.info("signIn: Customer registered in Keycloak");
 
-      final var accessToken = login(customer.getUsername(), password).accessToken();
+      final var accessToken = login(customer.getUsername(), password).access_token();
       final var userId = getUserInfo(accessToken);
       log.debug("signIn: userId={}", userId);
 
