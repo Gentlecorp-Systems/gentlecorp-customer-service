@@ -18,6 +18,30 @@ import org.springframework.validation.annotation.Validated;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Datentransferobjekt (DTO) für Kundendaten.
+ * <p>
+ * Validiert Namen, E-Mail, Telefonnummer, Benutzername, Geburtsdatum, Interessen und Kontaktoptionen.
+ * </p>
+ *
+ * @param lastName        Der Nachname des Kunden.
+ * @param firstName       Der Vorname des Kunden.
+ * @param email           Die E-Mail-Adresse des Kunden.
+ * @param phoneNumber     Die Telefonnummer des Kunden.
+ * @param username        Der Benutzername des Kunden.
+ * @param tierLevel       Die Mitgliedschaftsstufe.
+ * @param isSubscribed    Gibt an, ob der Kunde abonniert ist.
+ * @param birthdate       Das Geburtsdatum des Kunden.
+ * @param gender          Das Geschlecht des Kunden.
+ * @param maritalStatus   Der Familienstand des Kunden.
+ * @param interests       Die Interessen des Kunden.
+ * @param contactOptions  Die bevorzugten Kontaktoptionen.
+ * @param address         Die Adresse des Kunden.
+ *
+ * @since 13.02.2025
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
+ */
 public record CustomerDTO(
   @NotNull(message = "Please provide your last name.")
   @Pattern(regexp = LAST_NAME_PATTERN, message = "Invalid last name format.")

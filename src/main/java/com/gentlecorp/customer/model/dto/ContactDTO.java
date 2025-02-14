@@ -7,35 +7,52 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
+
 import static com.gentlecorp.customer.model.dto.CustomerDTO.FIRST_NAME_PATTERN;
 import static com.gentlecorp.customer.model.dto.CustomerDTO.LAST_NAME_PATTERN;
 import static com.gentlecorp.customer.model.dto.CustomerDTO.NAME_MAX_LENGTH;
 
-
-@ValidDateRange// Custom annotation to validate startDate and endDate relationship
+/**
+ * Datentransferobjekt (DTO) für Kontaktinformationen.
+ * <p>
+ * Validiert Namen, Beziehungstyp, Abhebelimit sowie Gültigkeit von Start- und Enddatum.
+ * </p>
+ *
+ * @param lastName          Der Nachname des Kontakts.
+ * @param firstName         Der Vorname des Kontakts.
+ * @param relationship      Die Art der Beziehung.
+ * @param withdrawalLimit   Das Abhebelimit für den Kontakt.
+ * @param isEmergencyContact Gibt an, ob der Kontakt ein Notfallkontakt ist.
+ * @param startDate         Das Startdatum der Beziehung.
+ * @param endDate           Das Enddatum der Beziehung.
+ *
+ * @since 13.02.2025
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
+ */
+@ValidDateRange
 public record ContactDTO(
-  @NotNull(message = "Please provide a last name.")
-  @Pattern(regexp = LAST_NAME_PATTERN, message = "Last name format is invalid.")
-  @Size(max = NAME_MAX_LENGTH, message = "Last name cannot exceed " + NAME_MAX_LENGTH + " characters.")
-  String lastName,
+    @NotNull(message = "Bitte geben Sie einen Nachnamen an.")
+    @Pattern(regexp = LAST_NAME_PATTERN, message = "Ungültiges Format für den Nachnamen.")
+    @Size(max = NAME_MAX_LENGTH, message = "Der Nachname darf maximal " + NAME_MAX_LENGTH + " Zeichen enthalten.")
+    String lastName,
 
-  @NotNull(message = "Please provide a first name.")
-  @Pattern(regexp = FIRST_NAME_PATTERN, message = "First name format is invalid.")
-  @Size(max = NAME_MAX_LENGTH, message = "First name cannot exceed " + NAME_MAX_LENGTH + " characters.")
-  String firstName,
+    @NotNull(message = "Bitte geben Sie einen Vornamen an.")
+    @Pattern(regexp = FIRST_NAME_PATTERN, message = "Ungültiges Format für den Vornamen.")
+    @Size(max = NAME_MAX_LENGTH, message = "Der Vorname darf maximal " + NAME_MAX_LENGTH + " Zeichen enthalten.")
+    String firstName,
 
-  @NotNull(message = "Relationship type is required.")
-  RelationshipType relationship,
+    @NotNull(message = "Der Beziehungstyp ist erforderlich.")
+    RelationshipType relationship,
 
-  int withdrawalLimit,
+    int withdrawalLimit,
 
-  boolean isEmergencyContact,
+    boolean isEmergencyContact,
 
-  @FutureOrPresent(message = "Start date cannot be in the past.")
-  LocalDate startDate,
+    @FutureOrPresent(message = "Das Startdatum darf nicht in der Vergangenheit liegen.")
+    LocalDate startDate,
 
-  @FutureOrPresent(message = "End date cannot be in the past.")
-  LocalDate endDate
+    @FutureOrPresent(message = "Das Enddatum darf nicht in der Vergangenheit liegen.")
+    LocalDate endDate
 ) {
-//  public interface OnCreate { }
 }
