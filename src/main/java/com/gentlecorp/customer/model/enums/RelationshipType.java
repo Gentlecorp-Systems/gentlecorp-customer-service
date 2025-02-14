@@ -7,8 +7,15 @@ import lombok.RequiredArgsConstructor;
 import java.util.Arrays;
 
 /**
- * Enum für Beziehungstypen zwischen Kunden.
- * Unterstützt JSON- und MongoDB-Verarbeitung.
+ * Definiert verschiedene Beziehungstypen zwischen Kunden.
+ * <p>
+ * Dieses Enum wird verwendet, um die Art der Verbindung zwischen zwei Kunden darzustellen.
+ * Es unterstützt sowohl JSON-Serialisierung als auch MongoDB-Speicherung.
+ * </p>
+ *
+ * @since 13.02.2025
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
  */
 @RequiredArgsConstructor
 public enum RelationshipType {

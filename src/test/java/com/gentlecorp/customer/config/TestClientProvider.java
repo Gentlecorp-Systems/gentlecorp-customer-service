@@ -1,82 +1,114 @@
 package com.gentlecorp.customer.config;
 
+import com.gentlecorp.customer.security.dto.TokenDTO;
 import com.gentlecorp.customer.testData.CustomerTestData;
-import io.github.cdimascio.dotenv.Dotenv;
-import jakarta.annotation.PostConstruct;
-import jakarta.validation.Valid;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.TestInstance;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.ResponseEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.graphql.client.HttpGraphQlClient;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.DefaultUriBuilderFactory;
+import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @Component
 public class TestClientProvider extends CustomerTestData {
 
-  private final TestRestTemplate restTemplate;
+  private static final Logger log = LoggerFactory.getLogger(TestClientProvider.class);
+  private HttpGraphQlClient graphQlClient;
+  private int serverPort;
 
-  // Dynamisch URL mit dem Server-Port erstellen
-  @Value("${server.port}")
-  int serverPort;
+  private final Map<String, String> tokenCache = new HashMap<>();
 
-    public TestClientProvider(TestRestTemplate restTemplate) {
-    this.restTemplate = restTemplate;
+  public TestClientProvider() {
   }
 
-  public TestRestTemplate adminClient;
-  public TestRestTemplate userClient;
-  public TestRestTemplate basicClient;
-  public TestRestTemplate eliteClient;
-  public TestRestTemplate supremeClient;
-  public TestRestTemplate visitorClient;
-
-
-  //@PostConstruct
+  /**
+   * Initialisiert die Authentifizierungsclients für verschiedene Benutzerrollen.
+   */
   public void init(final int port) {
+    log.info("Initialisiere Testclients mit Port {}", port);
     serverPort = port;
-    adminClient = createAuthenticatedClient(ROLE_ADMIN, ROLE_PASSWORD);
-    userClient = createAuthenticatedClient(ROLE_USER, ROLE_PASSWORD);
-    basicClient = createAuthenticatedClient(ROLE_BASIC, ROLE_PASSWORD);
-    eliteClient = createAuthenticatedClient(ROLE_ELITE, ROLE_PASSWORD);
-    supremeClient = createAuthenticatedClient(ROLE_SUPREME, ROLE_PASSWORD);
-    visitorClient = createVisitorClient();
+
+    WebClient webClient = WebClient.builder()
+        .baseUrl(SCHEMA_HOST + serverPort + GRAPHQL_ENDPOINT)
+        .defaultHeader("Content-Type", "application/json")
+        .build();
+
+    this.graphQlClient = HttpGraphQlClient.builder(webClient).build();
+
+    tokenCache.put(ROLE_ADMIN, authenticate(ROLE_ADMIN, ROLE_PASSWORD));
+    tokenCache.put(ROLE_USER, authenticate(ROLE_USER, ROLE_PASSWORD));
+    tokenCache.put(ROLE_BASIC, authenticate(ROLE_BASIC, ROLE_PASSWORD));
+    tokenCache.put(ROLE_ELITE, authenticate(ROLE_ELITE, ROLE_PASSWORD));
+    tokenCache.put(ROLE_SUPREME, authenticate(ROLE_SUPREME, ROLE_PASSWORD));
   }
 
-  private TestRestTemplate createVisitorClient() {
-    TestRestTemplate visitorClient = new TestRestTemplate();
-    // Basis-URL prüfen, falls für spezifische Anfragen notwendig
-    String baseUrl = String.format("http://localhost:%s", serverPort);
-    visitorClient.getRestTemplate().setUriTemplateHandler(new DefaultUriBuilderFactory(baseUrl));
-    return visitorClient;
-  }
+  /**
+   * Führt die Authentifizierung durch und gibt das Token zurück.
+   *
+   * @param username Benutzername
+   * @param password Passwort
+   * @return JWT-Token als String
+   */
+  public String authenticate(String username, String password) {
+    final var query = """
+        mutation Login($username: String!, $password: String!) {
+            authenticate(username: $username, password: $password) {
+                access_token
+            }
+        }
+    """;
 
-  public TestRestTemplate createAuthenticatedClient(String username, String password) {
-      String loginUrl = String.format("http://localhost:%s%s", serverPort, LOGIN_PATH);
+    //log.debug("query: {}", query);
+    log.info("Authenticate user {}", username);
 
-    ResponseEntity<Map> response = restTemplate.postForEntity(
-        loginUrl,
-        Map.of(USERNAME, username, PASSWORD, password),
-        Map.class
+    Map<String, Object> variables = Map.of(
+        "username",  username,
+        "password", password
     );
 
-    assert response.getStatusCode().is2xxSuccessful();
-    String token = (String) Objects.requireNonNull(response.getBody()).get(ACCESS_TOKEN);
-
-    TestRestTemplate authenticatedClient = new TestRestTemplate();
-    authenticatedClient.getRestTemplate().setInterceptors(
-      List.of((request, body, execution) -> {
-          request.getHeaders().add(AUTHORIZATION, BEARER + token);
-        return execution.execute(request, body);
-      })
-    );
-    return authenticatedClient;
+    final var token = graphQlClient
+        .mutate()
+        .build()
+        .document(query)
+        .variables(variables)
+        .retrieveSync("authenticate")
+        .toEntity(TokenDTO.class);
+    
+    return token.access_token();
   }
 
+  /**
+   * Erstellt einen `WebClient` mit Authentifizierung für eine bestimmte Rolle.
+   *
+   * @param role Benutzerrolle
+   * @return Authentifizierter `WebClient`
+   */
+  public HttpGraphQlClient getAuthenticatedClient(String role) {
+    String token = tokenCache.get(role);
+    if (token == null) {
+      throw new RuntimeException("Kein Token für Rolle: " + role);
+    }
+
+
+    WebClient webClient = WebClient.builder()
+        .baseUrl(SCHEMA_HOST + serverPort + GRAPHQL_ENDPOINT)
+        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+        .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+        .build();
+
+    return  HttpGraphQlClient.builder(webClient).build();
+  }
+
+  public HttpGraphQlClient getVisitorClient() {
+    WebClient webClient = WebClient.builder()
+        .baseUrl(SCHEMA_HOST + serverPort + GRAPHQL_ENDPOINT)
+        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+        .build();
+
+    return HttpGraphQlClient.builder(webClient).build();
+  }
 }

@@ -7,75 +7,82 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Custom runtime exception thrown when a customer cannot be found.
+ * Ausnahme, die ausgelöst wird, wenn ein Kunde nicht gefunden werden kann.
  * <p>
- * This exception is used to indicate that no customer was found based on the provided ID or search criteria.
+ * Diese Ausnahme signalisiert, dass kein Kunde mit der angegebenen ID oder Suchkriterien existiert.
  * </p>
  *
- * @since 24.08.2024
- * @version 1.0
+ * @since 13.02.2024
+ * @version 1.1
  * @author <a href="mailto:Caleb_G@outlook.de">Caleb Gyamfi</a>
  */
 @Getter
 public final class NotFoundException extends RuntimeException {
 
   /**
-   * The ID of the customer that was not found.
+   * Die ID des nicht gefundenen Kunden.
    * <p>
-   * This field is used when a specific customer ID is not found in the system.
+   * Wird verwendet, wenn eine bestimmte Kunden-ID nicht existiert.
    * </p>
    */
   private final UUID id;
 
   /**
-   * The search criteria that did not yield any results.
+   * Die Suchkriterien, die keine Ergebnisse geliefert haben.
    * <p>
-   * This field is used when no customers are found based on the provided search criteria.
+   * Wird verwendet, wenn keine Kunden anhand der angegebenen Suchkriterien gefunden wurden.
    * </p>
    */
   private final Map<String, List<String>> searchCriteria;
 
+  /**
+   * Die Nachricht, die die Details zur Ausnahme enthält.
+   */
   private final String message;
 
   /**
-   * Constructs a new {@code NotFoundException} with a message indicating the specified customer ID was not found.
+   * Erstellt eine neue {@code NotFoundException}, wenn ein Kunde mit der angegebenen ID nicht gefunden wurde.
    *
-   * @param id The ID of the customer that could not be found.
+   * @param id Die ID des nicht gefundenen Kunden.
    */
   public NotFoundException(final UUID id) {
-    super(String.format("No customer found with ID: %s", id));
+    super(String.format("Kein Kunde mit der ID %s gefunden.", id));
     this.id = id;
     this.searchCriteria = null;
-    this.message = null;
-
+    this.message = String.format("Kein Kunde mit der ID %s gefunden.", id);
   }
 
   /**
-   * Constructs a new {@code NotFoundException} with a message indicating no customers were found for the given search criteria.
+   * Erstellt eine neue {@code NotFoundException}, wenn keine Kunden mit den angegebenen Suchkriterien gefunden wurden.
    *
-   * @param searchCriteria The search criteria that did not yield any results.
+   * @param searchCriteria Die Suchkriterien, die keine Ergebnisse geliefert haben.
    */
   public NotFoundException(final Map<String, List<String>> searchCriteria) {
-    super(String.format("No customers found with these search criteria: %s", searchCriteria));
+    super(String.format("Keine Kunden mit diesen Suchkriterien gefunden: %s", searchCriteria));
     this.id = null;
     this.searchCriteria = searchCriteria;
-    this.message = null;
-  }
-
-  public NotFoundException(final String message) {
-    super("No customers found. with username: " + message);
-    this.id = null;
-    this.searchCriteria = null;
-    this.message = message;
+    this.message = String.format("Keine Kunden mit diesen Suchkriterien gefunden: %s", searchCriteria);
   }
 
   /**
-   * Constructs a new {@code NotFoundException} with a default message indicating no customers were found.
+   * Erstellt eine neue {@code NotFoundException}, wenn ein Kunde mit einem bestimmten Benutzernamen nicht gefunden wurde.
+   *
+   * @param username Der Benutzername des nicht gefundenen Kunden.
    */
-  public NotFoundException() {
-    super("No customers found.");
+  public NotFoundException(final String username) {
+    super(String.format("Kein Kunde mit dem Benutzernamen '%s' gefunden.", username));
     this.id = null;
     this.searchCriteria = null;
-    this.message = null;
+    this.message = String.format("Kein Kunde mit dem Benutzernamen '%s' gefunden.", username);
+  }
+
+  /**
+   * Erstellt eine neue {@code NotFoundException} mit einer Standardnachricht, wenn keine Kunden gefunden wurden.
+   */
+  public NotFoundException() {
+    super("Keine Kunden gefunden.");
+    this.id = null;
+    this.searchCriteria = null;
+    this.message = "Keine Kunden gefunden.";
   }
 }

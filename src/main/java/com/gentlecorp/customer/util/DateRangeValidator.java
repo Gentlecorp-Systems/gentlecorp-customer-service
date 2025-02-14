@@ -7,6 +7,17 @@ import jakarta.validation.ConstraintValidatorContext;
 
 import java.time.LocalDate;
 
+/**
+ * Validiert, ob das Startdatum eines Kontakts vor dem Enddatum liegt.
+ * <p>
+ * Diese Klasse implementiert die `ConstraintValidator`-Schnittstelle und prüft,
+ * ob das in `ContactDTO` definierte Startdatum nicht nach dem Enddatum liegt.
+ * </p>
+ *
+ * @since 13.02.2025
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
+ */
 public class DateRangeValidator implements ConstraintValidator<ValidDateRange, ContactDTO> {
 
   @Override

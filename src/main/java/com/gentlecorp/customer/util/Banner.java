@@ -9,6 +9,16 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Locale;
 
+/**
+ * Erstellt ein ASCII-Banner mit Systeminformationen für die Anwendung.
+ * <p>
+ * Zeigt unter anderem Java-Version, Betriebssystem, Speicherverbrauch, Kubernetes- und Keycloak-Konfiguration an.
+ * </p>
+ *
+ * @since 13.02.2025
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
+ */
 public final class Banner {
 
   private static final Figlets figlets = new Figlets();

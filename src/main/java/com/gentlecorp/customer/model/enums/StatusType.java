@@ -4,35 +4,48 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Stream;
 
 /**
- * Enum für verschiedene Statusarten eines Kunden.
- * Unterstützt JSON-Verarbeitung.
+ * Definiert die möglichen Statusarten eines Kunden.
+ * <p>
+ * Unterstützt Kurzformen ("A", "B", "I", "C") sowie Langformen ("ACTIVE", "BLOCKED", "INACTIVE", "CLOSED").
+ * Optimiert für JSON-Verarbeitung.
+ * </p>
+ *
+ * @author Caleb Gyamfi
+ * @version 1.0
  */
 @RequiredArgsConstructor
 public enum StatusType {
 
-    ACTIVE("A"),
-    BLOCKED("B"),
-    INACTIVE("I"),
-    CLOSED("C");
+    ACTIVE("A", "ACTIVE"),
+    BLOCKED("B", "BLOCKED"),
+    INACTIVE("I", "INACTIVE"),
+    CLOSED("C", "CLOSED");
 
-    private final String state;
+    private final String shortValue;
+    private final String longValue;
 
     /**
-     * Gibt die String-Repräsentation des Status zurück.
+     * Gibt die JSON-kompatible String-Repräsentation des Status zurück.
      *
-     * @return der Statuswert als String.
+     * @return die lange Form des Status als String.
      */
     @JsonValue
-    public String getState() {
-        return state;
+    public String getJsonValue() {
+        return longValue; // Gibt die Langform aus, z. B. "ACTIVE"
     }
+
+    private static final Map<String, StatusType> lookup = Stream.of(values())
+        .collect(java.util.stream.Collectors.toMap(
+            e -> e.shortValue.toUpperCase(), e -> e
+        ));
 
     /**
      * Wandelt einen String-Wert in den entsprechenden Enum-Wert um.
-     * Unterstützt JSON- und Datenbank-Verarbeitung.
+     * Unterstützt sowohl "A", "B", "I", "C" als auch "ACTIVE", "BLOCKED", "INACTIVE", "CLOSED".
      *
      * @param value der String-Wert des Status.
      * @return der entsprechende Enum-Wert.
@@ -40,11 +53,19 @@ public enum StatusType {
      */
     @JsonCreator
     public static StatusType of(final String value) {
-        return Arrays.stream(values())
-            .filter(statusType -> statusType.state.equalsIgnoreCase(value))
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException(
-                String.format("Ungültiger Statuswert '%s' für StatusType", value)
-            ));
+        if (value == null) {
+            throw new IllegalArgumentException("StatusType darf nicht null sein.");
+        }
+
+        String upperValue = value.toUpperCase();
+        for (StatusType type : values()) {
+            if (type.shortValue.equalsIgnoreCase(upperValue) || type.longValue.equalsIgnoreCase(upperValue)) {
+                return type;
+            }
+        }
+
+        throw new IllegalArgumentException(
+            String.format("Ungültiger Statuswert '%s' für StatusType. Erlaubt: A, B, I, C oder ACTIVE, BLOCKED, INACTIVE, CLOSED", value)
+        );
     }
 }

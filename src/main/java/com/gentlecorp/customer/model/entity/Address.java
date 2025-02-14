@@ -12,7 +12,13 @@ import lombok.ToString;
 
 /**
  * Repräsentiert die Adresse eines Kunden.
- * Wird als eingebettetes Attribut in der Customer-Klasse verwendet.
+ * <p>
+ * Diese Klasse wird als eingebettetes Attribut in der {@link Customer} -Entität verwendet.
+ * </p>
+ *
+ * @since 13.02.2025
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
  */
 @Getter
 @Setter

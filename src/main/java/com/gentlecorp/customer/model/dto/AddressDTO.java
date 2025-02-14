@@ -4,25 +4,42 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
+/**
+ * Datentransferobjekt (DTO) für Adressinformationen.
+ * <p>
+ * Enthält Validierungsregeln für Straßenname, Hausnummer, PLZ, Stadt, Bundesland und Land.
+ * </p>
+ *
+ * @param street       Der Straßenname.
+ * @param houseNumber  Die Hausnummer.
+ * @param zipCode      Die Postleitzahl.
+ * @param city         Die Stadt.
+ * @param state        Das Bundesland.
+ * @param country      Das Land.
+ *
+ * @since 13.02.2025
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
+ */
 public record AddressDTO(
-  @Pattern(message = "Please enter a valid street name, containing only letters.", regexp = STREET_PATTERN)
-  @NotNull(message = "Street name cannot be null.")
-  String street,
+    @Pattern(message = "Bitte einen gültigen Straßennamen eingeben.", regexp = STREET_PATTERN)
+    @NotNull(message = "Der Straßenname darf nicht null sein.")
+    String street,
 
-  @NotNull(message = "House number cannot be null.")
-  String houseNumber,
+    @NotNull(message = "Die Hausnummer darf nicht null sein.")
+    String houseNumber,
 
-  @NotNull(message = "Zip code cannot be null.")
-  String zipCode,
+    @NotNull(message = "Die Postleitzahl darf nicht null sein.")
+    String zipCode,
 
-  @NotNull(message = "City name cannot be null.")
-  String city,
+    @NotNull(message = "Der Stadtname darf nicht null sein.")
+    String city,
 
-  @NotNull(message = "State name cannot be null.")
-  String state,
+    @NotNull(message = "Das Bundesland darf nicht null sein.")
+    String state,
 
-  @NotBlank(message = "Country name cannot be empty.")
-  String country
+    @NotBlank(message = "Der Ländername darf nicht leer sein.")
+    String country
 ) {
   public static final String STREET_PATTERN = "^[a-zA-ZäöüßÄÖÜ\\s]+(?:\\s\\d+)?$";
 }
