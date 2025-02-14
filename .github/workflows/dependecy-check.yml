@@ -41,7 +41,7 @@ jobs:
 
       # 5. Ergebnisse anzeigen
       - name: Upload dependency report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.6.0
         with:
           name: dependency-updates-report
           path: build/dependencyUpdates/report.html
