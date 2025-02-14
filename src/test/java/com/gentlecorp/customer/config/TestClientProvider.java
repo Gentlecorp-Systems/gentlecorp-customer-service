@@ -77,10 +77,7 @@ public class TestClientProvider extends CustomerTestData {
         .variables(variables)
         .retrieveSync("authenticate")
         .toEntity(TokenDTO.class);
-
-
-    log.debug("Antwort von Login: {}", token);
-
+    
     return token.access_token();
   }
 
