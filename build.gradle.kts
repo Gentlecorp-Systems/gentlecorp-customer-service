@@ -138,7 +138,6 @@ dependencies {
 	 * --------------------------------------------------------------------------------------------------------------------*/
 	runtimeOnly("org.bouncycastle:bcpkix-jdk18on:${libs.versions.bouncycastle.get()}") // Argon2
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
-	// implementation("com.c4-soft.springaddons:spring-addons-starter-oidc:${libs.versions.springAddonsStarterOidc.get()}")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 
 
@@ -162,10 +161,19 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test:${libs.versions.springBootTest.get()}")
 	testImplementation("org.apache.httpcomponents.client5:httpclient5:${libs.versions.httpclient5.get()}")
 	implementation("org.apache.httpcomponents.core5:httpcore5:${libs.versions.httpcore5.get()}")
-//	testImplementation("org.junit.jupiter:junit-jupiter")
-//	testImplementation("org.springframework.boot:spring-boot-starter-test")
-//	testImplementation("org.springframework.security:spring-security-test")
-//	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+	testImplementation("org.springframework.boot:spring-boot-testcontainers")
+
+	testImplementation("org.springframework:spring-webflux")
+	testImplementation("org.springframework.graphql:spring-graphql-test")
+	testImplementation("org.springframework.kafka:spring-kafka-test")
+	testImplementation("org.springframework.security:spring-security-test")
+	testImplementation("org.testcontainers:junit-jupiter")
+	testImplementation("org.testcontainers:kafka")
+	testImplementation("org.testcontainers:mongodb")
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+ 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
 	/**----------------------------------------------------------------
 	 * SPRING BOOT STARTER
@@ -178,6 +186,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
+	implementation("org.springframework.boot:spring-boot-starter-graphql")
 
 	/**--------------------------------------------------------------------------------------------------------------------
 	 * DATENBANK
@@ -187,7 +196,7 @@ dependencies {
 	/**------------------------------------------------------------------------------------------------------------------------
 	 * MESSANGER
 	 * --------------------------------------------------------------------------------------------------------------------*/
-//	implementation("org.springframework.kafka:spring-kafka")
+	implementation("org.springframework.kafka:spring-kafka")
 
 	/**------------------------------------------------------------------------------------------------------------------------
 	 * WICHTIGE EXTRAS
@@ -209,21 +218,28 @@ dependencies {
 	testImplementation("org.gaul:modernizer-maven-annotations:${libs.versions.modernizer.get()}")
 
 	/**------------------------------------------------------------------------------------------------------------------------
+	 * DOCKER
+	 * --------------------------------------------------------------------------------------------------------------------*/
+//	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
+
+	/**------------------------------------------------------------------------------------------------------------------------
 	 * OBSERVABILITY
 	 * --------------------------------------------------------------------------------------------------------------------*/
 	// Tracing durch Micrometer und Visualisierung durch Zipkin
-	if (useTracing) {
-		println("")
-		println("Tracing mit   Z i p k i n   aktiviert")
-		println("")
-		implementation("io.micrometer:micrometer-tracing-bridge-brave")
-		implementation("io.zipkin.reporter2:zipkin-reporter-brave")
-		runtimeOnly("io.micrometer:micrometer-registry-prometheus")
-	} else {
-		println("")
-		println("Tracing mit   Z i p k i n   d e a k t i v i e r t")
-		println("")
-	}
+//	implementation("io.zipkin.reporter2:zipkin-reporter-brave")
+//	implementation("io.micrometer:micrometer-tracing-bridge-brave")
+
+//	if (useTracing) {
+//		println("")
+//		println("Tracing mit   Z i p k i n   aktiviert")
+//		println("")
+//		runtimeOnly("io.micrometer:micrometer-registry-prometheus")
+//		runtimeOnly("io.micrometer:micrometer-registry-graphite")
+//	} else {
+//		println("")
+//		println("Tracing mit   Z i p k i n   d e a k t i v i e r t")
+//		println("")
+//	}
 }
 
 tasks.withType<Test> {
@@ -244,16 +260,8 @@ tasks.named("bootRun", org.springframework.boot.gradle.tasks.run.BootRun::class.
 	if (enablePreview != null) {
 		jvmArgs(enablePreview)
 	}
-
-	// "System Properties", z.B. fuer Spring Properties oder fuer logback
-	// https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties
 	// systemProperty("spring.profiles.active", activeProfiles)
 	systemProperty("logging.file.name", "./build/log/application.log")
-	// $env:TEMP\tomcat-docbase.* -> src\main\webapp (urspruengl. fuer WAR)
-	// Document Base = Context Root, siehe https://tomcat.apache.org/tomcat-10.1-doc/config/context.html
-	// $env:TEMP\hsperfdata_<USERNAME>\<PID> Java HotSpot Performance data log: bei jedem Start der JVM neu angelegt.
-	// https://support.oracle.com/knowledge/Middleware/2325910_1.html
-	// https://blog.mygraphql.com/zh/notes/java/diagnostic/hsperfdata/hsperfdata
 	systemProperty("server.tomcat.basedir", "build/tomcat")
 	systemProperty("keycloak.client-secret", project.properties["keycloak.client-secret"]!!)
 	systemProperty("keycloak.issuer", project.properties["keycloak.issuer"]!!)
@@ -336,7 +344,6 @@ idea {
 	module {
 		isDownloadSources = true
 		isDownloadJavadoc = true
-		// https://stackoverflow.com/questions/59950657/querydsl-annotation-processor-and-gradle-plugin
 		sourceDirs.add(file("generated/"))
 		generatedSourceDirs.add(file("generated/"))
 	}

@@ -14,6 +14,13 @@ server:
 
 # Spring Boot Einstellungen
 spring:
+  graphql:
+    graphiql:
+     enabled: true
+    schema:
+     printer:
+      enabled: true
+
   profiles:
     active: ${app.env}
   application:
@@ -27,6 +34,7 @@ spring:
     mongodb:
       uri: ${app.mongo.uri}
       database: ${app.mongo.database}
+      uuid-representation: standard
 
 # Applikationsspezifische Einstellungen
 app:
@@ -57,7 +65,7 @@ logging:
       %date{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %5level ${PID:- } --- [%thread]
       %-40.40logger{39} : %m%n%wEx
   level:
-      com.gentlecorp: trace
+      com.gentlecorp.customer: trace
       org.apache.catalina.loader.WebappClassLoaderBase: info
       org.springframework.boot.availability.ApplicationAvailabilityBean: debug
       org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener: warn
@@ -83,3 +91,5 @@ logging:
       org.springframework.test.context.support.DefaultTestContextBootstrapper: warn
       org.springframework.data.mongodb: debug
       org.junit.jupiter: warn
+
+      # org.springframework.graphql: debug

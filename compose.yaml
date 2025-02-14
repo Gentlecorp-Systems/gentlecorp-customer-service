@@ -1,0 +1,21 @@
+include:
+  - path: ../compose/mongoDb/compose.yml
+  - path: ../compose/camunda/compose.yaml
+
+
+services:
+#  mongodb:
+#    image: 'mongo:latest'
+#    environment:
+#      - 'MONGO_INITDB_DATABASE=mydatabase'
+#      - 'MONGO_INITDB_ROOT_PASSWORD=secret'
+#      - 'MONGO_INITDB_ROOT_USERNAME=root'
+#    ports:
+#      - '27017'
+#    depends_on:
+#      backend:
+#        condition: service_started
+  zipkin:
+    image: 'openzipkin/zipkin:latest'
+    ports:
+      - '9411'

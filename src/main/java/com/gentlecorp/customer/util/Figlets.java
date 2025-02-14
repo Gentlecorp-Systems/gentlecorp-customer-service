@@ -2,6 +2,16 @@ package com.gentlecorp.customer.util;
 
 import java.util.Random;
 
+/**
+ * Generiert zufällige ASCII-Figlet-Banner.
+ * <p>
+ * Diese Klasse stellt verschiedene ASCII-Stile bereit, um eine zufällige Figlet-Darstellung auszuwählen.
+ * </p>
+ *
+ * @since 13.02.2025
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
+ */
 public class Figlets {
 
   private static final String IVRIT = """
@@ -55,6 +65,11 @@ public class Figlets {
 
   private static final Random RANDOM = new Random();
 
+  /**
+   * Wählt zufällig eine ASCII-Figlet-Darstellung aus.
+   *
+   * @return Eine zufällige ASCII-Banner-Zeichenkette.
+   */
   public String randomFigletGenerator() {
     // Generates a random number between 0 and 4 (inclusive)
     int choice = RANDOM.nextInt(5);

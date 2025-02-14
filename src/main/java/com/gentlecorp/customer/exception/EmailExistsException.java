@@ -11,7 +11,7 @@ import lombok.Getter;
  * </p>
  *
  * @author <a href="mailto:Caleb_G@outlook.de">Caleb Gyamfi</a>
- * @since 24.08.2024
+ * @since 13.02.2024
  * @version 1.0
  */
 @Getter
