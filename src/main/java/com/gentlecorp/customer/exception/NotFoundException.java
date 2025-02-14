@@ -12,9 +12,9 @@ import java.util.UUID;
  * Diese Ausnahme signalisiert, dass kein Kunde mit der angegebenen ID oder Suchkriterien existiert.
  * </p>
  *
- * @since 24.08.2024
+ * @since 13.02.2024
  * @version 1.1
- * @author Caleb Gyamfi
+ * @author <a href="mailto:Caleb_G@outlook.de">Caleb Gyamfi</a>
  */
 @Getter
 public final class NotFoundException extends RuntimeException {

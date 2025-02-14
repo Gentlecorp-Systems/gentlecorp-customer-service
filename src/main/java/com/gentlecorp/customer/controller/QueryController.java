@@ -1,16 +1,14 @@
 package com.gentlecorp.customer.controller;
 
 import com.gentlecorp.customer.exception.AccessForbiddenException;
-import com.gentlecorp.customer.exception.EmailExistsException;
 import com.gentlecorp.customer.exception.NotFoundException;
 import com.gentlecorp.customer.exception.UnauthorizedException;
-import com.gentlecorp.customer.exception.UsernameExistsException;
 import com.gentlecorp.customer.model.entity.Customer;
 import com.gentlecorp.customer.model.input.FilterInput;
 import com.gentlecorp.customer.model.input.PaginationInput;
 import com.gentlecorp.customer.model.input.SortInput;
 import com.gentlecorp.customer.service.CustomerReadService;
-import com.gentlecorp.customer.service.JwtService;
+import com.gentlecorp.customer.security.service.JwtService;
 import graphql.GraphQLError;
 import graphql.schema.DataFetchingEnvironment;
 import jakarta.validation.ConstraintViolation;
@@ -26,22 +24,27 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Controller;
 
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.StreamSupport;
 
-import static java.util.Collections.emptyMap;
 import static org.springframework.graphql.execution.ErrorType.BAD_REQUEST;
 import static org.springframework.graphql.execution.ErrorType.FORBIDDEN;
 import static org.springframework.graphql.execution.ErrorType.NOT_FOUND;
 import static org.springframework.http.ResponseEntity.ok;
 
+/**
+ * Der `QueryController` verarbeitet GraphQL-Anfragen für Kunden und Benutzer.
+ * Er stellt Methoden für das Abrufen von Kunden und anderen Benutzerdaten bereit.
+ *
+ * @since 13.02.2024
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
+ */
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -50,6 +53,13 @@ public class QueryController {
     private final CustomerReadService customerReadService;
     private final JwtService jwtService;
 
+    /**
+     * Validiert ein JWT und extrahiert Benutzername und Rolle.
+     *
+     * @param jwt Das JWT des Nutzers.
+     * @return Ein `Pair` mit Benutzername und Rolle.
+     * @throws UnauthorizedException Falls das JWT ungültig ist oder die Informationen fehlen.
+     */
     Pair<String, String> validateJwtAndGetUsernameAndRole(Jwt jwt) {
         final var username = jwtService.getUsername(jwt);
         if (username == null) {
@@ -65,6 +75,13 @@ public class QueryController {
     }
 
 
+    /**
+     * Ruft einen Kunden anhand seiner ID ab.
+     *
+     * @param id Die UUID des Kunden.
+     * @param authentication Die Authentifizierungsinformationen des Nutzers.
+     * @return Das gefundene `Customer`-Objekt.
+     */
     @QueryMapping("customer")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER', 'SUPREME', 'ELITE', 'BASIC')")
     Customer getById(
@@ -157,6 +174,13 @@ public class QueryController {
 //            .toList();
 //    }
 
+    /**
+     * Behandelt eine `AccessForbiddenException` und gibt ein entsprechendes GraphQL-Fehlerobjekt zurück.
+     *
+     * @param ex Die ausgelöste Ausnahme.
+     * @param env Das GraphQL-Umfeld für Fehlerinformationen.
+     * @return Ein `GraphQLError` mit der Fehlerbeschreibung.
+     */
     @GraphQlExceptionHandler
     GraphQLError onAccessForbidden(final AccessForbiddenException ex, DataFetchingEnvironment env) {
         return GraphQLError.newError()
@@ -167,6 +191,13 @@ public class QueryController {
             .build();
     }
 
+    /**
+     * Behandelt eine `NotFoundException` und gibt ein entsprechendes GraphQL-Fehlerobjekt zurück.
+     *
+     * @param ex Die ausgelöste Ausnahme.
+     * @param env Das GraphQL-Umfeld für Fehlerinformationen.
+     * @return Ein `GraphQLError` mit der Fehlerbeschreibung.
+     */
     @GraphQlExceptionHandler
     GraphQLError onNotFound(final NotFoundException ex, DataFetchingEnvironment env) {
         return GraphQLError.newError()

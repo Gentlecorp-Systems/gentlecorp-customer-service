@@ -1,12 +1,12 @@
-package com.gentlecorp.customer.service;
+package com.gentlecorp.customer.security.service;
 
 import com.gentlecorp.customer.KeycloakProps;
 import com.gentlecorp.customer.exception.NotFoundException;
 import com.gentlecorp.customer.exception.SignUpException;
-import com.gentlecorp.customer.model.dto.TokenDTO;
-import com.gentlecorp.customer.model.dto.UserRepresentation;
 import com.gentlecorp.customer.model.entity.Customer;
-import com.gentlecorp.customer.repository.KeycloakRepository;
+import com.gentlecorp.customer.security.KeycloakRepository;
+import com.gentlecorp.customer.security.dto.TokenDTO;
+import com.gentlecorp.customer.security.dto.UserRepresentation;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +19,16 @@ import java.util.Base64;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+/**
+ * Service für die Integration mit Keycloak.
+ * <p>
+ * Dieser Service ermöglicht Benutzerregistrierung, Authentifizierung und Rollenverwaltung über Keycloak.
+ * </p>
+ *
+ * @since 14.02.2025
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -29,6 +39,9 @@ public class KeycloakService {
   private String clientAndSecretEncoded;
   private final JwtService jwtService;
 
+  /**
+   * Kodiert die Client-ID und das Client-Secret für die Authentifizierung mit Keycloak.
+   */
   @PostConstruct
   private void encodeClientAndSecret() {
     final var clientAndSecret = keycloakProps.clientId() + ':' + keycloakProps.clientSecret();
@@ -37,6 +50,13 @@ public class KeycloakService {
       .encodeToString(clientAndSecret.getBytes(Charset.defaultCharset()));
   }
 
+  /**
+   * Meldet einen Benutzer mit Benutzername und Passwort bei Keycloak an.
+   *
+   * @param username Der Benutzername.
+   * @param password Das Passwort.
+   * @return Ein `TokenDTO`, das ein Zugriffstoken enthält.
+   */
   public TokenDTO login(final String username, final String password) {
     return keycloakRepository.login(
       "grant_type=password&username=" + username
@@ -49,6 +69,11 @@ public class KeycloakService {
     );
   }
 
+  /**
+   * Ruft das Admin-Token aus Keycloak ab.
+   *
+   * @return Das Zugriffstoken für den Admin.
+   */
   private String getAdminToken() {
     log.debug("getAdminToken");
     final var adminToken = login("admin", "p");
@@ -62,6 +87,13 @@ public class KeycloakService {
     return info.sub();
   }
 
+  /**
+   * Registriert einen neuen Benutzer in Keycloak.
+   *
+   * @param customer Die Kundendaten.
+   * @param password Das Passwort des Kunden.
+   * @param role     Die zugewiesene Rolle.
+   */
   public void signIn(final Customer customer, final String password, final String role) {
     log.debug("signIn: customer data prepared for registration");
     // log.debug("signIn: customer={}", customer.getUsername());

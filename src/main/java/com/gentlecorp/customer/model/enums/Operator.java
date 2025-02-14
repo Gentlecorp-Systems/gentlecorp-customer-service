@@ -1,7 +1,14 @@
 package com.gentlecorp.customer.model.enums;
 
 /**
- * Mögliche Vergleichsoperatoren für Filterbedingungen.
+ * Enum zur Definition von Vergleichsoperatoren für Filterbedingungen.
+ * <p>
+ * Diese Operatoren ermöglichen die Formulierung dynamischer Suchanfragen.
+ * </p>
+ *
+ * @since 13.02.2025
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
  */
 public enum Operator {
     EQ,   // Gleichheit

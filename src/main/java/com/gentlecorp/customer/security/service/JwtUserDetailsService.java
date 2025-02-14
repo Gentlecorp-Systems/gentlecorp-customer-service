@@ -1,5 +1,7 @@
-package com.gentlecorp.customer.security;
+package com.gentlecorp.customer.security.service;
 
+import com.gentlecorp.customer.security.CustomUserDetails;
+import com.gentlecorp.customer.security.enums.RoleType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +16,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Service zur Verarbeitung von JWTs und Erstellung von `UserDetails`.
+ * <p>
+ * Dieser Service analysiert ein JWT, extrahiert Benutzerinformationen und erstellt
+ * ein entsprechendes `UserDetails`-Objekt für die Authentifizierung.
+ * </p>
+ *
+ * @since 14.02.2025
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j

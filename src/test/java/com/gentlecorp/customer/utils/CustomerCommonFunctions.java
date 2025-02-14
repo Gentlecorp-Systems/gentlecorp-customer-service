@@ -70,7 +70,7 @@ public class CustomerCommonFunctions extends CustomerTestData {
         .bodyToMono(String.class)
         .block(); // block() nur für Tests
   }
-  
+
   protected GraphQlResponse<Customer> executeCustomerGraphQLQuery(
       final String query, final Map<String, Object> variables, final HttpGraphQlClient client
   ) {

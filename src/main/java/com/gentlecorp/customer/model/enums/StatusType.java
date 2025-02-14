@@ -8,8 +8,14 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 /**
- * Enum für verschiedene Statusarten eines Kunden.
- * Unterstützt JSON-Verarbeitung.
+ * Definiert die möglichen Statusarten eines Kunden.
+ * <p>
+ * Unterstützt Kurzformen ("A", "B", "I", "C") sowie Langformen ("ACTIVE", "BLOCKED", "INACTIVE", "CLOSED").
+ * Optimiert für JSON-Verarbeitung.
+ * </p>
+ *
+ * @author Caleb Gyamfi
+ * @version 1.0
  */
 @RequiredArgsConstructor
 public enum StatusType {

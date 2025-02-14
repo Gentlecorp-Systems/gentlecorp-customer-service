@@ -8,7 +8,15 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 /**
- * Enum für Interessentypen, angepasst für die Verwendung mit JSON und MongoDB.
+ * Enum zur Definition von Interessentypen eines Kunden.
+ * <p>
+ * Unterstützt sowohl Kurzformen (z. B. "I" für Investments) als auch Langformen (z. B. "INVESTMENTS").
+ * Optimiert für JSON-Serialisierung und MongoDB-Speicherung.
+ * </p>
+ *
+ * @since 13.02.2025
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
  */
 @RequiredArgsConstructor
 public enum InterestType {

@@ -9,11 +9,29 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Diese Ausnahme wird ausgelöst, wenn eine oder mehrere Validierungsregeln verletzt wurden.
+ * <p>
+ * Die Exception enthält Listen mit fehlerhaften Feldern aus den Entitäten `CustomerDTO` und `ContactDTO`.
+ * </p>
+ *
+ * @since 13.02.2024
+ * @version 1.0
+ * @author <a href="mailto:Caleb_G@outlook.de">Caleb Gyamfi</a>
+ */
 @Getter
 public class ConstraintViolationsException extends RuntimeException {
+  /** Liste der Validierungsfehler für die `CustomerDTO`-Entität. */
   private final transient Collection<ConstraintViolation<CustomerDTO>> customerViolationsDTO;
+  /** Liste der Validierungsfehler für die `ContactDTO`-Entität. */
   private final transient Collection<ConstraintViolation<ContactDTO>> contactViolationsDTO;
 
+  /**
+   * Erstellt eine neue `ConstraintViolationsException` mit einer Liste von Validierungsfehlern.
+   *
+   * @param customerViolations Liste der Kunden-Validierungsfehler.
+   * @param contactViolations  Liste der Kontakt-Validierungsfehler.
+   */
   public ConstraintViolationsException(
     final Collection<ConstraintViolation<CustomerDTO>> customerViolations,
     final Collection<ConstraintViolation<ContactDTO>> contactViolations

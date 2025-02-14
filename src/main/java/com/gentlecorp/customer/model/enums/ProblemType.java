@@ -8,6 +8,13 @@ import java.util.Arrays;
 
 /**
  * Enum für verschiedene Problemtypen in der Anwendung, z. B. Fehlerarten oder Statuscodes.
+ * <p>
+ * Dieses Enum definiert die Problemtypen, die zur Fehlerbehandlung in der Anwendung verwendet werden.
+ * </p>
+ *
+ * @since 13.02.2025
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
  */
 @Getter
 public enum ProblemType {

@@ -1,4 +1,4 @@
-package com.gentlecorp.customer.security;
+package com.gentlecorp.customer.security.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -7,8 +7,14 @@ import lombok.RequiredArgsConstructor;
 import java.util.Arrays;
 
 /**
- * Enum für verschiedene Benutzerrollen in der Anwendung.
- * Unterstützt JSON- und MongoDB-Verarbeitung.
+ * Definiert verschiedene Benutzerrollen in der Anwendung.
+ * <p>
+ * Unterstützt JSON-Serialisierung und ermöglicht die Umwandlung von String-Werten in Enum-Werte.
+ * </p>
+ *
+ * @since 14.02.2025
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
  */
 @RequiredArgsConstructor
 public enum RoleType {

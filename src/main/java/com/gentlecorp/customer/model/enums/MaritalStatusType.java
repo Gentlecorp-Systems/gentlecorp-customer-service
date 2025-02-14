@@ -8,7 +8,15 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 /**
- * Enum für Familienstandstypen, angepasst für JSON und MongoDB.
+ * Enum für Familienstandstypen eines Kunden.
+ * <p>
+ * Unterstützt Kurzformen ("S", "M", "D", "W") sowie Langformen ("SINGLE", "MARRIED", "DIVORCED", "WIDOWED").
+ * Optimiert für JSON-Serialisierung.
+ * </p>
+ *
+ * @since 13.02.2025
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
  */
 @RequiredArgsConstructor
 public enum MaritalStatusType {

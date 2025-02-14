@@ -18,6 +18,17 @@ import static com.gentlecorp.customer.util.Banner.TEXT;
 import static org.springframework.hateoas.config.EnableHypermediaSupport.HypermediaType.HAL;
 import static org.springframework.hateoas.support.WebStack.WEBMVC;
 
+/**
+ * Hauptklasse der Spring Boot-Anwendung für das Kundenmanagement.
+ * <p>
+ * Diese Klasse initialisiert die Anwendung und lädt die Umgebungsvariablen aus einer `.env`-Datei.
+ * Zudem werden verschiedene Spring-Module wie Security, MongoDB und Hypermedia aktiviert.
+ * </p>
+ *
+ * @since 14.02.2025
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
+ */
 @SpringBootApplication(proxyBeanMethods = false)
 @Import({ApplicationConfig.class, DevConfig.class})
 @EnableConfigurationProperties({KeycloakProps.class, MailProps.class})
@@ -29,14 +40,18 @@ import static org.springframework.hateoas.support.WebStack.WEBMVC;
 @EnableMongoAuditing
 public class CustomerApplication {
 
+	/**
+	 * Startet die Anwendung.
+	 *
+	 * @param args Kommandozeilenargumente.
+	 */
 	public static void main(String[] args) {
 		// .env-Datei laden
 		Dotenv dotenv = Dotenv.configure().load();
-
 		// Umgebungsvariablen setzen
 		dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
 
-
+		// Setze das ASCII-Banner und starte die Anwendung
 		final var app = new SpringApplication(CustomerApplication.class);
 		app.setBanner((_, _, out) -> out.println(TEXT));
 		app.run(args);

@@ -1,16 +1,14 @@
 package com.gentlecorp.customer.config;
 
-import com.gentlecorp.customer.model.dto.TokenDTO;
+import com.gentlecorp.customer.security.dto.TokenDTO;
 import com.gentlecorp.customer.testData.CustomerTestData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.graphql.client.GraphQlClient;
 import org.springframework.graphql.client.HttpGraphQlClient;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;

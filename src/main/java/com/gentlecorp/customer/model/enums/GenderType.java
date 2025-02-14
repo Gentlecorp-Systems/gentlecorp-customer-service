@@ -8,7 +8,15 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 /**
- * Enum für Geschlechtertypen, angepasst für JSON und MongoDB.
+ * Definiert die möglichen Geschlechtsoptionen eines Kunden.
+ * <p>
+ * Unterstützt Kurzformen ("M", "F", "D") sowie Langformen ("MALE", "FEMALE", "DIVERSE").
+ * Dieses Enum ist optimiert für JSON-Serialisierung und MongoDB-Speicherung.
+ * </p>
+ *
+ * @since 13.02.2025
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
  */
 @RequiredArgsConstructor
 public enum GenderType {

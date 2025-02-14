@@ -3,7 +3,7 @@ package com.gentlecorp.customer.service;
 import com.gentlecorp.customer.exception.AccessForbiddenException;
 import com.gentlecorp.customer.exception.NotFoundException;
 import com.gentlecorp.customer.model.entity.Customer;
-import com.gentlecorp.customer.security.RoleType;
+import com.gentlecorp.customer.security.enums.RoleType;
 import com.gentlecorp.customer.repository.CustomerRepository;
 import io.micrometer.observation.annotation.Observed;
 import lombok.NonNull;
@@ -26,9 +26,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.gentlecorp.customer.security.RoleType.ADMIN;
-import static com.gentlecorp.customer.security.RoleType.USER;
+import static com.gentlecorp.customer.security.enums.RoleType.ADMIN;
+import static com.gentlecorp.customer.security.enums.RoleType.USER;
 
+/**
+ * Serviceklasse zur Verwaltung von Kundenleseoperationen.
+ * <p>
+ * Diese Klasse bietet Methoden zum Abrufen einzelner Kunden sowie zur Durchführung dynamischer Suchabfragen.
+ * </p>
+ *
+ * @author Caleb Gyamfi
+ * @version 1.0
+ */
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -41,13 +50,17 @@ public class CustomerReadService {
 
 
     /**
-     * Findet einen Kunden anhand der ID.
+     * Findet einen Kunden anhand seiner ID.
+     * <p>
+     * Diese Methode überprüft, ob der angemeldete Benutzer Zugriff auf die angeforderte Kunden-ID hat.
+     * Administratoren und Benutzer mit entsprechender Berechtigung dürfen alle Kunden einsehen.
+     * </p>
      *
-     * @param id   Die Kunden-ID
-     * @param user Der eingeloggte Benutzer
-     * @return Der gefundene Kunde
-     * @throws NotFoundException Falls der Kunde nicht gefunden wird
-     * @throws AccessForbiddenException Falls der Benutzer keinen Zugriff hat
+     * @param id   Die eindeutige Kunden-ID.
+     * @param user Der angemeldete Benutzer, der die Abfrage durchführt.
+     * @return Der gefundene Kunde.
+     * @throws NotFoundException Falls kein Kunde mit der angegebenen ID gefunden wird.
+     * @throws AccessForbiddenException Falls der Benutzer keinen Zugriff auf den Kunden hat.
      */
     @Observed(name = "find-by-id")
     public @NonNull Customer findById(final UUID id, final UserDetails user) {
@@ -75,12 +88,15 @@ public class CustomerReadService {
 
     /**
      * Führt eine dynamische Filter-, Paginierungs- und Sortierabfrage aus.
+     * <p>
+     * Diese Methode generiert eine MongoDB-Abfrage basierend auf den übergebenen Filterkriterien.
+     * </p>
      *
-     * @param filter Die Filterbedingungen als `Map<String, Object>`
-     * @param page   Die gewünschte Seite
-     * @param size   Die Anzahl der Einträge pro Seite
-     * @param sort   Die Sortierkriterien als `Map<String, String>` (Feldname -> "ASC"/"DESC")
-     * @return Eine Liste mit den gefundenen Kunden
+     * @param filter Eine `Map<String, Object>` mit den Filterbedingungen.
+     * @param page   Die gewünschte Seite (beginnend bei 0).
+     * @param size   Die Anzahl der Einträge pro Seite.
+     * @param sort   Eine `Map<String, String>` mit den Sortierkriterien (Feldname -> "ASC"/"DESC").
+     * @return Eine `Collection<Customer>` mit den gefundenen Kunden.
      */
     public @NonNull Collection<Customer> find(
         Map<String, Object> filter, int page, int size, Map<String, String> sort

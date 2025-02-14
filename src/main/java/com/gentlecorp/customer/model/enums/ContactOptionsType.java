@@ -8,7 +8,15 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 /**
- * Enum für Kontaktoptionen, angepasst für die Verwendung mit MongoDB und JSON.
+ * Definiert die verfügbaren Kontaktoptionen eines Kunden.
+ * <p>
+ * Diese Enum unterstützt sowohl Kurzformen (z. B. "E" für E-Mail) als auch Langformen (z. B. "EMAIL").
+ * Sie wird für die Speicherung in MongoDB und für JSON-Serialisierung optimiert.
+ * </p>
+ *
+ * @since 13.02.2025
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
  */
 @RequiredArgsConstructor
 public enum ContactOptionsType {
@@ -24,7 +32,7 @@ public enum ContactOptionsType {
   /**
    * Gibt die JSON-kompatible String-Repräsentation zurück.
    *
-   * @return die Langform der Kontaktoption als String.
+   * @return Die Langform der Kontaktoption (z. B. "EMAIL").
    */
   @JsonValue
   public String getJsonValue() {

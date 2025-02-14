@@ -17,7 +17,13 @@ import java.util.UUID;
 
 /**
  * Repräsentiert einen Kunden im System.
+ * <p>
  * Diese Entität wird in der MongoDB in der Collection 'Customer' gespeichert.
+ * </p>
+ *
+ * @since 13.02.2025
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
  */
 @Document(collection = "Customer")
 @Getter

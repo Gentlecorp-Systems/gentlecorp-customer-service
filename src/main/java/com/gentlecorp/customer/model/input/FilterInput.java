@@ -9,7 +9,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Record für die Filterparameter von GraphQL-Abfragen.
+ * Record zur Definition von Filterparametern für GraphQL-Abfragen.
+ * <p>
+ * Ermöglicht die dynamische Filterung von Abfragen mit verschiedenen Vergleichsoperatoren
+ * sowie der Verknüpfung von Bedingungen über `AND`, `OR` und `NOR`.
+ * </p>
  *
  * @param field    Das zu filternde Feld.
  * @param operator Der Vergleichsoperator (z. B. EQ, IN, GTE, LTE, LIKE).
@@ -17,6 +21,10 @@ import java.util.stream.Collectors;
  * @param AND      Logische UND-Verknüpfung mit weiteren Filtern.
  * @param OR       Logische ODER-Verknüpfung mit weiteren Filtern.
  * @param NOR      Logische NOR-Verknüpfung mit weiteren Filtern.
+ *
+ * @since 13.02.2025
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
  */
 public record FilterInput(
     FilterOptions field,

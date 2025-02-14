@@ -1,9 +1,9 @@
-package com.gentlecorp.customer.repository;
+package com.gentlecorp.customer.security;
 
-import com.gentlecorp.customer.model.dto.RoleDTO;
-import com.gentlecorp.customer.model.dto.TokenDTO;
-import com.gentlecorp.customer.model.dto.UserInfoDTO;
-import com.gentlecorp.customer.model.dto.UserRepresentation;
+import com.gentlecorp.customer.security.dto.RoleDTO;
+import com.gentlecorp.customer.security.dto.TokenDTO;
+import com.gentlecorp.customer.security.dto.UserInfoDTO;
+import com.gentlecorp.customer.security.dto.UserRepresentation;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -21,6 +21,16 @@ import java.util.Map;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
+/**
+ * Repository für die Kommunikation mit dem Keycloak-Server.
+ * <p>
+ * Stellt Endpunkte für Benutzerverwaltung, Authentifizierung und Rollenmanagement bereit.
+ * </p>
+ *
+ * @since 14.02.2025
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
+ */
 @HttpExchange
 public interface KeycloakRepository {
   @GetExchange("http://localhost:18080/auth/realms/camunda-platform/.well-known/openid-configuration")

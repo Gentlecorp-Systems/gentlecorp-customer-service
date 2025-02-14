@@ -1,7 +1,6 @@
 package com.gentlecorp.customer.config;
 
 import com.gentlecorp.customer.security.JwtToUserDetailsConverter;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.actuate.health.HealthEndpoint;
 import org.springframework.boot.actuate.metrics.export.prometheus.PrometheusScrapeEndpoint;
@@ -10,38 +9,31 @@ import org.springframework.security.authentication.password.CompromisedPasswordC
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
-import static com.gentlecorp.customer.security.RoleType.ADMIN;
-import static com.gentlecorp.customer.security.RoleType.BASIC;
-import static com.gentlecorp.customer.security.RoleType.ELITE;
-import static com.gentlecorp.customer.security.RoleType.SUPREME;
-import static com.gentlecorp.customer.util.Constants.AUTH_PATH;
-import static com.gentlecorp.customer.util.Constants.CUSTOMER_PATH;
-import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.OPTIONS;
 import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpMethod.PUT;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 import static org.springframework.security.crypto.factory.PasswordEncoderFactories.createDelegatingPasswordEncoder;
 
+/**
+ * Diese Schnittstelle definiert Sicherheitskonfigurationen für die Anwendung.
+ * Sie konfiguriert Authentifizierungs- und Autorisierungsregeln für HTTP-Anfragen.
+ *
+ * @since 13.02.2024
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
+ */
 sealed interface SecurityConfig permits ApplicationConfig {
-
-
+  /**
+   * Konfiguriert die Sicherheitsfilterkette für die Anwendung.
+   *
+   * @param httpSecurity Das HttpSecurity-Objekt zur Konfiguration der Sicherheitsrichtlinien.
+   * @return Die konfigurierte `SecurityFilterChain`-Instanz.
+   * @throws Exception Falls eine Sicherheitskonfiguration fehlschlägt.
+   */
   @Bean
   default SecurityFilterChain securityFilterChain(
       final HttpSecurity httpSecurity,

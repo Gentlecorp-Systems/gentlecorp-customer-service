@@ -1,17 +1,11 @@
 package com.gentlecorp.customer.testData;
 
-import static com.gentlecorp.customer.util.Constants.CUSTOMER_PATH;
-
 public class CustomerTestData {
 
 
   public static final String SCHEMA_HOST = "http://localhost:";
-  public static final String LOGIN_PATH = "/auth/login";
-  public static final String ALL_PATH = "/all/";
-  public static final String CONTACT_PATH = "/contact";
   public static final String GRAPHQL_ENDPOINT = "/graphql";
 
-  public static final String CONTACT_URL_TEMPLATE = SCHEMA_HOST + "%d" + CUSTOMER_PATH + CONTACT_PATH + "%s";
 
   public static final String ADMIN_ID = "/00000000-0000-0000-0000-000000000000";
 

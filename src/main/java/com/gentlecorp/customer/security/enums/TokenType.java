@@ -1,4 +1,4 @@
-package com.gentlecorp.customer.model.enums;
+package com.gentlecorp.customer.security.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -6,7 +6,14 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 
 /**
- * Enum für Token-Typen, unterstützt JSON- und Datenbank-Verarbeitung.
+ * Enum zur Definition von Token-Typen für die Authentifizierung.
+ * <p>
+ * Unterstützt JSON-Serialisierung und ermöglicht die Umwandlung von String-Werten in Enum-Werte.
+ * </p>
+ *
+ * @since 14.02.2025
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
  */
 public enum TokenType {
   BEARER("Bearer");
