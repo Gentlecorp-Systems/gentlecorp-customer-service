@@ -4,24 +4,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * Custom exception thrown during sign-up failures.
+ * Ausnahme, die während eines fehlgeschlagenen Registrierungsversuchs ausgelöst wird.
  * <p>
- * This exception is used to indicate that an error occurred during the sign-up process,
- * such as when required data is invalid or not provided. It results in an HTTP 500 (Internal Server Error) response.
+ * Diese Ausnahme wird verwendet, wenn eine Anmeldung aufgrund ungültiger oder unvollständiger Daten fehlschlägt.
+ * Sie führt zu einer HTTP 500 (Internal Server Error) Antwort.
  * </p>
  *
- * @since 24.08.2024
- * @version 1.0
- * @author <a href="mailto:Caleb_G@outlook.de">Caleb Gyamfi</a>
+ * @since 13.02.2025
+ * @version 1.1
+ * @author Caleb Gyamfi
  */
 @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 public class SignUpException extends RuntimeException {
 
   /**
-   * Constructs a new {@code SignUpException} with the specified detail message.
+   * Erstellt eine neue {@code SignUpException} mit einer bestimmten Fehlermeldung.
    *
-   * @param message The detail message that explains the reason for the exception.
-   *                This message is saved for later retrieval by the {@link #getMessage()} method.
+   * @param message Die Detailnachricht, die den Grund der Ausnahme erklärt.
    */
   public SignUpException(final String message) {
     super(message);

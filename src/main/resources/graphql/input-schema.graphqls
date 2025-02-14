@@ -1,0 +1,112 @@
+
+
+"""
+Pagination-Parameter für die Steuerung von Ergebnisgrößen.
+"""
+input PaginationInput {
+    """
+    Anzahl der zurückzugebenden Ergebnisse (Standard: 10).
+    """
+    limit: Int
+    """
+    Startpunkt der Ergebnisse (Standard: 0).
+    """
+    offset: Int
+}
+
+"""
+Filterbedingungen für Abfragen.
+"""
+input FilterInput {
+    """
+    Das zu filternde Feld, z. B. userId oder orgUnit.
+    """
+    field: FilterOptions
+
+    """
+    Der Vergleichsoperator, z. B. EQ oder IN.
+    """
+    operator: Operator
+
+    """
+    Der Vergleichswert.
+    """
+    value: String
+
+    """
+    Logische UND-Verknüpfung mit weiteren Filtern.
+    """
+    AND: [FilterInput]
+
+    """
+    Logische ODER-Verknüpfung mit weiteren Filtern.
+    """
+    OR: [FilterInput]
+
+    """
+    Logische NOR-Verknüpfung mit weiteren Filtern.
+    """
+    NOR: [FilterInput]
+}
+
+"""
+Sortierparameter für Abfragen.
+"""
+input SortInput {
+    """
+    Feld, nach dem sortiert werden soll.
+    """
+    field: FilterOptions
+
+    """
+    Sortierreihenfolge, z. B. ASC oder DESC.
+    """
+    direction: directionInput
+}
+
+
+"""
+Input-Daten für die Erstellung eines Benutzers.
+"""
+input CustomerInput {
+    lastName: String
+    firstName: String
+    email: String
+    phoneNumber: String
+    username: String
+    tierLevel: Int
+    subscribed: Boolean
+    birthdate: String
+    gender: String,
+    maritalStatus: String,
+    customerState: String,
+    address: AddresseInput
+    contactOptions: [String]
+    interests: [String]
+}
+
+input AddresseInput {
+    street: String,
+    houseNumber: String,
+    zipCode: String,
+    city: String,
+    state: String,
+    country: String
+}
+
+"""
+Input-Daten für die Aktualisierung eines Benutzers.
+"""
+input CustomerUpdateInput {
+    lastName: String
+    firstName: String
+    email: String
+    phoneNumber: String
+    tierLevel: Int
+    subscribed: Boolean
+    maritalStatus: String,
+    customerState: String,
+    address: AddresseInput
+    contactOptions: [String]
+    interests: [String]
+}

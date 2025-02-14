@@ -16,9 +16,26 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
+/**
+ * Diese Klasse behandelt häufige Ausnahmen in der Anwendung.
+ * <p>
+ * Sie konvertiert bekannte Fehler in standardisierte ProblemDetail-Objekte.
+ * </p>
+ *
+ * @since 13.02.2024
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
+ */
 @ControllerAdvice
 @Slf4j
 public class CommonExceptionHandler {
+  /**
+   * Behandelt `NotFoundException` und gibt ein ProblemDetail-Objekt zurück.
+   *
+   * @param ex      Die `NotFoundException`.
+   * @param request Die aktuelle HTTP-Anfrage.
+   * @return Das ProblemDetail-Objekt.
+   */
   @ExceptionHandler
   @ResponseStatus(NOT_FOUND)
   ProblemDetail onNotFoundException(
@@ -32,6 +49,13 @@ public class CommonExceptionHandler {
     return problemDetail;
   }
 
+  /**
+   * Behandelt `AccessForbiddenException` und gibt ein ProblemDetail-Objekt zurück.
+   *
+   * @param ex      Die `AccessForbiddenException`.
+   * @param request Die aktuelle HTTP-Anfrage.
+   * @return Das ProblemDetail-Objekt.
+   */
   @ExceptionHandler
   @ResponseStatus(FORBIDDEN)
   ProblemDetail onAccessForbiddenException(final AccessForbiddenException ex, final HttpServletRequest request) {

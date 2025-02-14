@@ -1,0 +1,28 @@
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+###############################################################################################
+# Q U E R I E S
+###############################################################################################
+type Query {
+    customer(id: ID!): Customer
+    customers(filter: FilterInput, pagination: PaginationInput, order: SortInput): [Customer!]
+    hallo: String
+}
+
+###############################################################################################G
+# M U T A T I O N S
+###############################################################################################
+type Mutation {
+    createCustomer(input: CustomerInput!): MutationResponse!
+    updateCustomer(input: CustomerUpdateInput!): MutationResponse!
+    deleteCustomer(id: ID!): MutationResponse!
+    authenticate(username: String!, password: String!): TokenResult!
+    refreshToken(refreshToken: String!): TokenResult!
+    me: UserInfo!
+    #addContact(id: ID!, contact: ContactInput!): MutationResponse!
+    #removeContact(id: ID!): MutationResponse!
+}
+

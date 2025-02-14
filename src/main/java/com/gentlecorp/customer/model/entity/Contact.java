@@ -11,8 +11,13 @@ import java.util.UUID;
 
 /**
  * Repräsentiert einen Kontakt eines Kunden.
- * Wird als eingebettetes Attribut in der Customer-Collection verwendet.
- * Der Kontakt verweist auf einen anderen Kunden über die ID.
+ * <p>
+ * Kontakte verweisen auf andere Kunden über deren ID und definieren Beziehungen zwischen ihnen.
+ * </p>
+ *
+ * @since 13.02.2025
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
+ * @version 1.0
  */
 @Getter
 @Setter
