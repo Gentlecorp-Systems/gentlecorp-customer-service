@@ -488,7 +488,13 @@ public class TestCustomers extends CustomerCommonFunctions {
                     .isNotEmpty()
                     .hasSize(expectedSize),
                 () -> assertThat(response.getData())
-                    .allMatch(customer -> matchesBirthdateFilter(customer, birthdateFilter, operator))
+                    .allMatch(customer -> {
+                        try {
+                            return matchesBirthdateFilter(customer, birthdateFilter, operator);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    })
             );
         }
 
