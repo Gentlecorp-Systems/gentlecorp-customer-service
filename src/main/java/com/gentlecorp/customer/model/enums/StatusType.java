@@ -13,8 +13,8 @@ import java.util.stream.Stream;
  * Unterstützt Kurzformen ("A", "B", "I", "C") sowie Langformen ("ACTIVE", "BLOCKED", "INACTIVE", "CLOSED").
  * Optimiert für JSON-Verarbeitung.
  * </p>
- *
- * @author Caleb Gyamfi
+ * @since 13.02.2025
+ * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
  * @version 1.0
  */
 @RequiredArgsConstructor

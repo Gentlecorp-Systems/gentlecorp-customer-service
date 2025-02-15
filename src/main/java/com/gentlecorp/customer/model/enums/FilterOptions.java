@@ -6,9 +6,9 @@ package com.gentlecorp.customer.model.enums;
  * Dieses Enum ermöglicht dynamische Suchanfragen auf Basis der hier definierten Felder.
  * </p>
  *
- * @since 13.02.2025
+ * @since 14.02.2025
  * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
- * @version 1.0
+ * @version 2.0
  */
 public enum FilterOptions {
     id,
@@ -24,7 +24,12 @@ public enum FilterOptions {
     gender,
     maritalStatus,
     customerState,
-    address,
     contactOptions,
-    interests
+    interests,
+    address_street,
+    address_houseNumber,
+    address_zipCode,
+    address_city,
+    address_state,
+    address_country
 }

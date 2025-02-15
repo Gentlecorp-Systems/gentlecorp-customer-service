@@ -23,6 +23,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.time.LocalDate;
 import java.util.Map;
 
+import static com.gentlecorp.customer.model.enums.GenderType.MALE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class TestCustomer extends CustomerCommonFunctions {
@@ -71,11 +72,9 @@ public class TestCustomer extends CustomerCommonFunctions {
     @Test
     void testGetHiroshiByIdAsAdmin() {
         final var adminClient = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
-
         final Map<String, Object> id = Map.of(
             "id",  ID_HIROSHI
         );
-
         final var customer = executeCustomerGraphQLQuery(customerQuery, id, adminClient);
         verifyHiroshiDetails(customer.getData());
     }
@@ -83,11 +82,9 @@ public class TestCustomer extends CustomerCommonFunctions {
     @Test
     void testGetHiroshiByIdAsUser() {
         final var userClient = testClientProvider.getAuthenticatedClient(ROLE_USER);
-
         final Map<String, Object> id = Map.of(
             "id",  ID_HIROSHI
         );
-
         final var customer = executeCustomerGraphQLQuery(customerQuery, id, userClient);
         verifyHiroshiDetails(customer.getData());
     }
@@ -95,15 +92,11 @@ public class TestCustomer extends CustomerCommonFunctions {
     @Test
     void testGetHiroshiByIdAsSupreme() {
         final var client = testClientProvider.getAuthenticatedClient(ROLE_SUPREME);
-
         final Map<String, Object> id = Map.of("id", ID_HIROSHI);
-
         final var response = executeCustomerGraphQLQuery(customerQuery, id, client);
 
         assertThat(response.getData()).isNull(); // Kein Kunde zurückgegeben
         assertThat(response.getErrors()).isNotEmpty(); // Es gibt Fehler
-
-        log.info(response.getErrors().getFirst().toSpecification().toString());
 
         final var firstError = response.getErrors().getFirst();
         assertThat(firstError.getMessage()).isEqualTo(String.format("Zugriff verweigert: Benutzer '%s' besitzt nur die Rollen [%s], die für diese Anfrage nicht ausreichen.",ROLE_SUPREME, SUPREME));
@@ -114,15 +107,11 @@ public class TestCustomer extends CustomerCommonFunctions {
     @Test
     void testGetHiroshiByIdAsElite() {
         final var client = testClientProvider.getAuthenticatedClient(ROLE_ELITE);
-
         final Map<String, Object> id = Map.of("id", ID_HIROSHI);
-
         final var response = executeCustomerGraphQLQuery(customerQuery, id, client);
 
         assertThat(response.getData()).isNull(); // Kein Kunde zurückgegeben
         assertThat(response.getErrors()).isNotEmpty(); // Es gibt Fehler
-
-        log.info(response.getErrors().getFirst().toSpecification().toString());
 
         final var firstError = response.getErrors().getFirst();
         assertThat(firstError.getMessage()).isEqualTo(String.format("Zugriff verweigert: Benutzer '%s' besitzt nur die Rollen [%s], die für diese Anfrage nicht ausreichen.",ROLE_ELITE, ELITE));
@@ -132,15 +121,11 @@ public class TestCustomer extends CustomerCommonFunctions {
     @Test
     void testGetHiroshiByIdAsBasic() {
         final var client = testClientProvider.getAuthenticatedClient(ROLE_BASIC);
-
         final Map<String, Object> id = Map.of("id", ID_HIROSHI);
-
         final var response = executeCustomerGraphQLQuery(customerQuery, id, client);
 
         assertThat(response.getData()).isNull(); // Kein Kunde zurückgegeben
         assertThat(response.getErrors()).isNotEmpty(); // Es gibt Fehler
-
-        log.info(response.getErrors().getFirst().toSpecification().toString());
 
         final var firstError = response.getErrors().getFirst();
         assertThat(firstError.getMessage()).isEqualTo(String.format("Zugriff verweigert: Benutzer '%s' besitzt nur die Rollen [%s], die für diese Anfrage nicht ausreichen.",ROLE_BASIC, BASIC));
@@ -150,15 +135,11 @@ public class TestCustomer extends CustomerCommonFunctions {
     @Test
     void testGetHiroshiByIdAsVisitor() {
         final var client = testClientProvider.getVisitorClient();
-
         final Map<String, Object> id = Map.of("id", ID_HIROSHI);
-
         final var response = executeCustomerGraphQLQuery(customerQuery, id, client);
 
         assertThat(response.getData()).isNull(); // Kein Kunde zurückgegeben
         assertThat(response.getErrors()).isNotEmpty(); // Es gibt Fehler
-
-        log.info(response.getErrors().getFirst().toSpecification().toString());
 
         final var firstError = response.getErrors().getFirst();
         assertThat(firstError.getMessage()).isEqualTo(("Unauthorized"));
@@ -243,7 +224,7 @@ public class TestCustomer extends CustomerCommonFunctions {
         assertThat(customer.getTierLevel()).isEqualTo(TIER_LEVEL_1);
         assertThat(customer.getBirthdate()).isEqualTo(LocalDate.parse(BIRTH_DATE_HIROSHI));
         assertThat(customer.getCustomerState()).isEqualTo(StatusType.ACTIVE);
-        assertThat(customer.getGender().toString()).isEqualTo("MALE");
+        assertThat(customer.getGender().toString()).isEqualTo(MALE.toString());
         assertThat(customer.getMaritalStatus()).isEqualTo(MaritalStatusType.MARRIED);
     }
 
@@ -280,7 +261,7 @@ public class TestCustomer extends CustomerCommonFunctions {
         assertThat(customer.getTierLevel()).isEqualTo(TIER_LEVEL_2);
         assertThat(customer.getBirthdate()).isEqualTo(LocalDate.parse(BIRTH_DATE_LEROY));
         assertThat(customer.getCustomerState()).isEqualTo(StatusType.ACTIVE);
-        assertThat(customer.getGender()).isEqualTo(GenderType.MALE);
+        assertThat(customer.getGender()).isEqualTo(MALE);
         assertThat(customer.getMaritalStatus()).isEqualTo(MaritalStatusType.SINGLE);
     }
 
@@ -295,7 +276,7 @@ public class TestCustomer extends CustomerCommonFunctions {
         assertThat(customer.getTierLevel()).isEqualTo(TIER_LEVEL_1);
         assertThat(customer.getBirthdate()).isEqualTo(LocalDate.parse(BIRTH_DATE_ERIK));
         assertThat(customer.getCustomerState()).isEqualTo(StatusType.INACTIVE);
-        assertThat(customer.getGender()).isEqualTo(GenderType.MALE);
+        assertThat(customer.getGender()).isEqualTo(MALE);
         assertThat(customer.getMaritalStatus()).isEqualTo(MaritalStatusType.MARRIED);
     }
 
@@ -310,7 +291,7 @@ public class TestCustomer extends CustomerCommonFunctions {
         assertThat(customer.getTierLevel()).isEqualTo(TIER_LEVEL_3);
         assertThat(customer.getBirthdate()).isEqualTo(LocalDate.parse(BIRTH_DATE_CALEB));
         assertThat(customer.getCustomerState()).isEqualTo(StatusType.ACTIVE);
-        assertThat(customer.getGender()).isEqualTo(GenderType.MALE);
+        assertThat(customer.getGender()).isEqualTo(MALE);
         assertThat(customer.getMaritalStatus()).isEqualTo(MaritalStatusType.MARRIED);
     }
 }

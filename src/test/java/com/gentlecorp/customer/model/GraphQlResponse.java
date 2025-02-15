@@ -6,9 +6,9 @@ import java.util.List;
 
 public class GraphQlResponse<T> {
     private final T data;
-    private final List<GraphQLError> errors;
+    private final List<CustomGraphQLError> errors;
 
-    public GraphQlResponse(T data, List<GraphQLError> errors) {
+    public GraphQlResponse(T data, List<CustomGraphQLError> errors) {
         this.data = data;
         this.errors = errors;
     }
@@ -21,7 +21,7 @@ public class GraphQlResponse<T> {
         return data;
     }
 
-    public List<GraphQLError> getErrors() {
+    public List<CustomGraphQLError> getErrors() {
         return errors;
     }
 }

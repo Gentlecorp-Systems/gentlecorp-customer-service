@@ -1,6 +1,6 @@
 package com.gentlecorp.customer.testData;
 
-public class CustomerTestData {
+public class CustomerTestData extends CustomerTestQueryData{
 
 
   public static final String SCHEMA_HOST = "http://localhost:";
@@ -59,17 +59,17 @@ public class CustomerTestData {
   public static final String CONTACT_OPTIONS = "contactOptions";
 
   //Query Parameter
-  public static final String CUSTOMER_STATUS = "customerStatus";
-  public static final String PREFIX = "prefix";
+  public static final String CUSTOMER_STATUS = "customerState";
+  //public static final String PREFIX = "prefix";
 
   // Adressattribute
   public static final String ADDRESS = "address";
-  public static final String STREET = "street";
+  public static final String STREET = "address_street";
   public static final String HOUSE_NUMBER = "houseNumber";
-  public static final String ZIP_CODE = "zipCode";
-  public static final String CITY = "city";
-  public static final String STATE = "state";
-  public static final String COUNTRY = "country";
+  public static final String ZIP_CODE = "address_zipCode";
+  public static final String CITY = "address_city";
+  public static final String STATE = "address_state";
+  public static final String COUNTRY = "address_country";
 
   //Kontaktattribute
   public static final String RELATIONSHIP = "relationship";
@@ -158,9 +158,9 @@ public class CustomerTestData {
   public static final String QUERY_ICLOUD_COM = "icloud.com";
   public static final String QUERY_IS_SUBSCRIBED = "true";
   public static final String QUERY_IS_NOT_SUBSCRIBED = "false";
-  public static final String QUERY_BIRTH_DATE_BEFORE = "before;1991-01-01";
-  public static final String QUERY_BIRTH_DATE_AFTER = "after;1999-01-01";
-  public static final String QUERY_BIRTH_DATE_BETWEEN = "between;1991-01-01;1998-12-31";
+  public static final String QUERY_BIRTH_DATE_BEFORE = "1991-01-01";
+  public static final String QUERY_BIRTH_DATE_AFTER = "1999-01-01";
+  public static final String QUERY_BIRTH_DATE_BETWEEN = "1991-01-01,1998-12-31";
   public static final String QUERY_ZIP_CODE_70374 = "70374";
   public static final String QUERY_ZIP_CODE_Y1000 = "Y1000";
   public static final String QUERY_ZIP_CODE_KA = "KA";
@@ -182,39 +182,39 @@ public class CustomerTestData {
   public static final int TIER_LEVEL_2 = 2;
   public static final int TIER_LEVEL_1 = 1;
 
-  public static final String GENDER_FEMALE = "F";
-  public static final String GENDER_MALE = "M";
-  public static final String GENDER_DIVERSE = "D";
+  public static final String GENDER_FEMALE = "FEMALE";
+  public static final String GENDER_MALE = "MALE";
+  public static final String GENDER_DIVERSE = "DIVERSE";
 
   // MArital Status
-  public static final String MARITAL_STATUS_SINGLE = "S";
-  public static final String MARITAL_STATUS_MARRIED = "M";
-  public static final String MARITAL_STATUS_DIVORCED = "D";
-  public static final String MARITAL_STATUS_WIDOW = "W";
+  public static final String MARITAL_STATUS_SINGLE = "SINGLE";
+  public static final String MARITAL_STATUS_MARRIED = "MARRIED";
+  public static final String MARITAL_STATUS_DIVORCED = "DIVORCED";
+  public static final String MARITAL_STATUS_WIDOW = "WIDOWED";
 
   // Customer Status
-  public static final String CUSTOMER_STATUS_ACTIVE = "A";
-  public static final String CUSTOMER_STATUS_INACTIVE = "I";
-  public static final String CUSTOMER_STATUS_CLOSED = "C";
-  public static final String CUSTOMER_STATUS_BLOCKED = "B";
+  public static final String CUSTOMER_STATUS_ACTIVE = "ACTIVE";
+  public static final String CUSTOMER_STATUS_INACTIVE = "INACTIVE";
+  public static final String CUSTOMER_STATUS_CLOSED = "CLOSED";
+  public static final String CUSTOMER_STATUS_BLOCKED = "BLOCKED";
 
   // Interessen
-  public static final String INTEREST_INVESTMENTS = "I";
-  public static final String INTEREST_SAVINGS_AND_FINANCES = "SF";
-  public static final String INTEREST_CREDIT_AND_DEBT = "CD";
-  public static final String INTEREST_BANK_PRODUCTS_AND_SERVICES = "BPS";
-  public static final String INTEREST_FINANCIAL_EDUCATION_AND_COUNSELING = "FEC";
-  public static final String INTEREST_REAL_ESTATE = "RE";
-  public static final String INTEREST_INSURANCE = "IN";
-  public static final String INTEREST_SUSTAINABLE_FINANCE = "SUF";
-  public static final String INTEREST_TECHNOLOGY_AND_INNOVATION = "IT";
-  public static final String INTEREST_TRAVEL = "T";
+  public static final String INTEREST_INVESTMENTS = "INVESTMENTS";
+  public static final String INTEREST_SAVINGS_AND_FINANCES = "SAVING_AND_FINANCE";
+  public static final String INTEREST_CREDIT_AND_DEBT = "CREDIT_AND_DEBT";
+  public static final String INTEREST_BANK_PRODUCTS_AND_SERVICES = "BANK_PRODUCTS_AND_SERVICES";
+  public static final String INTEREST_FINANCIAL_EDUCATION_AND_COUNSELING = "FINANCIAL_EDUCATION_AND_COUNSELING";
+  public static final String INTEREST_REAL_ESTATE = "REAL_ESTATE";
+  public static final String INTEREST_INSURANCE = "INSURANCE";
+  public static final String INTEREST_SUSTAINABLE_FINANCE = "SUSTAINABLE_FINANCE";
+  public static final String INTEREST_TECHNOLOGY_AND_INNOVATION = "TECHNOLOGY_AND_INNOVATION";
+  public static final String INTEREST_TRAVEL = "TRAVEL";
 
   // Kontakt Optionen
-  public static final String CONTACT_OPTION_PHONE = "P";
-  public static final String CONTACT_OPTION_EMAIL = "E";
-  public static final String CONTACT_OPTION_LETTER = "L";
-  public static final String CONTACT_OPTION_SMS = "S";
+  public static final String CONTACT_OPTION_PHONE = "PHONE";
+  public static final String CONTACT_OPTION_EMAIL = "EMAIL";
+  public static final String CONTACT_OPTION_LETTER = "LETTER";
+  public static final String CONTACT_OPTION_SMS = "SMS";
 
   // Neue Konstanten für die spezifischen Werte
   public static final String NEW_USER_LAST_NAME = "Gyamfi";
@@ -273,68 +273,6 @@ public class CustomerTestData {
   public static final Boolean INVALID_CONTACT_IS_EMERGENCY = null;
 
 
-
-
- public static final String customerQuery = """
-                query Customer($id: ID!) {
-                    customer(id: $id) {
-                          id
-                          version
-                          lastName
-                          firstName
-                          email
-                          phoneNumber
-                          username
-                          tierLevel
-                          subscribed
-                          birthdate
-                          gender
-                          maritalStatus
-                          customerState
-                      }
-                }
-                """;
-
-  public static final String fullCustomerQuery = """
-      query Customer($id: ID!) {
-          customer(id: $id) {
-              id
-              version
-              lastName
-              firstName
-              email
-              phoneNumber
-              username
-              tierLevel
-              subscribed
-              birthdate
-              gender
-              maritalStatus
-              customerState
-              contactOptions
-              interests
-              address {
-                  street
-                  houseNumber
-                  zipCode
-                  city
-                  state
-                  country
-              }
-          }
-      }
-      """;
-
-
-
-
-
-
-
-
-
-
-
   public static final String UPDATED_LAST_NAME = "Updatedastame";
   public static final String UPDATED_FIRST_NAME = "Updatedirstame";
   public static final String UPDATED_USERNAME = "Updatedirstadme";
@@ -358,5 +296,6 @@ public class CustomerTestData {
   public static final String NEW_PASSWORD = "123.Caleb";
   public static final String NEW_INVALID_PASSWORD = "p";
 
+  public static final String AS = "asc";
 
 }

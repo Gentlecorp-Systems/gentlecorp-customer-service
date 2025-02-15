@@ -9,7 +9,6 @@ import com.gentlecorp.customer.model.GraphQlResponse;
 import com.gentlecorp.customer.model.entity.Customer;
 import com.gentlecorp.customer.testData.CustomerTestData;
 
-import graphql.GraphQLError;
 import graphql.language.SourceLocation;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
@@ -19,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.graphql.client.FieldAccessException;
 import org.springframework.graphql.client.HttpGraphQlClient;
 import org.springframework.http.HttpHeaders;
@@ -28,12 +26,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -69,6 +67,88 @@ public class CustomerCommonFunctions extends CustomerTestData {
         .retrieve()
         .bodyToMono(String.class)
         .block(); // block() nur für Tests
+  }
+
+  protected GraphQlResponse<List<Customer>> executeCustomersGraphQLQuery(final String query, final Map<String, Object> variables, final HttpGraphQlClient client) {
+    return client.document(query)
+        .variables(Optional.ofNullable(variables).orElseGet(HashMap::new))
+        .retrieve("customers")
+        .toEntityList(Customer.class)
+        .map(customer -> new GraphQlResponse<>(customer, List.of())) // Erfolgreiche Antwort
+        .onErrorResume(error -> {
+          log.error("Fehler aufgetreten: {}", error.getClass().getName());
+          log.error("Fehlermeldung (Original): {}", error.getMessage());
+
+          if (error instanceof FieldAccessException fieldAccessException) {
+            String errorMessage = fieldAccessException.getMessage();
+
+            // Werte initialisieren
+            String extractedMessage = "Unbekannter Fehler";
+            List<String> path = List.of();
+            List<SourceLocation> locations = List.of();
+            Map<String, Object> extensions = Map.of();
+
+            try {
+              // 🔹 1. `message=` Wert extrahieren
+              Matcher messageMatcher = Pattern.compile("message=(.*?), locations=").matcher(errorMessage);
+              if (messageMatcher.find()) {
+                extractedMessage = messageMatcher.group(1).trim();
+                log.debug("Extracted message: {}", extractedMessage);
+              }
+
+              // 🔹 2. `path=` Wert extrahieren
+              Matcher pathMatcher = Pattern.compile("path=\\[([^]]+)\\]").matcher(errorMessage);
+              if (pathMatcher.find()) {
+                path = Arrays.asList(pathMatcher.group(1).replace(" ", "").split(","));
+                log.debug("Extracted path: {}", path);
+              }
+
+              // 🔹 3. `locations=` Wert extrahieren
+              Matcher locationsMatcher = Pattern.compile("locations=\\[\\{line=(\\d+), column=(\\d+)\\}\\]").matcher(errorMessage);
+              if (locationsMatcher.find()) {
+                int line = Integer.parseInt(locationsMatcher.group(1));
+                int column = Integer.parseInt(locationsMatcher.group(2));
+                locations = List.of(new SourceLocation(line, column));
+                log.debug("Extracted locations: {}", locations);
+              }
+
+              // 🔹 4. `extensions=` manuell in JSON umwandeln
+              Matcher extensionsMatcher = Pattern.compile("extensions=\\{([^}]+)\\}").matcher(errorMessage);
+              if (extensionsMatcher.find()) {
+                String extensionsString = extensionsMatcher.group(1).trim();
+
+                // 🛠 `=` durch `:` ersetzen und String-Werte mit `"` umschließen
+                String jsonFormattedExtensions = extensionsString
+                    .replaceAll("(\\w+)=([A-Za-z_]+)", "\"$1\":\"$2\"") // Keys und Werte korrekt setzen
+                    .replaceAll("=", ":") // Falls noch = übrig ist, zu : umwandeln
+                    .replaceAll("'", "\""); // Falls Einzel-Anführungszeichen vorkommen
+
+                jsonFormattedExtensions = "{" + jsonFormattedExtensions + "}"; // `{}` wieder hinzufügen
+
+                log.debug("Endgültige JSON-Extensions: {}", jsonFormattedExtensions);
+
+                ObjectMapper objectMapper = new ObjectMapper();
+                extensions = objectMapper.readValue(jsonFormattedExtensions, new TypeReference<Map<String, Object>>() {});
+              }
+
+
+              log.error("Extrahierte GraphQL-Fehlermeldung: {}", extractedMessage);
+              log.error("Extrahrierter Path: {}", path);
+              log.error("Extrahrierte Extensions: {}", extensions);
+
+              return Mono.just(new GraphQlResponse<>(null, List.of(
+                  new CustomGraphQLError(extractedMessage, locations, null, extensions)
+              )));
+
+            } catch (Exception ex) {
+              log.error("Fehler beim Parsen des GraphQL-Fehlers: {}", ex.getMessage());
+            }
+          }
+
+          // Fallback für nicht erkannte Fehler
+          return Mono.just(new GraphQlResponse<>(null, List.of(new CustomGraphQLError(error.getMessage()))));
+        })
+        .block();
   }
 
   protected GraphQlResponse<Customer> executeCustomerGraphQLQuery(

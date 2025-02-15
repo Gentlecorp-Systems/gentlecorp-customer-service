@@ -16,6 +16,7 @@ enum Operator {
     GTE
     LTE
     LIKE
+    PREFIX
 }
 
 """
@@ -35,9 +36,15 @@ enum FilterOptions {
     gender
     maritalStatus
     customerState
-    address
-    contactOptions
     interests
+    contactOptions
+    prefix
+    address_street
+    address_houseNumber
+    address_zipCode
+    address_city
+    address_state
+    address_country
 }
 
 """
