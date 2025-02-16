@@ -57,7 +57,7 @@ public class JwtUserDetailsService {
 
         log.debug("Benutzer '{}' hat Rollen: {}", username, authorities);
 
-        return new CustomUserDetails(username, authorities);
+        return new CustomUserDetails(username, authorities,jwt);
     }
 
     /**

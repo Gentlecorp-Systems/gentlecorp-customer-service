@@ -13,7 +13,6 @@ import org.springframework.web.service.annotation.HttpExchange;
 import org.springframework.web.service.annotation.PostExchange;
 import org.springframework.web.service.annotation.PutExchange;
 
-import java.net.http.HttpResponse;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +43,7 @@ public interface KeycloakRepository {
   );
 
   @PostExchange("auth/admin/realms/camunda-platform/users")
-  HttpResponse<Void> signIn(
+  void signIn(
     @RequestBody String customer,
     @RequestHeader(AUTHORIZATION) String authorization,
     @RequestHeader(CONTENT_TYPE) String contentType

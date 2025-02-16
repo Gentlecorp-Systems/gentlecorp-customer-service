@@ -7,6 +7,7 @@ import com.gentlecorp.customer.model.entity.Customer;
 import com.gentlecorp.customer.model.input.FilterInput;
 import com.gentlecorp.customer.model.input.PaginationInput;
 import com.gentlecorp.customer.model.input.SortInput;
+import com.gentlecorp.customer.security.CustomUserDetails;
 import com.gentlecorp.customer.service.CustomerReadService;
 import com.gentlecorp.customer.security.service.JwtService;
 import graphql.GraphQLError;
@@ -51,29 +52,6 @@ import static org.springframework.http.ResponseEntity.ok;
 public class QueryController {
 
     private final CustomerReadService customerReadService;
-    private final JwtService jwtService;
-
-    /**
-     * Validiert ein JWT und extrahiert Benutzername und Rolle.
-     *
-     * @param jwt Das JWT des Nutzers.
-     * @return Ein `Pair` mit Benutzername und Rolle.
-     * @throws UnauthorizedException Falls das JWT ungültig ist oder die Informationen fehlen.
-     */
-    Pair<String, String> validateJwtAndGetUsernameAndRole(Jwt jwt) {
-        final var username = jwtService.getUsername(jwt);
-        if (username == null) {
-            throw new UnauthorizedException("Missing username in token");
-        }
-
-        final var role = jwtService.getRole(jwt);
-        if (role == null) {
-            throw new UnauthorizedException("Missing role in token");
-        }
-
-        return Pair.of(username, role);
-    }
-
 
     /**
      * Ruft einen Kunden anhand seiner ID ab.
@@ -88,9 +66,10 @@ public class QueryController {
         @Argument final UUID id,
         final Authentication authentication
     ) {
+        log.debug("deleteCustomer: id={}", authentication);
         log.debug("findById: id={}, user={}", id, authentication);
 
-        final var user = (UserDetails) authentication.getPrincipal();
+        final var user = (CustomUserDetails) authentication.getPrincipal();
         final var customer = customerReadService.findById(id,user);
         log.debug("findById: customer={}", customer);
         return customer;

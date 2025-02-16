@@ -1,4 +1,14 @@
 
+enum RelationshipTyp{
+    PARTNER
+    BUSINESS_PARTNER
+    RELATIVE
+    COLLEAGUE
+    PARENT
+    SIBLING
+    CHILD
+    COUSIN
+}
 """
 Sortierreihenfolge für Abfragen, z. B. aufsteigend (ASC) oder absteigend (DESC).
 """
@@ -137,7 +147,7 @@ type MutationResponse {
 }
 
 type Customer {
-    id: String
+    id: ID
 version:  Int
 lastName: String
 firstName: String
@@ -151,7 +161,7 @@ gender: String,
 maritalStatus: String,
 customerState: String,
 address: Addresse
-contactOptions: [String]
+contactOptions: [ID]
 interests: [String]
 }
 
@@ -162,6 +172,17 @@ zipCode: String,
 city: String,
 state: String,
 country: String
+}
+
+type Contact {
+    id: ID
+    lastName: String
+    firstName: String
+    Relationship: RelationshipTyp
+    withdrawalLimit: Int
+    emergencyContact: Boolean
+    startDate: String
+    endDate: String
 }
 
 """

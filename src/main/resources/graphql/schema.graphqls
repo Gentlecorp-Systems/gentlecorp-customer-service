@@ -16,13 +16,17 @@ type Query {
 # M U T A T I O N S
 ###############################################################################################
 type Mutation {
-    createCustomer(input: CustomerInput!): MutationResponse!
-    updateCustomer(input: CustomerUpdateInput!): MutationResponse!
-    deleteCustomer(id: ID!): MutationResponse!
+    createCustomer(input: CustomerInput!, password: String!): Customer!
+    updateCustomer(input: CustomerUpdateInput!, id: ID!, version: String!): MutationResponse
+    deleteCustomer(id: ID!, version: Int): MutationResponse
+
+    addContact(id: ID!, input: ContactInput): ID
+    updateContact(id: ID!, contactId: ID!, customerVersion: Int!, contactVersion: Int!, input: ContactInput): Contact!
+    removeContact(id: ID!, contactId: ID!, customerVersion: Int!, contactVersion: Int!): MutationResponse
+
+    updatePassword(newPassword: String!): MutationResponse
     authenticate(username: String!, password: String!): TokenResult!
     refreshToken(refreshToken: String!): TokenResult!
     me: UserInfo!
-    #addContact(id: ID!, contact: ContactInput!): MutationResponse!
-    #removeContact(id: ID!): MutationResponse!
 }
 

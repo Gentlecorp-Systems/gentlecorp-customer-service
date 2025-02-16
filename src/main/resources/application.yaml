@@ -25,6 +25,27 @@ spring:
     active: ${app.env}
   application:
     name: customer
+  mail:
+    host: localhost
+    port: 5025
+#  mail:
+#    host: smtp.acme.com
+#    port: 25
+#    #protocol: smtp
+#    properties.mail:
+#      debug: false
+#      smtp:
+#        auth: false
+#        starttls.enable: false
+#    # Mailserver des IZ
+#    #host: smtp.h-ka.de
+#    #port: 23
+#    #username: nnvv0011
+#    #password: blabla
+#    # GMail
+#    #host: smtp.gmail.com
+#    #port: 587
+#    #properties.mail.smtp.starttls.enable: true
   security:
     oauth2:
       resourceserver:
@@ -38,6 +59,9 @@ spring:
 
 # Applikationsspezifische Einstellungen
 app:
+  mail:
+   from: Theo Test <theo@test.de>
+   to: Maxi Musterfrau <maxi.musterfrau@test.de>
   env: ${ACTIVE_PROFILE:test}
   password: p
   keycloak:

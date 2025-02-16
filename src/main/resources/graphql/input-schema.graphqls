@@ -110,3 +110,13 @@ input CustomerUpdateInput {
     contactOptions: [String]
     interests: [String]
 }
+
+input ContactInput {
+    lastName: String
+    firstName: String
+    relationship: RelationshipTyp
+    withdrawalLimit: Int
+    emergencyContact: Boolean
+    startDate: String
+    endDate: String
+}

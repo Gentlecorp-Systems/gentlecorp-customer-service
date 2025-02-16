@@ -120,7 +120,7 @@ public class KeycloakService {
       password // Ensure password is present in Customer object
     );
 
-    // log.debug("signIn: customerData={}", customerData);
+    //log.debug("signIn: customerData={}", customerData);
 
     try {
       // Register user in Keycloak and get user ID
@@ -269,11 +269,14 @@ public class KeycloakService {
 
   public void delete(final String token, final String username) {
     log.debug("delete: username={}", username);
-    final var userList = keycloakRepository.getUserByUsername(token, username);
+    final var authToken = String.format("Bearer %s", token);
+    final var userList = keycloakRepository.getUserByUsername(authToken, username);
+    log.debug("delete: users={}", userList);
     final var userId = userList.stream()
       .map(UserRepresentation::id)
       .findFirst().orElseThrow(() -> new NotFoundException(username));
 
-    keycloakRepository.deleteUser(token, userId);
+    log.debug("delete: userId={}", userId);
+    keycloakRepository.deleteUser(authToken, userId);
   }
 }
