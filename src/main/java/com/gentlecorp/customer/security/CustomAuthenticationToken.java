@@ -1,5 +1,6 @@
 package com.gentlecorp.customer.security;
 
+import lombok.Getter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,9 +19,10 @@ import java.util.Collection;
  * @author <a href="mailto:caleb-script@outlook.de">Caleb Gyamfi</a>
  * @version 1.0
  */
-
+@Getter
 public class CustomAuthenticationToken extends AbstractAuthenticationToken {
     private final UserDetails userDetails;
+
     private final Jwt jwt;
 
     /**
@@ -46,4 +48,5 @@ public class CustomAuthenticationToken extends AbstractAuthenticationToken {
     public Object getPrincipal() {
         return userDetails;
     }
+
 }

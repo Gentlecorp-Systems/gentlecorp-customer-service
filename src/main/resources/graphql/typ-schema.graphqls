@@ -1,4 +1,14 @@
 
+enum RelationshipTyp{
+    PARTNER
+    BUSINESS_PARTNER
+    RELATIVE
+    COLLEAGUE
+    PARENT
+    SIBLING
+    CHILD
+    COUSIN
+}
 """
 Sortierreihenfolge für Abfragen, z. B. aufsteigend (ASC) oder absteigend (DESC).
 """
@@ -117,7 +127,7 @@ type MutationResponse {
     """
     Gibt an, ob die Operation erfolgreich war.
     """
-    success: Boolean!
+    success: Boolean
     """
     Zusätzliche Informationen oder Fehlermeldungen.
     """
@@ -137,7 +147,7 @@ type MutationResponse {
 }
 
 type Customer {
-    id: String
+    id: ID
 version:  Int
 lastName: String
 firstName: String
@@ -148,20 +158,32 @@ tierLevel: Int
 subscribed: Boolean
 birthdate: String
 gender: String,
-maritalStatus: String,
-customerState: String,
-address: Addresse
-contactOptions: [String]
+maritalStatus: String
+customerState: String
+address: Adresse
+contactOptions: [ID]
 interests: [String]
+contactIds: [String]
 }
 
-type Addresse {
+type Adresse {
 street: String,
 houseNumber: String,
 zipCode: String,
 city: String,
 state: String,
 country: String
+}
+
+type Contact {
+    id: ID
+    lastName: String
+    firstName: String
+    Relationship: RelationshipTyp
+    withdrawalLimit: Int
+    emergencyContact: Boolean
+    startDate: String
+    endDate: String
 }
 
 """

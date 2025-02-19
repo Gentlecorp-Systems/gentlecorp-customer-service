@@ -51,7 +51,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         @Test
         @DisplayName("Sollte alle Kunden für Admin zurückgeben")
         void testGetAllAsAdmin() {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final var response = executeCustomersGraphQLQuery(customersQuery, null, client);
             assertValidCustomerResponse(response.getData());
         }
@@ -59,7 +59,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         @Test
         @DisplayName("Sollte alle Kunden für User zurückgeben")
         void testGetAllAsUser() {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_USER);
+            final var client = testClientProvider.getAuthenticatedClient(USER_USER);
             final var response = executeCustomersGraphQLQuery(customersQuery, null, client);
             assertValidCustomerResponse(response.getData());
         }
@@ -67,7 +67,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         @Test
         @DisplayName("Sollte Zugriff für Supreme verweigern")
         void testGetAllAsSupreme() {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_SUPREME);
+            final var client = testClientProvider.getAuthenticatedClient(USER_SUPREME);
             final var response = executeCustomersGraphQLQuery(customersQuery, null, client);
             assertResponseStatus(response.getErrors().getFirst(), "FORBIDDEN");
 
@@ -76,7 +76,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         @Test
         @DisplayName("Sollte Zugriff für Elite verweigern")
         void testGetAllAsElite() {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ELITE);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ELITE);
             final var response = executeCustomersGraphQLQuery(customersQuery, null, client);
             assertResponseStatus(response.getErrors().getFirst(), "FORBIDDEN");
         }
@@ -84,7 +84,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         @Test
         @DisplayName("Sollte Zugriff für Basic verweigern")
         void testGetAllAsBasic() {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_BASIC);
+            final var client = testClientProvider.getAuthenticatedClient(USER_BASIC);
             final var response = executeCustomersGraphQLQuery(customersQuery, null, client);
             assertResponseStatus(response.getErrors().getFirst(), "FORBIDDEN");
         }
@@ -106,7 +106,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         GENDER_DIVERSE + ", 3"
     })
     void testGetAllFilterGender(String gender, int expectedSize) {
-        final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+        final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
         final Map<String, Object> variables = Map.of(
             "field",  GENDER,
             "operator",EQ,
@@ -136,7 +136,7 @@ public class TestCustomers extends CustomerCommonFunctions {
             USERNAME_ERIK + "," + USERNAME_ERIK + ", 1",
         })
         void testGetAllFilterUsername(String searchUsername, String expectedUsername, int expectedSize) {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
                 "field",  USERNAME,
                 "operator",EQ,
@@ -160,7 +160,7 @@ public class TestCustomers extends CustomerCommonFunctions {
             QUERY_IVA + ", 2"
         })
         void testGetAllFilterPartialUsername(String partialUsername, int expectedSize) {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
                 "field",  USERNAME,
                 "operator",LIKE,
@@ -192,7 +192,7 @@ public class TestCustomers extends CustomerCommonFunctions {
             QUERY_M + ", 2"
         })
         void testGetAllFilterPrefix(String prefix, int expectedSize) {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
                 "field", LAST_NAME,
                 "operator",PREFIX,
@@ -221,7 +221,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         @Test
         @DisplayName("Sollte leere Liste für nicht existierenden Präfix zurückgeben")
         void testGetAllFilterNonExistingPrefix() {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
                 "field",  LAST_NAME,
                 "operator",LIKE,
@@ -244,7 +244,7 @@ public class TestCustomers extends CustomerCommonFunctions {
             QUERY_SON + ", 4"
         })
         void testGetAllFilterLastName(String lastNameFilter, int expectedSize) {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
                 "field",  LAST_NAME,
                 "operator",LIKE,
@@ -265,7 +265,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         @Test
         @DisplayName("Sollte spezifische Nachnamen für Filter 'M' enthalten")
         void testGetAllFilterLastName_M_SpecificNames() {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
                 "field",  LAST_NAME,
                 "operator",LIKE,
@@ -282,7 +282,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         @Test
         @DisplayName("Sollte leere Liste für nicht existierenden Nachnamen zurückgeben")
         void testGetAllFilterNonExistingLastName() {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
                 "field",  LAST_NAME,
                 "operator",LIKE,
@@ -307,7 +307,7 @@ public class TestCustomers extends CustomerCommonFunctions {
             QUERY_ICLOUD_COM + ", 2"
         })
         void testGetAllFilterEmail(String emailFilter, int expectedSize) {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
                 "field",  EMAIL,
                 "operator",LIKE,
@@ -328,7 +328,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         @Test
         @DisplayName("Sollte exakte E-Mail-Adresse zurückgeben")
         void testGetAllFilterExactEmail() {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
                 "field",  EMAIL,
                 "operator", EQ,
@@ -349,7 +349,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         @Test
         @DisplayName("Sollte leere Liste für nicht existierende E-Mail zurückgeben")
         void testGetAllFilterNonExistingEmail() {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
                 "field",  EMAIL,
                 "operator", EQ,
@@ -373,7 +373,7 @@ public class TestCustomers extends CustomerCommonFunctions {
             QUERY_IS_NOT_SUBSCRIBED + ", 4, false"
         })
         void testGetAllFilterSubscription(String subscriptionStatus, int expectedSize, boolean expectedSubscriptionStatus) {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
                 "field",  "subscribed",
                 "operator",EQ,
@@ -403,7 +403,7 @@ public class TestCustomers extends CustomerCommonFunctions {
             TIER_LEVEL_3 + ", 9"
         })
         void testGetAllFilterTierLevel(String tierLevel, int expectedSize) {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
                 "field",  TIER_LEVEL,
                 "operator",EQ,
@@ -424,7 +424,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         @Test
         @DisplayName("Sollte spezifische Tier 1 Kunden enthalten")
         void testGetAllFilterTier1SpecificCustomers() {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
                 "field",  TIER_LEVEL,
                 "operator",EQ,
@@ -442,7 +442,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         @Test
         @DisplayName("Sollte leere Liste für ungültigen Tier-Level zurückgeben")
         void testGetAllFilterInvalidTierLevel() {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
                 "field",  TIER_LEVEL,
                 "operator",EQ,
@@ -474,7 +474,7 @@ public class TestCustomers extends CustomerCommonFunctions {
 //            QUERY_BIRTH_DATE_BETWEEN + ", 5, between"
 //        })
         void testGetAllFilterBirthdate(String birthdateFilter, int expectedSize, Operator operator) {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
                 "field",  BIRTHDATE,
                 "operator",operator.name(),
@@ -501,7 +501,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         @Test
         @DisplayName("Sollte spezifische Kunden für Geburtsdatum vor 1999-05-03 enthalten")
         void testGetAllFilterBirthdateBeforeSpecificCustomers() {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
                 "field",  BIRTHDATE,
                 "operator",EQ,
@@ -528,7 +528,7 @@ public class TestCustomers extends CustomerCommonFunctions {
             MARITAL_STATUS_WIDOW + ", 2"
         })
         void testGetAllFilterMaritalStatus(String getMaritalStatus, int expectedSize) {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
                 "field",  MARITAL_STATUS,
                 "operator",EQ,
@@ -560,7 +560,7 @@ public class TestCustomers extends CustomerCommonFunctions {
             CUSTOMER_STATUS_CLOSED + ", 1"
         })
         void testGetAllFilterCustomerStatus(String customerStatus, int expectedSize) {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
                 "field",  CUSTOMER_STATUS,
                 "operator",EQ,
@@ -599,9 +599,9 @@ public class TestCustomers extends CustomerCommonFunctions {
 //            QUERY_ZIP_CODE_KA + ", 2, prefix"
 //        })
         void testGetAllFilterZipCode(String zipCode, int expectedSize, Operator operator) {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
-                "field",  ZIP_CODE,
+                "field",  ADDRESS_ZIP_CODE,
                 "operator",operator.name(),
                 "value", zipCode
             );
@@ -623,9 +623,9 @@ public class TestCustomers extends CustomerCommonFunctions {
         @Test
         @DisplayName("Sollte leere Liste für nicht existierende Postleitzahl zurückgeben")
         void testGetAllFilterNonExistingZipCode() {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
-                "field",  ZIP_CODE,
+                "field",  ADDRESS_ZIP_CODE,
                 "operator",EQ,
                 "value", "99999"
             );
@@ -654,9 +654,9 @@ public class TestCustomers extends CustomerCommonFunctions {
 //            QUERY_CITY_TOK + ", 1, partial"
 //        })
         void testGetAllFilterCity(String city, int expectedSize, Operator operator) {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
-                "field",  CITY,
+                "field",  ADDRESS_CITY,
                 "operator",operator.name(),
                 "value", city
             );
@@ -678,9 +678,9 @@ public class TestCustomers extends CustomerCommonFunctions {
         @Test
         @DisplayName("Sollte leere Liste für nicht existierende Stadt zurückgeben")
         void testGetAllFilterNonExistingCity() {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
-                "field",  CITY,
+                "field",  ADDRESS_CITY,
                 "operator",EQ,
                 "value","NonExistentCity"
             );
@@ -709,9 +709,9 @@ public class TestCustomers extends CustomerCommonFunctions {
 //            QUERY_STATE_BA + ", 5, partial"
 //        })
         void testGetAllFilterState(String state, int expectedSize, Operator operator) {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
-                "field",  STATE,
+                "field",  ADDRESS_STATE,
                 "operator",operator.name(),
                 "value", state
             );
@@ -731,9 +731,9 @@ public class TestCustomers extends CustomerCommonFunctions {
         @Test
         @DisplayName("Sollte leere Liste für nicht existierendes Bundesland zurückgeben")
         void testGetAllFilterNonExistingState() {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
-                "field",  STATE,
+                "field",  ADDRESS_STATE,
                 "operator",EQ,
                 "value", "NonExistentState"
             );
@@ -762,9 +762,9 @@ public class TestCustomers extends CustomerCommonFunctions {
 //            QUERY_COUNTRY_LAND + ", 11, partial"
 //        })
         void testGetAllFilterCountry(String country, int expectedSize, Operator operator) {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
-                "field",  COUNTRY,
+                "field",  ADDRESS_COUNTRY,
                 "operator",operator.name(),
                 "value", country
             );
@@ -784,9 +784,9 @@ public class TestCustomers extends CustomerCommonFunctions {
         @Test
         @DisplayName("Sollte leere Liste für nicht existierendes Land zurückgeben")
         void testGetAllFilterNonExistingCountry() {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
-                "field",  COUNTRY,
+                "field",  ADDRESS_COUNTRY,
                 "operator",EQ,
                 "value", "NonExistentState"
             );
@@ -810,7 +810,7 @@ public class TestCustomers extends CustomerCommonFunctions {
             CONTACT_OPTION_SMS + ", 8"
         })
         void testGetAllFilterSingleContactOption(String contactOption, int expectedSize) {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
                 "field",  CONTACT_OPTIONS,
                 "operator",EQ,
@@ -835,7 +835,7 @@ public class TestCustomers extends CustomerCommonFunctions {
             CONTACT_OPTION_PHONE + ";" + CONTACT_OPTION_EMAIL + ", 17"
         })
         void testGetAllFilterMultipleContactOptions(String contactOptionsString, int expectedSize) {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
 
             // ✅ Spaltet die Interessen anhand des Trennzeichens ";"
             List<String> contactOptions = Arrays.asList(contactOptionsString.split(";"));
@@ -886,7 +886,7 @@ public class TestCustomers extends CustomerCommonFunctions {
             INTEREST_TECHNOLOGY_AND_INNOVATION + ", 16"
         })
         void testGetAllFilterSingleInterest(String interest, int expectedSize) {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
             final Map<String, Object> variables = Map.of(
                 "field",  INTERESTS,
                 "operator",EQ,
@@ -914,7 +914,7 @@ public class TestCustomers extends CustomerCommonFunctions {
             INTEREST_INVESTMENTS + ";" + INTEREST_REAL_ESTATE + ", 4"
         })
         void testGetAllFilterMultipleInterests(String interestsString, int expectedSize) {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
 
             // ✅ Spaltet die Interessen anhand des Trennzeichens ";"
             List<String> interests = Arrays.asList(interestsString.split(";"));
@@ -959,7 +959,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         @Test
         @DisplayName("Sollte Kunden für Nachname und E-Mail-Filter zurückgeben")
         void testFilterLastNameAndEmail() {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
 
             // ✅ Setzt die Bedingungen in das Filter-Query
             final Map<String, Object> variables = Map.of(
@@ -987,7 +987,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         @Test
         @DisplayName("Sollte Kunden für Abonnement, Geschlecht, Familienstand und Kundenstatus zurückgeben")
         void testFilterSubscribedAndGenderAndMaritalStatusAndCustomerStatus() {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
 
             // ✅ Setzt die Bedingungen in das Filter-Query
             final Map<String, Object> variables = Map.of(
@@ -1016,13 +1016,13 @@ public class TestCustomers extends CustomerCommonFunctions {
         @Test
         @DisplayName("Sollte Kunden für Geburtsdatum und Bundesland zurückgeben")
         void testFilterBirthdateAndState() {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
 
             // ✅ Setzt die Bedingungen in das Filter-Query
             final Map<String, Object> variables = Map.of(
                 "and", List.of(
                     Map.of("field",BIRTHDATE,"operator",GTE,"value",QUERY_BIRTH_DATE_AFTER),
-                    Map.of("field", STATE, "operator", PREFIX, "value", QUERY_STATE_BA)
+                    Map.of("field", ADDRESS_STATE, "operator", PREFIX, "value", QUERY_STATE_BA)
                 )
             );
             final var response = executeCustomersGraphQLQuery(customersMultipleFilterQuery, variables, client);
@@ -1045,12 +1045,12 @@ public class TestCustomers extends CustomerCommonFunctions {
         @Test
         @DisplayName("Sollte Kunden für Land, Kontaktoption, Interesse und Kundenstufe zurückgeben")
         void testFilterCountryAndContactAndInterestAndTier() {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
 
             // ✅ Setzt die Bedingungen in das Filter-Query
             final Map<String, Object> variables = Map.of(
                 "and", List.of(
-                    Map.of("field",COUNTRY,"operator",LIKE,"value",QUERY_COUNTRY_LAND),
+                    Map.of("field",ADDRESS_COUNTRY,"operator",LIKE,"value",QUERY_COUNTRY_LAND),
                     Map.of("field", CONTACT_OPTIONS, "operator", EQ, "value", CONTACT_OPTION_EMAIL),
                     Map.of("field",INTERESTS,"operator",EQ,"value",INTEREST_TECHNOLOGY_AND_INNOVATION),
                     Map.of("field", TIER_LEVEL, "operator", EQ, "value", String.valueOf(TIER_LEVEL_3))
@@ -1077,7 +1077,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         @Test
         @DisplayName("Sollte NOT_FOUND zurückgeben für Benutzername, Kundenstufe und Interesse Filter ohne Ergebnisse")
         void testFilterUsernameAndTierAndInterest() {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
 
             // ✅ Setzt die Bedingungen in das Filter-Query
             final Map<String, Object> variables = Map.of(

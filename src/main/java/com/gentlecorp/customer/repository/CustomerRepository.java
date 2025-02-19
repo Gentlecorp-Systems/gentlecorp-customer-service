@@ -35,5 +35,9 @@ public interface CustomerRepository extends MongoRepository<Customer, UUID> {
      */
     @Query("{}") // Nutze eine native MongoDB Query für dynamische Filter
     Page<Customer> find(String filter, Pageable pageable);
+
+    boolean existsByEmail(String email);
+
+    boolean existsByUsername(String username);
 }
 
