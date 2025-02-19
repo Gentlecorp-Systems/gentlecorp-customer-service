@@ -105,7 +105,6 @@ input CustomerUpdateInput {
     tierLevel: Int
     subscribed: Boolean
     maritalStatus: String,
-    customerState: String,
     address: AddresseInput
     contactOptions: [String]
     interests: [String]

@@ -1,7 +1,10 @@
 package com.gentlecorp.customer.controller;
 
 import com.gentlecorp.customer.exception.AccessForbiddenException;
+import com.gentlecorp.customer.exception.ConstraintViolationsException;
+import com.gentlecorp.customer.exception.EmailExistsException;
 import com.gentlecorp.customer.exception.NotFoundException;
+import com.gentlecorp.customer.exception.UsernameExistsException;
 import com.gentlecorp.customer.model.dto.ContactDTO;
 import com.gentlecorp.customer.model.dto.CustomerDTO;
 import com.gentlecorp.customer.model.dto.CustomerUpdateDTO;
@@ -13,6 +16,7 @@ import com.gentlecorp.customer.security.CustomUserDetails;
 import com.gentlecorp.customer.service.CustomerWriteService;
 import com.gentlecorp.customer.util.Validation;
 import graphql.GraphQLError;
+import graphql.language.SourceLocation;
 import graphql.schema.DataFetchingEnvironment;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
@@ -30,10 +34,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static com.gentlecorp.customer.util.Validation.validateContact;
@@ -163,42 +171,36 @@ public class MutationController {
     }
 
 
-//    @GraphQlExceptionHandler
-//    GraphQLError onEmailExists(final EmailExistsException ex) {
-//        return GraphQLError.newError()
-//            .errorType(BAD_REQUEST)
-//            .message("Die Emailadresse " + ex.getEmail() + " existiert bereits.")
-//            .path(List.of("input", "email")) // NOSONAR
-//            .build();
-//    }
+    @GraphQlExceptionHandler
+    GraphQLError onEmailExists(final EmailExistsException ex) {
+        return GraphQLError.newError()
+            .errorType(BAD_REQUEST)
+            .message("Die Emailadresse " + ex.getEmail() + " existiert bereits.")
+            .path(List.of("input", "email")) // NOSONAR
+            .build();
+    }
 
-//    @GraphQlExceptionHandler
-//    GraphQLError onUsernameExists(final UsernameExistsException ex) {
-//        final List<Object> path = List.of("input", "username");
-//        return GraphQLError.newError()
-//            .errorType(BAD_REQUEST)
-//            .message("Der Username " + ex.getUsername() + " existiert bereits.")
-//            .path(path)
-//            .build();
-//    }
-//
-//    @GraphQlExceptionHandler
-//    GraphQLError onDateTimeParseException(final DateTimeParseException ex) {
-//        final List<Object> path = List.of("input", "geburtsdatum");
-//        return GraphQLError.newError()
-//            .errorType(BAD_REQUEST)
-//            .message("Das Datum " + ex.getParsedString() + " ist nicht korrekt.")
-//            .path(path)
-//            .build();
-//    }
-//
-//    @GraphQlExceptionHandler
-//    Collection<GraphQLError> onConstraintViolations(final ConstraintViolationException ex) {
-//        return ex.getConstraintViolations()
-//            .stream()
-//            .map(this::violationToGraphQLError)
-//            .toList();
-//    }
+    @GraphQlExceptionHandler
+    GraphQLError onUsernameExists(final UsernameExistsException ex) {
+        final List<Object> path = List.of("input", "username");
+        return GraphQLError.newError()
+            .errorType(BAD_REQUEST)
+            .message("Der Username " + ex.getUsername() + " existiert bereits.")
+            .path(path)
+            .build();
+    }
+
+    @GraphQlExceptionHandler
+    GraphQLError onDateTimeParseException(final DateTimeParseException ex) {
+        final List<Object> path = List.of("input", "geburtsdatum");
+        return GraphQLError.newError()
+            .errorType(BAD_REQUEST)
+            .message("Das Datum " + ex.getParsedString() + " ist nicht korrekt.")
+            .path(path)
+            .build();
+    }
+
+
 
     /**
      * Behandelt eine `AccessForbiddenException` und gibt ein entsprechendes GraphQL-Fehlerobjekt zurück.
@@ -234,18 +236,32 @@ public class MutationController {
             .build();
     }
 
-    private GraphQLError violationToGraphQLError(final ConstraintViolation<?> violation) {
+    @GraphQlExceptionHandler
+    Collection<GraphQLError> onConstraintViolations(final ConstraintViolationsException ex, DataFetchingEnvironment env) {
+        return  Stream.concat(
+                ex.getCustomerViolations().stream(),
+                ex.getContactViolations().stream()
+            )
+            .map(violations -> violationToGraphQLError(violations, env))
+            .toList();
+    }
+
+    private GraphQLError violationToGraphQLError(final ConstraintViolation<?> violation, DataFetchingEnvironment env) {
         // String oder Integer als Listenelement
         final List<Object> path = new ArrayList<>(List.of("input"));
 
         final var propertyPath = violation.getPropertyPath();
         StreamSupport.stream(propertyPath.spliterator(), false)
-            .filter(node -> !node.getName().equals("create") && !node.getName().equals("kunde"))
+            .filter(node -> !Set.of("create", "customer", "contact").contains(node.getName()))
             .forEach(node -> path.add(node.toString()));
+
+        SourceLocation location = Optional.ofNullable(env.getExecutionStepInfo().getField().getSingleField().getSourceLocation())
+            .orElse(new SourceLocation(0, 0));  // Fallback auf Zeile 0, Spalte 0
 
         return GraphQLError.newError()
             .errorType(BAD_REQUEST)
             .message(violation.getMessage())
+            .location(location)
             .path(path)
             .build();
     }

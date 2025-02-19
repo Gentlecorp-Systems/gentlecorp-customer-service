@@ -127,7 +127,7 @@ type MutationResponse {
     """
     Gibt an, ob die Operation erfolgreich war.
     """
-    success: Boolean!
+    success: Boolean
     """
     Zusätzliche Informationen oder Fehlermeldungen.
     """

@@ -14,6 +14,19 @@ server:
 
 # Spring Boot Einstellungen
 spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      #value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      properties:
+        spring:
+          json:
+            type:
+              mapping:
+                account:com.gentlecorp.customer.model.dto.AccountDTO,
+                shoppingCart:com.gentlecorp.customer.model.dto.ShoppingCartDTO
   graphql:
     graphiql:
      enabled: true

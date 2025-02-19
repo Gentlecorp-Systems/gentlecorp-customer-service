@@ -8,6 +8,7 @@ import com.gentlecorp.customer.exception.NotFoundException;
 import com.gentlecorp.customer.exception.PasswordInvalidException;
 import com.gentlecorp.customer.exception.UsernameExistsException;
 import com.gentlecorp.customer.model.dto.AccountDTO;
+import com.gentlecorp.customer.model.dto.ShoppingCartDTO;
 import com.gentlecorp.customer.model.entity.Contact;
 import com.gentlecorp.customer.model.entity.Customer;
 import com.gentlecorp.customer.repository.ContactRepository;
@@ -17,6 +18,7 @@ import com.gentlecorp.customer.security.enums.RoleType;
 import com.gentlecorp.customer.security.service.KeycloakService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,6 +53,7 @@ public class CustomerWriteService {
     private final MailService mailService;
     private final MailProps props;
     private final KeycloakService keycloakService;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     public Customer create(final Customer customer, final String password) {
         customer.setCustomerState(ACTIVE);
@@ -97,6 +100,8 @@ public class CustomerWriteService {
 
         props.setTo(customerDb.getEmail());
         mailService.send(customerDb);
+        kafkaTemplate.send("newAccount", checkingAccount);
+        kafkaTemplate.send("create-shopping-cart",new ShoppingCartDTO(customer.getId(),""));
 
         log.debug("create: customerDb={}", customerDb);
         return customerDb;
@@ -292,6 +297,7 @@ public class CustomerWriteService {
 
         keycloakService.delete(user.getToken(), customerDb.getUsername());
         customerRepository.delete(customerDb);
+        kafkaTemplate.send("delete-shopping-cart",new ShoppingCartDTO(id,user.getToken()));
     }
 
     @SuppressWarnings("ReturnCount")

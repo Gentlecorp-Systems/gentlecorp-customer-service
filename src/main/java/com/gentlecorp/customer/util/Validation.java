@@ -12,9 +12,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Component
@@ -25,7 +27,7 @@ public class Validation {
 
   public <T> void validateDTO(T dto, Class<?>... groups) {
     // Perform validation
-    final Collection<ConstraintViolation<T>> violations = validator.validate(dto, groups);
+    final Set<ConstraintViolation<T>> violations = validator.validate(dto, groups);
 
     // Handle violations
     if (!violations.isEmpty()) {
@@ -34,21 +36,18 @@ public class Validation {
       // Determine the type of DTO and throw the appropriate exception
       if (dto instanceof CustomerDTO) {
         @SuppressWarnings("unchecked")
-        var customerViolations = (Collection<ConstraintViolation<CustomerDTO>>) (Collection<?>) violations;
+        var customerViolations = new ArrayList<>((Collection<ConstraintViolation<CustomerDTO>>) (Collection<?>) violations);
         throw new ConstraintViolationsException(customerViolations, null);
       }
 
       if (dto instanceof ContactDTO) {
         @SuppressWarnings("unchecked")
-        var contactViolations = (Collection<ConstraintViolation<ContactDTO>>) (Collection<?>) violations;
+        var contactViolations = new ArrayList<>((Collection<ConstraintViolation<ContactDTO>>) (Collection<?>) violations);
         throw new ConstraintViolationsException(null, contactViolations);
       }
-//      else {
-//        // Handle unexpected DTO types
-//        throw new IllegalArgumentException(dto.getClass().getName());
-//      }
     }
   }
+
 
   public static void validateContact(Contact newContact, List<Contact> contacts) {
     contacts.forEach(

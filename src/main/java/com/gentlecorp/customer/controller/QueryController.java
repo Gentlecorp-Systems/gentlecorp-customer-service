@@ -116,43 +116,6 @@ public class QueryController {
         return "Hello, GraphQL!";
     }
 
-//    @GraphQlExceptionHandler
-//    GraphQLError onEmailExists(final EmailExistsException ex) {
-//        return GraphQLError.newError()
-//            .errorType(BAD_REQUEST)
-//            .message("Die Emailadresse " + ex.getEmail() + " existiert bereits.")
-//            .path(List.of("input", "email")) // NOSONAR
-//            .build();
-//    }
-
-//    @GraphQlExceptionHandler
-//    GraphQLError onUsernameExists(final UsernameExistsException ex) {
-//        final List<Object> path = List.of("input", "username");
-//        return GraphQLError.newError()
-//            .errorType(BAD_REQUEST)
-//            .message("Der Username " + ex.getUsername() + " existiert bereits.")
-//            .path(path)
-//            .build();
-//    }
-//
-//    @GraphQlExceptionHandler
-//    GraphQLError onDateTimeParseException(final DateTimeParseException ex) {
-//        final List<Object> path = List.of("input", "geburtsdatum");
-//        return GraphQLError.newError()
-//            .errorType(BAD_REQUEST)
-//            .message("Das Datum " + ex.getParsedString() + " ist nicht korrekt.")
-//            .path(path)
-//            .build();
-//    }
-//
-//    @GraphQlExceptionHandler
-//    Collection<GraphQLError> onConstraintViolations(final ConstraintViolationException ex) {
-//        return ex.getConstraintViolations()
-//            .stream()
-//            .map(this::violationToGraphQLError)
-//            .toList();
-//    }
-
     /**
      * Behandelt eine `AccessForbiddenException` und gibt ein entsprechendes GraphQL-Fehlerobjekt zurück.
      *
@@ -184,22 +147,6 @@ public class QueryController {
             .message(ex.getMessage())
             .path(env.getExecutionStepInfo().getPath().toList()) // Dynamischer Query-Pfad
             .location(env.getExecutionStepInfo().getField().getSingleField().getSourceLocation()) // GraphQL Location
-            .build();
-    }
-
-    private GraphQLError violationToGraphQLError(final ConstraintViolation<?> violation) {
-        // String oder Integer als Listenelement
-        final List<Object> path = new ArrayList<>(List.of("input"));
-
-        final var propertyPath = violation.getPropertyPath();
-        StreamSupport.stream(propertyPath.spliterator(), false)
-            .filter(node -> !node.getName().equals("create") && !node.getName().equals("kunde"))
-            .forEach(node -> path.add(node.toString()));
-
-        return GraphQLError.newError()
-            .errorType(BAD_REQUEST)
-            .message(violation.getMessage())
-            .path(path)
             .build();
     }
 }

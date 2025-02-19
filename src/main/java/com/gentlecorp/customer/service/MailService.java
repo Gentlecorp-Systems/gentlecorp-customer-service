@@ -22,7 +22,7 @@ import static jakarta.mail.Message.RecipientType.TO;
 @Slf4j
 public class MailService {
 
-  private static final boolean SMTP_ACTIVATED = Objects.equals(System.getenv("SMTP_ACTIVATED"), "true") ||
+  private static final boolean SMTP_ACTIVATED = Objects.equals(System.getProperty("SMTP_ACTIVATED"), "true") ||
     Objects.equals(System.getProperty("smtp-activated"), "true");
 
   private final JavaMailSender mailSender;

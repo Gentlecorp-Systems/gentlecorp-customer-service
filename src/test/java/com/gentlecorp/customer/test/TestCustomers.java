@@ -601,7 +601,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         void testGetAllFilterZipCode(String zipCode, int expectedSize, Operator operator) {
             final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
             final Map<String, Object> variables = Map.of(
-                "field",  ZIP_CODE,
+                "field",  ADDRESS_ZIP_CODE,
                 "operator",operator.name(),
                 "value", zipCode
             );
@@ -625,7 +625,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         void testGetAllFilterNonExistingZipCode() {
             final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
             final Map<String, Object> variables = Map.of(
-                "field",  ZIP_CODE,
+                "field",  ADDRESS_ZIP_CODE,
                 "operator",EQ,
                 "value", "99999"
             );
@@ -656,7 +656,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         void testGetAllFilterCity(String city, int expectedSize, Operator operator) {
             final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
             final Map<String, Object> variables = Map.of(
-                "field",  CITY,
+                "field",  ADDRESS_CITY,
                 "operator",operator.name(),
                 "value", city
             );
@@ -680,7 +680,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         void testGetAllFilterNonExistingCity() {
             final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
             final Map<String, Object> variables = Map.of(
-                "field",  CITY,
+                "field",  ADDRESS_CITY,
                 "operator",EQ,
                 "value","NonExistentCity"
             );
@@ -711,7 +711,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         void testGetAllFilterState(String state, int expectedSize, Operator operator) {
             final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
             final Map<String, Object> variables = Map.of(
-                "field",  STATE,
+                "field",  ADDRESS_STATE,
                 "operator",operator.name(),
                 "value", state
             );
@@ -733,7 +733,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         void testGetAllFilterNonExistingState() {
             final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
             final Map<String, Object> variables = Map.of(
-                "field",  STATE,
+                "field",  ADDRESS_STATE,
                 "operator",EQ,
                 "value", "NonExistentState"
             );
@@ -764,7 +764,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         void testGetAllFilterCountry(String country, int expectedSize, Operator operator) {
             final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
             final Map<String, Object> variables = Map.of(
-                "field",  COUNTRY,
+                "field",  ADDRESS_COUNTRY,
                 "operator",operator.name(),
                 "value", country
             );
@@ -786,7 +786,7 @@ public class TestCustomers extends CustomerCommonFunctions {
         void testGetAllFilterNonExistingCountry() {
             final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
             final Map<String, Object> variables = Map.of(
-                "field",  COUNTRY,
+                "field",  ADDRESS_COUNTRY,
                 "operator",EQ,
                 "value", "NonExistentState"
             );
@@ -1022,7 +1022,7 @@ public class TestCustomers extends CustomerCommonFunctions {
             final Map<String, Object> variables = Map.of(
                 "and", List.of(
                     Map.of("field",BIRTHDATE,"operator",GTE,"value",QUERY_BIRTH_DATE_AFTER),
-                    Map.of("field", STATE, "operator", PREFIX, "value", QUERY_STATE_BA)
+                    Map.of("field", ADDRESS_STATE, "operator", PREFIX, "value", QUERY_STATE_BA)
                 )
             );
             final var response = executeCustomersGraphQLQuery(customersMultipleFilterQuery, variables, client);
@@ -1050,7 +1050,7 @@ public class TestCustomers extends CustomerCommonFunctions {
             // ✅ Setzt die Bedingungen in das Filter-Query
             final Map<String, Object> variables = Map.of(
                 "and", List.of(
-                    Map.of("field",COUNTRY,"operator",LIKE,"value",QUERY_COUNTRY_LAND),
+                    Map.of("field",ADDRESS_COUNTRY,"operator",LIKE,"value",QUERY_COUNTRY_LAND),
                     Map.of("field", CONTACT_OPTIONS, "operator", EQ, "value", CONTACT_OPTION_EMAIL),
                     Map.of("field",INTERESTS,"operator",EQ,"value",INTEREST_TECHNOLOGY_AND_INNOVATION),
                     Map.of("field", TIER_LEVEL, "operator", EQ, "value", String.valueOf(TIER_LEVEL_3))
