@@ -43,11 +43,11 @@ public class TestClientProvider extends CustomerTestData {
 
     this.graphQlClient = HttpGraphQlClient.builder(webClient).build();
 
-    tokenCache.put(ROLE_ADMIN, authenticate(ROLE_ADMIN, ROLE_PASSWORD));
-    tokenCache.put(ROLE_USER, authenticate(ROLE_USER, ROLE_PASSWORD));
-    tokenCache.put(ROLE_BASIC, authenticate(ROLE_BASIC, ROLE_PASSWORD));
-    tokenCache.put(ROLE_ELITE, authenticate(ROLE_ELITE, ROLE_PASSWORD));
-    tokenCache.put(ROLE_SUPREME, authenticate(ROLE_SUPREME, ROLE_PASSWORD));
+    tokenCache.put(USER_ADMIN, authenticate(USER_ADMIN, USER_PASSWORD));
+    tokenCache.put(USER_USER, authenticate(USER_USER, USER_PASSWORD));
+    tokenCache.put(USER_BASIC, authenticate(USER_BASIC, USER_PASSWORD));
+    tokenCache.put(USER_ELITE, authenticate(USER_ELITE, USER_PASSWORD));
+    tokenCache.put(USER_SUPREME, authenticate(USER_SUPREME, USER_PASSWORD));
   }
 
   /**

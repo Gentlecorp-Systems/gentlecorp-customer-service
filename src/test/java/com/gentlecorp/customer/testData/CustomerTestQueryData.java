@@ -40,6 +40,7 @@ public class CustomerTestQueryData extends CreateCustomerTestData {
               customerState
               contactOptions
               interests
+              contactIds
               address {
                   street
                   houseNumber
@@ -195,6 +196,25 @@ public class CustomerTestQueryData extends CreateCustomerTestData {
              affectedCount
              warnings
          }
+     }
+     """;
+
+ public static final String customersUpdatePasswordQuery = """
+     mutation DeleteCustomer($password: String!) {
+         updatePassword(newPassword: $password) {
+             message
+             affectedCount
+             warnings
+         }
+     }
+     """;
+
+ public static final String addContactQuery = """
+     mutation AddContact($input: ContactInput, $id: ID!) {
+         addContact(
+             id: $id
+             input: $input
+         )
      }
      """;
 }

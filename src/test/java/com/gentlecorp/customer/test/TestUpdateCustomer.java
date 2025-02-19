@@ -2,6 +2,7 @@ package com.gentlecorp.customer.test;
 
 import com.gentlecorp.customer.Env;
 import com.gentlecorp.customer.config.TestClientProvider;
+import com.gentlecorp.customer.model.GraphQlResponse;
 import com.gentlecorp.customer.model.entity.Customer;
 import com.gentlecorp.customer.utils.CustomerCommonFunctions;
 import org.junit.jupiter.api.BeforeAll;
@@ -14,6 +15,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.graphql.client.HttpGraphQlClient;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,10 +58,10 @@ public class TestUpdateCustomer extends CustomerCommonFunctions {
 
     @ParameterizedTest(name = "Aktualisiere neuer Kunde als {0}")
     @CsvSource({
-        ROLE_USER + "," + USER,
-        ROLE_SUPREME + "," + SUPREME,
-        ROLE_BASIC + "," + BASIC,
-        ROLE_ELITE + "," + ELITE
+        USER_USER + "," + USER,
+        USER_SUPREME + "," + SUPREME,
+        USER_BASIC + "," + BASIC,
+        USER_ELITE + "," + ELITE
     })
     void testUpdateNewCustomerNotAdmin(final String user, final String role) {
       final var customer = createNewCustomer();
@@ -151,7 +153,7 @@ public class TestUpdateCustomer extends CustomerCommonFunctions {
 
       performUpdateAndAssertResponse(input);
 
-      final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+      final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
       final Map<String, Object> variables = Map.of(
           "id",  customer.getId()
       );
@@ -164,6 +166,118 @@ public class TestUpdateCustomer extends CustomerCommonFunctions {
 
       deleteAndVerifyCustomer(customer.getId(), 2);
     }
+  }
+
+//  @Test()
+//  @DisplayName("Aktualisiere username eines Kunden den es schon gibt als admin")
+//  void testUpdateNewCustomerDuplicateUsername() {
+//    HttpGraphQlClient client;
+//    Map<String, Object> id;
+//    GraphQlResponse<Customer> response;
+//
+//    final var customer = createNewCustomer();
+//    final var updateRequest = createUpdateRequestBody();
+//    updateRequest.put(USERNAME,USER_SUPREME);
+//    final var input = Map.of(
+//        "input",updateRequest,
+//        "id",customer.getId(),
+//        "version","1"
+//    );
+//
+//    client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
+//    response = executeUpdateCustomerGraphQLQuery2(customerUpdateQuery, input, client);
+//
+//    final var firstError = response.getErrors().getFirst();
+//    assertThat(firstError.getMessage()).isEqualTo(String.format("Der Username %s existiert bereits.",USER_SUPREME));
+//    assertThat(firstError.getExtensions().get("classification")).isEqualTo("CONFLICT");
+//
+//    client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
+//    id = Map.of("id", customer.getId(), "version", customer.getVersion());
+//    executeDeleteCustomerGraphQLQuery(customersDeleteQuery, id, client);
+//  }
+
+  @Test()
+  @DisplayName("Aktualisiere email eines Kunden den es schon gibt als admin")
+  void testUpdateNewCustomerDuplicateEmail() {
+    HttpGraphQlClient client;
+    Map<String, Object> id;
+    GraphQlResponse<Customer> response;
+
+    final var customer = createNewCustomer();
+    final var updateRequest = createUpdateRequestBody();
+    updateRequest.put(EMAIL,EMAIL_CALEB);
+    final var input = Map.of(
+        "input",updateRequest,
+        "id",customer.getId(),
+        "version","1"
+    );
+
+    client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
+    response = executeUpdateCustomerGraphQLQuery2(customerUpdateQuery, input, client);
+
+    final var firstError = response.getErrors().getFirst();
+    assertThat(firstError.getMessage()).isEqualTo(String.format("Die Emailadresse %s existiert bereits.",EMAIL_CALEB));
+    assertThat(firstError.getExtensions().get("classification")).isEqualTo("CONFLICT");
+
+    client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
+    id = Map.of("id", customer.getId(), "version", customer.getVersion());
+    executeDeleteCustomerGraphQLQuery(customersDeleteQuery, id, client);
+  }
+
+  @ParameterizedTest(name = "Lösche neuer Kunde mit ungültiger version: {0}")
+  @CsvSource({
+      "0,Die Versionsnummer 0 ist veraltet.",
+      "2,Die angegebene Version 2 ist voraus und noch nicht gültig."
+  })
+  void testUpdateNewCustomerInvalidVersion(final String version, final String message) {
+    HttpGraphQlClient client;
+    Map<String, Object> id;
+    GraphQlResponse<Customer> response;
+
+    final var customer = createNewCustomer();
+    final var updateRequest = createUpdateRequestBody();
+    final var input = Map.of(
+        "input",updateRequest,
+        "id",customer.getId(),
+        "version",version
+    );
+
+    client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
+    response = executeUpdateCustomerGraphQLQuery2(customerUpdateQuery, input, client);
+
+    final var firstError = response.getErrors().getFirst();
+    assertThat(firstError.getMessage()).isEqualTo(message);
+    assertThat(firstError.getExtensions().get("classification")).isEqualTo("PRECONDITION_FAILED");
+
+    client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
+    id = Map.of("id", customer.getId(), "version", customer.getVersion());
+    executeDeleteCustomerGraphQLQuery(customersDeleteQuery, id, client);
+  }
+
+  @ParameterizedTest(name = "Erstelle neuen Kunden mit ungültigen Passwort: {0}")
+  @CsvSource({
+      "A","As1","asddasddas","ASDASD","123123","ASD!232","asd123","asdASD"
+  })
+  void testUpdateNewCustomerPasswordAsCustomer(final String password) {
+    HttpGraphQlClient client;
+    Map<String, Object> id;
+    GraphQlResponse<Customer> response;
+
+    final var customer = createNewCustomer();
+    final Map<String,Object> input = Map.of(
+        PASSWORD,password
+    );
+
+    client = testClientProvider.createAuthenticatedClient(BASIC_USERNAME, NEW_USER_PASSWORD);
+    response = executeUpdateCustomerGraphQLQuery2(customersUpdatePasswordQuery, input, client);
+
+    final var firstError = response.getErrors().getFirst();
+    assertThat(firstError.getMessage()).isEqualTo(String.format("Ungültiges Passwort: %s", password));
+    assertThat(firstError.getExtensions().get("classification")).isEqualTo("BAD_REQUEST");
+
+    client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
+    id = Map.of("id", customer.getId(), "version", customer.getVersion());
+    executeDeleteCustomerGraphQLQuery(customersDeleteQuery, id, client);
   }
 
   private void assertCustomerAttribute(final boolean isAddressAttribute, final String attributeName, final Customer customer) {
@@ -179,7 +293,7 @@ public class TestUpdateCustomer extends CustomerCommonFunctions {
   }
 
   private void verifyCustomerUpdate(final UUID customerId) {
-    final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+    final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
     final Map<String, Object> variables = Map.of(
         "id",  customerId
     );
@@ -191,7 +305,7 @@ public class TestUpdateCustomer extends CustomerCommonFunctions {
   }
 
   private void performUpdateAndAssertResponse(final Map<String, Object> variables) {
-    final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+    final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
     executeUpdateCustomerGraphQLQuery(customerUpdateQuery, variables, client);
   }
 

@@ -2,6 +2,8 @@ package com.gentlecorp.customer.test;
 
 import com.gentlecorp.customer.Env;
 import com.gentlecorp.customer.config.TestClientProvider;
+import com.gentlecorp.customer.model.GraphQlResponse;
+import com.gentlecorp.customer.model.entity.Customer;
 import com.gentlecorp.customer.utils.CustomerCommonFunctions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +15,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.graphql.client.HttpGraphQlClient;
 
 import java.util.Map;
 import java.util.stream.Stream;
@@ -123,8 +126,51 @@ public class TestCreateCustomer extends CustomerCommonFunctions {
 
             validateErrorResponse(variables, expectedMessage);
         }
-
     }
+
+    @ParameterizedTest(name = "Fehlgeschlagene Kundenerstellung mit ungültigem Wert für {0}")
+    @CsvSource({
+        USERNAME + ", " + USER_SUPREME + ",Der Username gentlecg99 existiert bereits.",
+        EMAIL + ", " + EMAIL_CALEB  + ",Die Emailadresse caleb_g@outlook.de existiert bereits.",
+    })
+    void testFailCreateCustomerWithInvalidStringInput(
+        final String attribut, final String invalidInput, final String message) {
+        final Map<String, Object> input = createBaseCustomerInput();
+        input.put(attribut, invalidInput);
+        final Map<String, Object> variables = Map.of("input", input, PASSWORD, NEW_USER_PASSWORD);
+
+        final var client = testClientProvider.getVisitorClient();
+        final var response = executeCreateCustomerGraphQLQuery2(customerCreateQuery, variables, client);
+
+        assertThat(response.getData()).isNull(); // Kein Kunde zurückgegeben
+        assertThat(response.getErrors()).isNotEmpty(); // Es gibt Fehler
+
+        final var firstError = response.getErrors().getFirst();
+        assertThat(firstError.getMessage()).isEqualTo(message);
+        assertThat(firstError.getExtensions().get("classification")).isEqualTo("CONFLICT");
+    }
+
+    @ParameterizedTest(name = "Erstelle neuen Kunden mit ungültigen Passwort: {0}")
+    @CsvSource({
+        "A","As1","asddasddas","ASDASD","123123","ASD!232","asd123","asdASD"
+    })
+    void testFailCreateCustomerWithInvalidStringInput(
+        final String password) {
+        final Map<String, Object> input = createBaseCustomerInput();
+        final Map<String, Object> variables = Map.of("input", input, PASSWORD, password);
+
+        final var client = testClientProvider.getVisitorClient();
+        final var response = executeCreateCustomerGraphQLQuery2(customerCreateQuery, variables, client);
+
+        assertThat(response.getData()).isNull(); // Kein Kunde zurückgegeben
+        assertThat(response.getErrors()).isNotEmpty(); // Es gibt Fehler
+
+        final var firstError = response.getErrors().getFirst();
+        assertThat(firstError.getMessage()).isEqualTo(String.format("Ungültiges Passwort: %s", password));
+        assertThat(firstError.getExtensions().get("classification")).isEqualTo("BAD_REQUEST");
+    }
+
+
 
     private void validateErrorResponse(Map<String, Object> variables, String expectedMessage) {
         final var client = testClientProvider.getVisitorClient();

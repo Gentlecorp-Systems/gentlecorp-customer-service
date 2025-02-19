@@ -26,14 +26,18 @@ public class Validation {
   private final Validator validator;
 
   public <T> void validateDTO(T dto, Class<?>... groups) {
-    // Perform validation
+    // Standard-Validierung ausführen
     final Set<ConstraintViolation<T>> violations = validator.validate(dto, groups);
 
-    // Handle violations
-    if (!violations.isEmpty()) {
-      log.debug("Validation failed: violations={}", violations);
+    // 🔥 Hier wird auch klassenbezogene Validierung berücksichtigt!
+    final Set<ConstraintViolation<T>> classLevelViolations = validator.validate(dto);
 
-      // Determine the type of DTO and throw the appropriate exception
+    // Beide Validierungen zusammenführen
+    violations.addAll(classLevelViolations);
+
+    if (!violations.isEmpty()) {
+      log.debug("🚨 Validation failed: {}", violations);
+
       if (dto instanceof CustomerDTO) {
         @SuppressWarnings("unchecked")
         var customerViolations = new ArrayList<>((Collection<ConstraintViolation<CustomerDTO>>) (Collection<?>) violations);
@@ -47,6 +51,7 @@ public class Validation {
       }
     }
   }
+
 
 
   public static void validateContact(Contact newContact, List<Contact> contacts) {

@@ -158,14 +158,15 @@ tierLevel: Int
 subscribed: Boolean
 birthdate: String
 gender: String,
-maritalStatus: String,
-customerState: String,
-address: Addresse
+maritalStatus: String
+customerState: String
+address: Adresse
 contactOptions: [ID]
 interests: [String]
+contactIds: [String]
 }
 
-type Addresse {
+type Adresse {
 street: String,
 houseNumber: String,
 zipCode: String,

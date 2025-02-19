@@ -59,7 +59,7 @@ public class Contact {
   /**
    * Auszahlungslimit, das dieser Kontakt für den Kunden hat (mindestens 0).
    */
-  @Min(value = 0, message = "Das Auszahlungslimit darf nicht negativ sein")
+
   private int withdrawalLimit;
 
   /**

@@ -25,12 +25,12 @@ public class CustomerTestData extends UpdateCustomerTestData {
   public static final String USER = "USER";
 
   // Testrollen und -zugangsdaten
-  public static final String ROLE_ADMIN = "admin";
-  public static final String ROLE_USER = "user";
-  public static final String ROLE_SUPREME = "gentlecg99";
-  public static final String ROLE_ELITE = "leroy135";
-  public static final String ROLE_BASIC = "erik";
-  public static final String ROLE_PASSWORD = "p";
+  public static final String USER_ADMIN = "admin";
+  public static final String USER_USER = "user";
+  public static final String USER_SUPREME = "gentlecg99";
+  public static final String USER_ELITE = "leroy135";
+  public static final String USER_BASIC = "erik";
+  public static final String USER_PASSWORD = "p";
 
   // HTTP-Header
   public static final String HEADER_IF_NONE_MATCH = "If-None-Match";
@@ -56,10 +56,7 @@ public class CustomerTestData extends UpdateCustomerTestData {
   public static final String MARITAL_STATUS = "maritalStatus";
   public static final String INTERESTS = "interests";
   public static final String CONTACT_OPTIONS = "contactOptions";
-
-  //Query Parameter
   public static final String CUSTOMER_STATUS = "customerState";
-  //public static final String PREFIX = "prefix";
 
   // Adressattribute
   public static final String ADDRESS = "address";
@@ -81,7 +78,9 @@ public class CustomerTestData extends UpdateCustomerTestData {
   //Kontaktattribute
   public static final String RELATIONSHIP = "relationship";
   public static final String WITHDRAWAL_LIMIT = "withdrawalLimit";
-  public static final String IS_EMERGENCY_CONTACT = "isEmergencyContact";
+  public static final String EMERGENCY_CONTACT = "emergencyContact";
+  public static final String START_DATE = "startDate";
+  public static final String END_DATE = "endDate";
 
   // Hiroshi's Daten
   public static final String USERNAME_HIROSHI = "hiroshi.tanaka";
@@ -139,20 +138,6 @@ public class CustomerTestData extends UpdateCustomerTestData {
   public static final String STATE_CALEB = "Baden Württemberg";
   public static final String COUNTRY_CALEB = "Deutschland";
 
-  // E-Tags
-  public static final String ETAG_VALUE_MINUS_1 = "\"-1\"";
-  public static final String ETAG_VALUE_0 = "\"0\"";
-  public static final String ETAG_VALUE_1 = "\"1\"";
-  public static final String ETAG_VALUE_2 = "\"2\"";
-  public static final String ETAG_VALUE_3 = "\"3\"";
-  public static final String INVALID_ETAG_VALUE = "\"3";
-
-  // Problem Detail
-  public static final String INVALID_KEY = "Invalid key: ";
-  public static final int BAD_REQUEST_STATUS = 400;
-  public static final String BAD_REQUEST_TITLE = "Bad Request";
-  public static final String BAD_REQUEST_TYPE = "/problem/badRequest";
-
   public static final int TOTAL_CUSTOMERS = 27;
 
   //Query Parameter
@@ -179,14 +164,11 @@ public class CustomerTestData extends UpdateCustomerTestData {
   public static final String QUERY_COUNTRY_USA = "USA";
   public static final String QUERY_COUNTRY_LAND = "land";
 
-  // Invalid Query Parameter
-  public static final String INVALID = "invalid";
-  public static final int INVALID_TIER_LEVEL_4 = 4;
-
   // Tier  Level
   public static final int TIER_LEVEL_3 = 3;
   public static final int TIER_LEVEL_2 = 2;
   public static final int TIER_LEVEL_1 = 1;
+  public static final int INVALID_TIER_LEVEL_4 = 4;
 
   public static final String GENDER_FEMALE = "FEMALE";
   public static final String GENDER_MALE = "MALE";

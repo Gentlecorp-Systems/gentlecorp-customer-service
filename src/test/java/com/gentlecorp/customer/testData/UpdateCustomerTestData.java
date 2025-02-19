@@ -1,6 +1,6 @@
 package com.gentlecorp.customer.testData;
 
-public class UpdateCustomerTestData {
+public class UpdateCustomerTestData extends ContactTestData {
 
   public static final String UPDATED_LAST_NAME = "Updatedastame";
   public static final String UPDATED_FIRST_NAME = "Updatedirstame";

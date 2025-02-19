@@ -41,23 +41,6 @@ public class CreateCustomerTestData extends CustomerTestData {
   public static final String INVALID_CONTACT_OPTIONS = "INVALID";
   public static final String INVALID_INTERESTS = "INVALID";
   public static final String INVALID_PASSWORD = "INVALID";
-  public static final String NEW_CONTACT_LAST_NAME = "Rolly";
-  public static final String NEW_CONTACT_FIRST_NAME = "Hola";
-  public static final String NEW_CONTACT_RELATIONSHIP = "S";
-  public static final int NEW_CONTACT_WITHDRAWAL_LIMIT = 50;
-  public static final boolean NEW_CONTACT_IS_EMERGENCY = false;
-
-  public static final String EXISTING_CONTACT_LAST_NAME = "Andersson";
-  public static final String EXISTING_CONTACT_FIRST_NAME = "Eric";
-  public static final String EXISTING_CONTACT_RELATIONSHIP = "S";
-  public static final int EXISTING_CONTACT_WITHDRAWAL_LIMIT = 50;
-  public static final boolean EXISTING_CONTACT_IS_EMERGENCY = false;
-
-  public static final String INVALID_CONTACT_FIRST_NAME = "";
-  public static final String INVALID_CONTACT_LAST_NAME = "";
-  public static final String INVALID_CONTACT_RELATIONSHIP = "";
-  public static final int INVALID_CONTACT_WITHDRAWAL_LIMIT = -1;
-  public static final Boolean INVALID_CONTACT_IS_EMERGENCY = null;
 
 
   public static final String UPDATED_LAST_NAME = "Updatedastame";

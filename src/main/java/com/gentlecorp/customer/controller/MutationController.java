@@ -2,15 +2,20 @@ package com.gentlecorp.customer.controller;
 
 import com.gentlecorp.customer.exception.AccessForbiddenException;
 import com.gentlecorp.customer.exception.ConstraintViolationsException;
+import com.gentlecorp.customer.exception.ContactExistsException;
 import com.gentlecorp.customer.exception.EmailExistsException;
 import com.gentlecorp.customer.exception.NotFoundException;
+import com.gentlecorp.customer.exception.PasswordInvalidException;
 import com.gentlecorp.customer.exception.UsernameExistsException;
+import com.gentlecorp.customer.exception.VersionAheadException;
+import com.gentlecorp.customer.exception.VersionOutdatedException;
 import com.gentlecorp.customer.model.dto.ContactDTO;
 import com.gentlecorp.customer.model.dto.CustomerDTO;
 import com.gentlecorp.customer.model.dto.CustomerUpdateDTO;
 import com.gentlecorp.customer.model.dto.PasswordDTO;
 import com.gentlecorp.customer.model.entity.Contact;
 import com.gentlecorp.customer.model.entity.Customer;
+import com.gentlecorp.customer.model.enums.ProblemType;
 import com.gentlecorp.customer.model.mapper.CustomerMapper;
 import com.gentlecorp.customer.security.CustomUserDetails;
 import com.gentlecorp.customer.service.CustomerWriteService;
@@ -20,20 +25,24 @@ import graphql.language.SourceLocation;
 import graphql.schema.DataFetchingEnvironment;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.GraphQlExceptionHandler;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import java.net.URI;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,12 +53,16 @@ import java.util.UUID;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import static com.gentlecorp.customer.exception.CustomErrorType.CONFLICT;
+import static com.gentlecorp.customer.exception.CustomErrorType.PRECONDITION_FAILED;
+import static com.gentlecorp.customer.util.Constants.PROBLEM_PATH;
 import static com.gentlecorp.customer.util.Validation.validateContact;
 import static com.gentlecorp.customer.util.VersionUtils.getVersion;
 import static com.gentlecorp.customer.util.VersionUtils.validateVersion;
 import static org.springframework.graphql.execution.ErrorType.BAD_REQUEST;
 import static org.springframework.graphql.execution.ErrorType.FORBIDDEN;
 import static org.springframework.graphql.execution.ErrorType.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 import static org.springframework.http.ResponseEntity.noContent;
 
 @Controller
@@ -170,37 +183,83 @@ public class MutationController {
         customerWriteService.deleteById(id,version, user);
     }
 
+    @GraphQlExceptionHandler
+    GraphQLError onVersionOutdated(
+        final VersionOutdatedException ex,
+        final DataFetchingEnvironment env
+    ) {
+        log.error("onVersionOutdated: {}", ex.getMessage());
+        return GraphQLError.newError()
+            .errorType(PRECONDITION_FAILED)
+            .message(ex.getMessage())
+            .path(env.getExecutionStepInfo().getPath().toList()) // Dynamischer Query-Pfad
+            .location(env.getExecutionStepInfo().getField().getSingleField().getSourceLocation()) // GraphQL Location
+            .build();
+    }
 
     @GraphQlExceptionHandler
-    GraphQLError onEmailExists(final EmailExistsException ex) {
+    GraphQLError onVersionAhead(
+        final VersionAheadException ex,
+        final DataFetchingEnvironment env
+    ) {
+        log.error("onVersionAhead: {}", ex.getMessage());
         return GraphQLError.newError()
-            .errorType(BAD_REQUEST)
+            .errorType(PRECONDITION_FAILED)
+            .message(ex.getMessage())
+            .path(env.getExecutionStepInfo().getPath().toList()) // Dynamischer Query-Pfad
+            .location(env.getExecutionStepInfo().getField().getSingleField().getSourceLocation()) // GraphQL Location
+            .build();
+    }
+
+    @GraphQlExceptionHandler
+    GraphQLError onEmailExists(final EmailExistsException ex, final DataFetchingEnvironment env) {
+        log.error("onEmailExists: {}", ex.getMessage());
+        return GraphQLError.newError()
+            .errorType(CONFLICT)
             .message("Die Emailadresse " + ex.getEmail() + " existiert bereits.")
-            .path(List.of("input", "email")) // NOSONAR
+            .location(env.getExecutionStepInfo().getField().getSingleField().getSourceLocation()) // GraphQL Location
+            .path(env.getExecutionStepInfo().getPath().toList()) // Dynamischer Query-Pfad
             .build();
     }
 
     @GraphQlExceptionHandler
-    GraphQLError onUsernameExists(final UsernameExistsException ex) {
-        final List<Object> path = List.of("input", "username");
+    GraphQLError onUsernameExists(final UsernameExistsException ex, final DataFetchingEnvironment env) {
+        log.error("onUsernameExists: {}", ex.getMessage());
         return GraphQLError.newError()
-            .errorType(BAD_REQUEST)
+            .errorType(CONFLICT)
             .message("Der Username " + ex.getUsername() + " existiert bereits.")
-            .path(path)
+            .location(env.getExecutionStepInfo().getField().getSingleField().getSourceLocation()) // GraphQL Location
+            .path(env.getExecutionStepInfo().getPath().toList()) // Dynamischer Query-Pfad
             .build();
     }
 
     @GraphQlExceptionHandler
-    GraphQLError onDateTimeParseException(final DateTimeParseException ex) {
-        final List<Object> path = List.of("input", "geburtsdatum");
+    GraphQLError onPasswordInvalid(
+        final PasswordInvalidException ex,
+        final DataFetchingEnvironment env
+    ) {
+        log.error("onPasswordInvalid: {}", ex.getMessage());
         return GraphQLError.newError()
             .errorType(BAD_REQUEST)
-            .message("Das Datum " + ex.getParsedString() + " ist nicht korrekt.")
-            .path(path)
+            .message(ex.getMessage())
+            .location(env.getExecutionStepInfo().getField().getSingleField().getSourceLocation()) // GraphQL Location
+            .path(env.getExecutionStepInfo().getPath().toList()) // Dynamischer Query-Pfad
             .build();
     }
 
-
+    @GraphQlExceptionHandler
+    GraphQLError onContactExists(
+        final ContactExistsException ex,
+        final DataFetchingEnvironment env
+    ) {
+        log.debug("onContactExists: {}", ex.getMessage());
+        return GraphQLError.newError()
+            .errorType(CONFLICT)
+            .message(ex.getMessage())
+            .location(env.getExecutionStepInfo().getField().getSingleField().getSourceLocation()) // GraphQL Location
+            .path(env.getExecutionStepInfo().getPath().toList()) // Dynamischer Query-Pfad
+            .build();
+    }
 
     /**
      * Behandelt eine `AccessForbiddenException` und gibt ein entsprechendes GraphQL-Fehlerobjekt zurück.
@@ -211,6 +270,7 @@ public class MutationController {
      */
     @GraphQlExceptionHandler
     GraphQLError onAccessForbidden(final AccessForbiddenException ex, DataFetchingEnvironment env) {
+        log.error("onAccessForbidden: {}", ex.getMessage());
         return GraphQLError.newError()
             .errorType(FORBIDDEN)
             .message(ex.getMessage())
@@ -228,6 +288,7 @@ public class MutationController {
      */
     @GraphQlExceptionHandler
     GraphQLError onNotFound(final NotFoundException ex, DataFetchingEnvironment env) {
+        log.error("onNotFound: {}", ex.getMessage());
         return GraphQLError.newError()
             .errorType(NOT_FOUND)
             .message(ex.getMessage())
@@ -237,16 +298,23 @@ public class MutationController {
     }
 
     @GraphQlExceptionHandler
-    Collection<GraphQLError> onConstraintViolations(final ConstraintViolationsException ex, DataFetchingEnvironment env) {
-        return  Stream.concat(
-                ex.getCustomerViolations().stream(),
-                ex.getContactViolations().stream()
+    Collection<GraphQLError> onConstraintViolations(
+        final ConstraintViolationsException ex,
+        final DataFetchingEnvironment env
+    ) {
+        log.error("onConstraintViolations: {}", ex.getMessage());
+        return Stream.of(
+                Optional.ofNullable(ex.getCustomerViolations()).orElse(List.of()).stream(),
+                Optional.ofNullable(ex.getContactViolations()).orElse(List.of()).stream()
             )
-            .map(violations -> violationToGraphQLError(violations, env))
-            .toList();
+            .flatMap(stream -> stream) // Streams korrekt zusammenführen
+            .map(violation -> violationToGraphQLError(violation, env))
+            .toList(); // Gibt eine fehlerfreie Liste zurück
     }
 
+
     private GraphQLError violationToGraphQLError(final ConstraintViolation<?> violation, DataFetchingEnvironment env) {
+        log.debug("violationToGraphQLError: {}", violation);
         // String oder Integer als Listenelement
         final List<Object> path = new ArrayList<>(List.of("input"));
 

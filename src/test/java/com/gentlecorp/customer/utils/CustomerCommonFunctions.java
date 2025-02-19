@@ -7,6 +7,7 @@ import com.gentlecorp.customer.config.TestClientProvider;
 import com.gentlecorp.customer.model.CustomGraphQLError;
 import com.gentlecorp.customer.model.GraphQlResponse;
 import com.gentlecorp.customer.model.entity.Address;
+import com.gentlecorp.customer.model.entity.Contact;
 import com.gentlecorp.customer.model.entity.Customer;
 import com.gentlecorp.customer.testData.TestData;
 import graphql.language.SourceLocation;
@@ -611,6 +612,108 @@ public class CustomerCommonFunctions extends TestData {
         .block();
   }
 
+  protected GraphQlResponse<Customer> executeDeleteCustomerGraphQLQuery2(
+      final String query, final Map<String, Object> variables, final HttpGraphQlClient client
+  ) {
+    return (GraphQlResponse<Customer>) client.document(query)
+        .variables(variables)
+        .execute()
+        .map(response -> {
+          log.debug("GraphQL Full Response: {}", response);
+
+          // Prüfe, ob die Antwort Errors enthält
+          if (response.getErrors() != null && !response.getErrors().isEmpty()) {
+            log.error("GraphQL Errors gefunden: {}", response.getErrors());
+
+            String errorMessage = response.getErrors().toString();
+            String extractedMessage = "Unbekannter Fehler";
+            List<String> path = List.of();
+            List<SourceLocation> locations = List.of();
+            Map<String, Object> extensions = Map.of();
+
+            try {
+              // 🔹 1. `message=` Wert extrahieren
+              Matcher messageMatcher = Pattern.compile("message=(.*?), locations=").matcher(errorMessage);
+              if (messageMatcher.find()) {
+                extractedMessage = messageMatcher.group(1).trim();
+                log.debug("Extracted message: {}", extractedMessage);
+              }
+
+              // 🔹 2. `path=` Wert extrahieren
+              Matcher pathMatcher = Pattern.compile("path=\\[([^]]+)\\]").matcher(errorMessage);
+              if (pathMatcher.find()) {
+                path = Arrays.asList(pathMatcher.group(1).replace(" ", "").split(","));
+                log.debug("Extracted path: {}", path);
+              }
+
+              // 🔹 3. `locations=` Wert extrahieren
+              Matcher locationsMatcher = Pattern.compile("locations=\\[\\{line=(\\d+), column=(\\d+)\\}\\]").matcher(errorMessage);
+              if (locationsMatcher.find()) {
+                int line = Integer.parseInt(locationsMatcher.group(1));
+                int column = Integer.parseInt(locationsMatcher.group(2));
+                locations = List.of(new SourceLocation(line, column));
+                log.debug("Extracted locations: {}", locations);
+              }
+
+              // 🔹 4. `extensions=` manuell in JSON umwandeln
+              Matcher extensionsMatcher = Pattern.compile("extensions=\\{([^}]+)\\}").matcher(errorMessage);
+              if (extensionsMatcher.find()) {
+                String extensionsString = extensionsMatcher.group(1).trim();
+
+                // 🛠 `=` durch `:` ersetzen und String-Werte mit `"` umschließen
+                String jsonFormattedExtensions = extensionsString
+                    .replaceAll("(\\w+)=([A-Za-z_]+)", "\"$1\":\"$2\"") // Keys und Werte korrekt setzen
+                    .replaceAll("=", ":") // Falls noch = übrig ist, zu : umwandeln
+                    .replaceAll("'", "\""); // Falls Einzel-Anführungszeichen vorkommen
+
+                jsonFormattedExtensions = "{" + jsonFormattedExtensions + "}"; // `{}` wieder hinzufügen
+
+                log.debug("Endgültige JSON-Extensions: {}", jsonFormattedExtensions);
+
+                ObjectMapper objectMapper = new ObjectMapper();
+                extensions = objectMapper.readValue(jsonFormattedExtensions, new TypeReference<Map<String, Object>>() {});
+              }
+
+              log.error("Extrahierte GraphQL-Fehlermeldung: {}", extractedMessage);
+              log.error("Extrahrierter Path: {}", path);
+              log.error("Extrahrierte Extensions: {}", extensions);
+
+              return new GraphQlResponse<>(null, List.of(
+                  new CustomGraphQLError(extractedMessage, locations, null, extensions)
+              ));
+            } catch (Exception ex) {
+              log.error("Fehler beim Parsen des GraphQL-Fehlers: {}", ex.getMessage());
+            }
+
+            return new GraphQlResponse<>(null, List.of(new CustomGraphQLError(response.getErrors().toString())));
+          }
+
+          // Prüfe, ob `createCustomer` existiert
+          Map<String, Object> data = response.getData();
+          if (data != null && data.containsKey("createCustomer")) {
+            Customer customer = new ObjectMapper().convertValue(data.get("createCustomer"), Customer.class);
+            return new GraphQlResponse<>(customer, List.of());
+          } else {
+            log.error("Kein createCustomer Feld in der Antwort gefunden: {}", data);
+            return new GraphQlResponse<>(null, List.of(new CustomGraphQLError("Kein Kunde wurde erstellt")));
+          }
+        })
+        .onErrorResume(error -> {
+          log.error("GraphQL Client Exception: {}", error.getMessage());
+          return Mono.just(new GraphQlResponse<>(null, List.of(new CustomGraphQLError(error.getMessage()))));
+        })
+        .block();
+  }
+
+  protected UUID executeAddContactGraphQLQuery(
+      final String query, final Map<String, Object> variables, final HttpGraphQlClient client
+  ) {
+    return client.mutate().build().document(query)
+        .variables(variables)
+        .retrieve("addContact") // Hier wird sichergestellt, dass nur das gewünschte Feld extrahiert wird
+        .toEntity(UUID.class) // In ein Customer-Objekt umwandeln
+        .block();
+  }
 
 
   /**
@@ -687,7 +790,7 @@ public class CustomerCommonFunctions extends TestData {
   }
 
   protected void verifyCustomerAsAdmin(UUID customerId, String expectedUsername, final String expectedEmail, int expectedTierLevel) {
-    final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+    final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
     final Map<String, Object> id = Map.of("id", customerId);
     final var response = executeCustomerGraphQLQuery(fullCustomerQuery, id, client);
     final var createdCustomer = response.getData();
@@ -725,17 +828,17 @@ public class CustomerCommonFunctions extends TestData {
     Map<String, Object> id;
     GraphQlResponse<Customer> response;
 
-    client = testClientProvider.getAuthenticatedClient(ROLE_SUPREME);
+    client = testClientProvider.getAuthenticatedClient(USER_SUPREME);
     id = Map.of("id", customerId);
     response = executeCustomerGraphQLQuery(customerQuery, id, client);
     assertThat(response.getErrors().getFirst().getExtensions().get("classification")).isEqualTo("FORBIDDEN");
 
-    client = testClientProvider.getAuthenticatedClient(ROLE_ELITE);
+    client = testClientProvider.getAuthenticatedClient(USER_ELITE);
     id = Map.of("id", customerId);
     response = executeCustomerGraphQLQuery(customerQuery, id, client);
     assertThat(response.getErrors().getFirst().getExtensions().get("classification")).isEqualTo("FORBIDDEN");
 
-    client = testClientProvider.getAuthenticatedClient(ROLE_BASIC);
+    client = testClientProvider.getAuthenticatedClient(USER_BASIC);
     id = Map.of("id", customerId);
     response = executeCustomerGraphQLQuery(customerQuery, id, client);
     assertThat(response.getErrors().getFirst().getExtensions().get("classification")).isEqualTo("FORBIDDEN");
@@ -760,11 +863,11 @@ public class CustomerCommonFunctions extends TestData {
     Map<String, Object> id;
     GraphQlResponse<Customer> response;
 
-    client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+    client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
     id = Map.of("id", customerId, "version", version);
     response = executeDeleteCustomerGraphQLQuery(customersDeleteQuery, id, client);
 
-    client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+    client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
     id = Map.of("id", customerId);
     response = executeCustomerGraphQLQuery(customerQuery, id, client);
     assertThat(response.getErrors().getFirst().getExtensions().get("classification")).isEqualTo("NOT_FOUND");

@@ -56,6 +56,9 @@ public class ConstraintViolationsException extends RuntimeException {
       List<ConstraintViolation<CustomerDTO>> customerViolations,
       List<ConstraintViolation<ContactDTO>> contactViolations
   ) {
+    System.out.println("formatMessage: " + customerViolations);
+    System.out.println("formatMessage: " + contactViolations);
+
     String customerMessage = customerViolations != null && !customerViolations.isEmpty()
         ? "Fehler in CustomerDTO:\n" + formatViolations(customerViolations)
         : "";
