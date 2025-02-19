@@ -1,6 +1,6 @@
 package com.gentlecorp.customer.testData;
 
-public class CustomerTestQueryData {
+public class CustomerTestQueryData extends CreateCustomerTestData {
 
  public static final String customerQuery = """
                 query Customer($id: ID!) {
@@ -40,6 +40,7 @@ public class CustomerTestQueryData {
               customerState
               contactOptions
               interests
+              contactIds
               address {
                   street
                   houseNumber
@@ -122,10 +123,98 @@ public class CustomerTestQueryData {
              }
          }
     """;
+
+ public static final String customerCreateQuery = """
+     mutation createCustomer($input: CustomerInput!, $password: String!) {
+          createCustomer(
+              input: $input
+              password: $password
+          ) {
+                     id
+                     version
+                     lastName
+                     firstName
+                     email
+                     phoneNumber
+                     username
+                     tierLevel
+                     subscribed
+                     birthdate
+                     gender
+                     maritalStatus
+                     customerState
+                     address {
+                         street
+                         houseNumber
+                         zipCode
+                         city
+                         state
+                         country
+                     }
+                     contactOptions
+                     interests
+                 }
+      }
+    """;
+
+ public static final String customerUpdateQuery = """
+     mutation UpdateCustomer($input: CustomerUpdateInput!, $id: ID!, $version: String!) {
+         updateCustomer(
+             input: $input
+             id: $id
+             version: $version
+         ) {
+             message
+             result {
+                 id
+                 version
+                 lastName
+                 firstName
+                 email
+                 phoneNumber
+                 username
+                 tierLevel
+                 subscribed
+                 birthdate
+                 gender
+                 maritalStatus
+                 customerState
+                 contactOptions
+                 interests
+             }
+             affectedCount
+             warnings
+             success
+         }
+     }
+     """;
+
+ public static final String customersDeleteQuery = """
+     mutation DeleteCustomer($id: ID!, $version: Int) {
+         deleteCustomer(id: $id, version: $version) {
+             message
+             affectedCount
+             warnings
+         }
+     }
+     """;
+
+ public static final String customersUpdatePasswordQuery = """
+     mutation DeleteCustomer($password: String!) {
+         updatePassword(newPassword: $password) {
+             message
+             affectedCount
+             warnings
+         }
+     }
+     """;
+
+ public static final String addContactQuery = """
+     mutation AddContact($input: ContactInput, $id: ID!) {
+         addContact(
+             id: $id
+             input: $input
+         )
+     }
+     """;
 }
-
-
-
-
-
-

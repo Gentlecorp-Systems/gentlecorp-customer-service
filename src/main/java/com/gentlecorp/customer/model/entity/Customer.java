@@ -7,8 +7,6 @@ import lombok.*;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -122,7 +120,7 @@ public class Customer {
     /**
      * Liste von Kontakten, die mit dem Kunden verknüpft sind.
      */
-    private List<Contact> contacts;
+    private List<UUID> contactIds;
 
     /**
      * Zeitstempel der Erstellung des Kunden-Dokuments.
@@ -145,4 +143,27 @@ public class Customer {
      * Bevorzugte Kontaktoptionen des Kunden.
      */
     private List<ContactOptionsType> contactOptions;
+
+    public void set(final Customer customer) {
+            lastName = customer.getLastName() != null ? customer.getLastName() : lastName;
+            firstName = customer.getFirstName() != null ? customer.getFirstName() : firstName;
+            email = customer.getEmail() != null ? customer.getEmail() : email;
+            phoneNumber = customer.getPhoneNumber() != null ? customer.getPhoneNumber() : phoneNumber;
+            username = customer.getUsername() != null ? customer.getUsername() : username;
+
+            tierLevel = customer.getTierLevel() > 0 ? customer.getTierLevel() : tierLevel;
+            subscribed = customer.isSubscribed();
+
+            birthdate = customer.getBirthdate() != null ? customer.getBirthdate() : birthdate;
+            gender = customer.getGender() != null ? customer.getGender() : gender;
+            maritalStatus = customer.getMaritalStatus() != null ? customer.getMaritalStatus() : maritalStatus;
+            customerState = customer.getCustomerState() != null ? customer.getCustomerState() : customerState;
+
+            address = customer.getAddress() != null ? customer.getAddress() : address;
+            contactIds = customer.getContactIds() != null ? customer.getContactIds() : contactIds;
+
+            interests = customer.getInterests() != null ? customer.getInterests() : interests;
+            contactOptions = customer.getContactOptions() != null ? customer.getContactOptions() : contactOptions;
+
+    }
 }

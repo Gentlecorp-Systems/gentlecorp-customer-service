@@ -7,6 +7,7 @@ import com.gentlecorp.customer.model.entity.Customer;
 import com.gentlecorp.customer.model.input.FilterInput;
 import com.gentlecorp.customer.model.input.PaginationInput;
 import com.gentlecorp.customer.model.input.SortInput;
+import com.gentlecorp.customer.security.CustomUserDetails;
 import com.gentlecorp.customer.service.CustomerReadService;
 import com.gentlecorp.customer.security.service.JwtService;
 import graphql.GraphQLError;
@@ -51,29 +52,6 @@ import static org.springframework.http.ResponseEntity.ok;
 public class QueryController {
 
     private final CustomerReadService customerReadService;
-    private final JwtService jwtService;
-
-    /**
-     * Validiert ein JWT und extrahiert Benutzername und Rolle.
-     *
-     * @param jwt Das JWT des Nutzers.
-     * @return Ein `Pair` mit Benutzername und Rolle.
-     * @throws UnauthorizedException Falls das JWT ungültig ist oder die Informationen fehlen.
-     */
-    Pair<String, String> validateJwtAndGetUsernameAndRole(Jwt jwt) {
-        final var username = jwtService.getUsername(jwt);
-        if (username == null) {
-            throw new UnauthorizedException("Missing username in token");
-        }
-
-        final var role = jwtService.getRole(jwt);
-        if (role == null) {
-            throw new UnauthorizedException("Missing role in token");
-        }
-
-        return Pair.of(username, role);
-    }
-
 
     /**
      * Ruft einen Kunden anhand seiner ID ab.
@@ -88,9 +66,10 @@ public class QueryController {
         @Argument final UUID id,
         final Authentication authentication
     ) {
+        log.debug("deleteCustomer: id={}", authentication);
         log.debug("findById: id={}, user={}", id, authentication);
 
-        final var user = (UserDetails) authentication.getPrincipal();
+        final var user = (CustomUserDetails) authentication.getPrincipal();
         final var customer = customerReadService.findById(id,user);
         log.debug("findById: customer={}", customer);
         return customer;
@@ -137,43 +116,6 @@ public class QueryController {
         return "Hello, GraphQL!";
     }
 
-//    @GraphQlExceptionHandler
-//    GraphQLError onEmailExists(final EmailExistsException ex) {
-//        return GraphQLError.newError()
-//            .errorType(BAD_REQUEST)
-//            .message("Die Emailadresse " + ex.getEmail() + " existiert bereits.")
-//            .path(List.of("input", "email")) // NOSONAR
-//            .build();
-//    }
-
-//    @GraphQlExceptionHandler
-//    GraphQLError onUsernameExists(final UsernameExistsException ex) {
-//        final List<Object> path = List.of("input", "username");
-//        return GraphQLError.newError()
-//            .errorType(BAD_REQUEST)
-//            .message("Der Username " + ex.getUsername() + " existiert bereits.")
-//            .path(path)
-//            .build();
-//    }
-//
-//    @GraphQlExceptionHandler
-//    GraphQLError onDateTimeParseException(final DateTimeParseException ex) {
-//        final List<Object> path = List.of("input", "geburtsdatum");
-//        return GraphQLError.newError()
-//            .errorType(BAD_REQUEST)
-//            .message("Das Datum " + ex.getParsedString() + " ist nicht korrekt.")
-//            .path(path)
-//            .build();
-//    }
-//
-//    @GraphQlExceptionHandler
-//    Collection<GraphQLError> onConstraintViolations(final ConstraintViolationException ex) {
-//        return ex.getConstraintViolations()
-//            .stream()
-//            .map(this::violationToGraphQLError)
-//            .toList();
-//    }
-
     /**
      * Behandelt eine `AccessForbiddenException` und gibt ein entsprechendes GraphQL-Fehlerobjekt zurück.
      *
@@ -205,22 +147,6 @@ public class QueryController {
             .message(ex.getMessage())
             .path(env.getExecutionStepInfo().getPath().toList()) // Dynamischer Query-Pfad
             .location(env.getExecutionStepInfo().getField().getSingleField().getSourceLocation()) // GraphQL Location
-            .build();
-    }
-
-    private GraphQLError violationToGraphQLError(final ConstraintViolation<?> violation) {
-        // String oder Integer als Listenelement
-        final List<Object> path = new ArrayList<>(List.of("input"));
-
-        final var propertyPath = violation.getPropertyPath();
-        StreamSupport.stream(propertyPath.spliterator(), false)
-            .filter(node -> !node.getName().equals("create") && !node.getName().equals("kunde"))
-            .forEach(node -> path.add(node.toString()));
-
-        return GraphQLError.newError()
-            .errorType(BAD_REQUEST)
-            .message(violation.getMessage())
-            .path(path)
             .build();
     }
 }

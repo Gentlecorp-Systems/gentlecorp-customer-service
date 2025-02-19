@@ -4,14 +4,18 @@ import com.gentlecorp.customer.security.dto.TokenDTO;
 import com.gentlecorp.customer.testData.CustomerTestData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.graphql.client.HttpGraphQlClient;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Component
 public class TestClientProvider extends CustomerTestData {
@@ -39,11 +43,11 @@ public class TestClientProvider extends CustomerTestData {
 
     this.graphQlClient = HttpGraphQlClient.builder(webClient).build();
 
-    tokenCache.put(ROLE_ADMIN, authenticate(ROLE_ADMIN, ROLE_PASSWORD));
-    tokenCache.put(ROLE_USER, authenticate(ROLE_USER, ROLE_PASSWORD));
-    tokenCache.put(ROLE_BASIC, authenticate(ROLE_BASIC, ROLE_PASSWORD));
-    tokenCache.put(ROLE_ELITE, authenticate(ROLE_ELITE, ROLE_PASSWORD));
-    tokenCache.put(ROLE_SUPREME, authenticate(ROLE_SUPREME, ROLE_PASSWORD));
+    tokenCache.put(USER_ADMIN, authenticate(USER_ADMIN, USER_PASSWORD));
+    tokenCache.put(USER_USER, authenticate(USER_USER, USER_PASSWORD));
+    tokenCache.put(USER_BASIC, authenticate(USER_BASIC, USER_PASSWORD));
+    tokenCache.put(USER_ELITE, authenticate(USER_ELITE, USER_PASSWORD));
+    tokenCache.put(USER_SUPREME, authenticate(USER_SUPREME, USER_PASSWORD));
   }
 
   /**
@@ -77,7 +81,7 @@ public class TestClientProvider extends CustomerTestData {
         .variables(variables)
         .retrieveSync("authenticate")
         .toEntity(TokenDTO.class);
-    
+
     return token.access_token();
   }
 
@@ -110,5 +114,17 @@ public class TestClientProvider extends CustomerTestData {
         .build();
 
     return HttpGraphQlClient.builder(webClient).build();
+  }
+
+  public HttpGraphQlClient createAuthenticatedClient(String username, String password) {
+    final var token = authenticate(username,password);
+
+    WebClient webClient = WebClient.builder()
+        .baseUrl(SCHEMA_HOST + serverPort + GRAPHQL_ENDPOINT)
+        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+        .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+        .build();
+
+    return  HttpGraphQlClient.builder(webClient).build();
   }
 }

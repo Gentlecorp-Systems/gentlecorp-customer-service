@@ -45,7 +45,7 @@ public class TestCustomer extends CustomerCommonFunctions {
     void testGetAllCustomersByIds() {
         assertThat(testClientProvider).isNotNull();
 
-        final var adminClient = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+        final var adminClient = testClientProvider.getAuthenticatedClient(USER_ADMIN);
         assertThat(adminClient).isNotNull();
 
         for (int i = 0; i <= 26; i++) {
@@ -71,7 +71,7 @@ public class TestCustomer extends CustomerCommonFunctions {
 
     @Test
     void testGetHiroshiByIdAsAdmin() {
-        final var adminClient = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+        final var adminClient = testClientProvider.getAuthenticatedClient(USER_ADMIN);
         final Map<String, Object> id = Map.of(
             "id",  ID_HIROSHI
         );
@@ -81,7 +81,7 @@ public class TestCustomer extends CustomerCommonFunctions {
 
     @Test
     void testGetHiroshiByIdAsUser() {
-        final var userClient = testClientProvider.getAuthenticatedClient(ROLE_USER);
+        final var userClient = testClientProvider.getAuthenticatedClient(USER_USER);
         final Map<String, Object> id = Map.of(
             "id",  ID_HIROSHI
         );
@@ -91,7 +91,7 @@ public class TestCustomer extends CustomerCommonFunctions {
 //
     @Test
     void testGetHiroshiByIdAsSupreme() {
-        final var client = testClientProvider.getAuthenticatedClient(ROLE_SUPREME);
+        final var client = testClientProvider.getAuthenticatedClient(USER_SUPREME);
         final Map<String, Object> id = Map.of("id", ID_HIROSHI);
         final var response = executeCustomerGraphQLQuery(customerQuery, id, client);
 
@@ -99,14 +99,14 @@ public class TestCustomer extends CustomerCommonFunctions {
         assertThat(response.getErrors()).isNotEmpty(); // Es gibt Fehler
 
         final var firstError = response.getErrors().getFirst();
-        assertThat(firstError.getMessage()).isEqualTo(String.format("Zugriff verweigert: Benutzer '%s' besitzt nur die Rollen [%s], die für diese Anfrage nicht ausreichen.",ROLE_SUPREME, SUPREME));
+        assertThat(firstError.getMessage()).isEqualTo(String.format("Zugriff verweigert: Benutzer '%s' besitzt nur die Rollen [%s], die für diese Anfrage nicht ausreichen.",USER_SUPREME, SUPREME));
        assertThat(firstError.getExtensions().get("classification")).isEqualTo("FORBIDDEN");
     }
 
 
     @Test
     void testGetHiroshiByIdAsElite() {
-        final var client = testClientProvider.getAuthenticatedClient(ROLE_ELITE);
+        final var client = testClientProvider.getAuthenticatedClient(USER_ELITE);
         final Map<String, Object> id = Map.of("id", ID_HIROSHI);
         final var response = executeCustomerGraphQLQuery(customerQuery, id, client);
 
@@ -114,13 +114,13 @@ public class TestCustomer extends CustomerCommonFunctions {
         assertThat(response.getErrors()).isNotEmpty(); // Es gibt Fehler
 
         final var firstError = response.getErrors().getFirst();
-        assertThat(firstError.getMessage()).isEqualTo(String.format("Zugriff verweigert: Benutzer '%s' besitzt nur die Rollen [%s], die für diese Anfrage nicht ausreichen.",ROLE_ELITE, ELITE));
+        assertThat(firstError.getMessage()).isEqualTo(String.format("Zugriff verweigert: Benutzer '%s' besitzt nur die Rollen [%s], die für diese Anfrage nicht ausreichen.",USER_ELITE, ELITE));
         assertThat(firstError.getExtensions().get("classification")).isEqualTo("FORBIDDEN");
     }
 
     @Test
     void testGetHiroshiByIdAsBasic() {
-        final var client = testClientProvider.getAuthenticatedClient(ROLE_BASIC);
+        final var client = testClientProvider.getAuthenticatedClient(USER_BASIC);
         final Map<String, Object> id = Map.of("id", ID_HIROSHI);
         final var response = executeCustomerGraphQLQuery(customerQuery, id, client);
 
@@ -128,7 +128,7 @@ public class TestCustomer extends CustomerCommonFunctions {
         assertThat(response.getErrors()).isNotEmpty(); // Es gibt Fehler
 
         final var firstError = response.getErrors().getFirst();
-        assertThat(firstError.getMessage()).isEqualTo(String.format("Zugriff verweigert: Benutzer '%s' besitzt nur die Rollen [%s], die für diese Anfrage nicht ausreichen.",ROLE_BASIC, BASIC));
+        assertThat(firstError.getMessage()).isEqualTo(String.format("Zugriff verweigert: Benutzer '%s' besitzt nur die Rollen [%s], die für diese Anfrage nicht ausreichen.",USER_BASIC, BASIC));
         assertThat(firstError.getExtensions().get("classification")).isEqualTo("FORBIDDEN");
     }
 
@@ -147,7 +147,7 @@ public class TestCustomer extends CustomerCommonFunctions {
 
         @Test
     void testGetErikByIdAsErik() {
-            final var client = testClientProvider.getAuthenticatedClient(ROLE_BASIC);
+            final var client = testClientProvider.getAuthenticatedClient(USER_BASIC);
             final Map<String, Object> id = Map.of(
                 "id",  ID_ERIK
             );
@@ -157,7 +157,7 @@ public class TestCustomer extends CustomerCommonFunctions {
 
     @Test
     void testGetLeroyByIdAsLeroy() {
-        final var client = testClientProvider.getAuthenticatedClient(ROLE_ELITE);
+        final var client = testClientProvider.getAuthenticatedClient(USER_ELITE);
         final Map<String, Object> id = Map.of(
             "id",  ID_LEROY
         );
@@ -167,7 +167,7 @@ public class TestCustomer extends CustomerCommonFunctions {
 
     @Test
     void testGetCalebByIdAsCaleb() {
-        final var client = testClientProvider.getAuthenticatedClient(ROLE_SUPREME);
+        final var client = testClientProvider.getAuthenticatedClient(USER_SUPREME);
         final Map<String, Object> id = Map.of(
             "id",  ID_CALEB
         );
@@ -177,7 +177,7 @@ public class TestCustomer extends CustomerCommonFunctions {
 
     @Test
     void testGetCustomerByIdNotFound() {
-        final var client = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+        final var client = testClientProvider.getAuthenticatedClient(USER_ADMIN);
         final String query = """
                 query Customer($id: ID!) {
                     customer(id: $id) {
@@ -202,7 +202,7 @@ public class TestCustomer extends CustomerCommonFunctions {
 
         @Test
     void testGetFullHiroshiByIdAsAdmin() {
-            final var adminClient = testClientProvider.getAuthenticatedClient(ROLE_ADMIN);
+            final var adminClient = testClientProvider.getAuthenticatedClient(USER_ADMIN);
 
             final Map<String, Object> id = Map.of(
                 "id",  ID_HIROSHI

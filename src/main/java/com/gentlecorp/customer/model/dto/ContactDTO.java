@@ -3,9 +3,12 @@ package com.gentlecorp.customer.model.dto;
 import com.gentlecorp.customer.model.annotation.ValidDateRange;
 import com.gentlecorp.customer.model.enums.RelationshipType;
 import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+
 import java.time.LocalDate;
 
 import static com.gentlecorp.customer.model.dto.CustomerDTO.FIRST_NAME_PATTERN;
@@ -32,19 +35,20 @@ import static com.gentlecorp.customer.model.dto.CustomerDTO.NAME_MAX_LENGTH;
  */
 @ValidDateRange
 public record ContactDTO(
-    @NotNull(message = "Bitte geben Sie einen Nachnamen an.")
-    @Pattern(regexp = LAST_NAME_PATTERN, message = "Ungültiges Format für den Nachnamen.")
-    @Size(max = NAME_MAX_LENGTH, message = "Der Nachname darf maximal " + NAME_MAX_LENGTH + " Zeichen enthalten.")
+    @NotNull(message = "Bitte gib deinen Nachnamen an.")
+    @Pattern(regexp = LAST_NAME_PATTERN, message = "Der Nachname darf nur Buchstaben enthalten und sollte mit einem großen Buchstaben anfangen.")
+    @Size(max = NAME_MAX_LENGTH, message = "Der Nachname darf maximal {max} Zeichen lang sein.")
     String lastName,
 
-    @NotNull(message = "Bitte geben Sie einen Vornamen an.")
-    @Pattern(regexp = FIRST_NAME_PATTERN, message = "Ungültiges Format für den Vornamen.")
-    @Size(max = NAME_MAX_LENGTH, message = "Der Vorname darf maximal " + NAME_MAX_LENGTH + " Zeichen enthalten.")
+    @NotNull(message = "Bitte gib deinen Vornamen an.")
+    @Pattern(regexp = FIRST_NAME_PATTERN, message = "Der Vorname darf nur Buchstaben enthalten und sollte mit einem großen Buchstaben anfangen.")
+    @Size(max = NAME_MAX_LENGTH, message = "Der Vorname darf maximal {max} Zeichen lang sein.")
     String firstName,
 
     @NotNull(message = "Der Beziehungstyp ist erforderlich.")
     RelationshipType relationship,
 
+    @Min(value = 0, message = "Das Auszahlungslimit darf nicht negativ sein")
     int withdrawalLimit,
 
     boolean isEmergencyContact,
