@@ -169,7 +169,7 @@ jobs:
 
       # 5. Code Coverage Bericht hochladen
       - name: Upload Coverage to Codecov
-        uses: codecov/codecov-action@4898080f15c09ae860fcec6796854d10a2e23de8
+        uses: codecov/codecov-action@0565863a31f2c772f9f0395002a31e3f06189574
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: build/reports/jacoco/test/html/jacocoTestReport.xml
