@@ -116,14 +116,14 @@ jobs:
 
       - name: Docker Scout Quickview
         id: docker-scout-quickview
-        uses: docker/scout-action@0133ff88fe16d4a412dc4827a8fccbccb6b583e0
+        uses: docker/scout-action@d341d36d6eebbe05c0b25760c63afa19e8f23269
         with:
           command: quickview
           image: calebscript/customer:${{ env.CURRENT_DATE }}
 
       - name: Docker Scout CVEs
         id: docker-scout-cves
-        uses: docker/scout-action@0133ff88fe16d4a412dc4827a8fccbccb6b583e0
+        uses: docker/scout-action@d341d36d6eebbe05c0b25760c63afa19e8f23269
         with:
           command: cves
           image: calebscript/customer:${{ env.CURRENT_DATE }}
